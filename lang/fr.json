@@ -385,7 +385,8 @@
       "manaBurn": "{actorName} brûle {amount} point(s) de vigueur pour accomplir son sort {capacityName}",
       "warningNeedLearnedCapacities": "Vous devez apprendre les capacités des rangs précédents avant d'apprendre celle-ci",
       "consume": "{actorName} a consommé un(e) {itemName}",
-      "attackActionLimit": "Une attaque de créature ne peut avoir qu'une seule action"
+      "attackActionLimit": "Une attaque de créature ne peut avoir qu'une seule action",
+      "onlyInBattle" : "Pas de combat en cours ou combat non démarré !"
     },
     "tooltip": {
       "formulaAttack": "Formule d'attaque (sans le dé)",
@@ -423,6 +424,7 @@
         "damMelee": "Dommages de contact",
         "damRanged": "Dommages à distance",
         "damMagic": "Dommages magiques",
+        "save": "Sauvegarde",
         "path": "Voie",
         "paths": "Voies",
         "critrange": "Critique",
@@ -631,6 +633,7 @@
       "value": "Valeur",
       "currency": "Monnaie",
       "consumable": "Consommables",
+      "save": "Sauvegarde",
       "rarity": "Rareté",
       "usage": "Usage",
       "1h": "Une main",
@@ -662,6 +665,7 @@
       "skillUsed" :  "Compétence(s) utilisée(s)",
       "formula": "Formule",
       "oppositeRoll": "Jet opposé",
+      "saveRoll": "Jet de sauvegarde",      
       "skillformula": "Formule de compétence",
       "healformula": "Formule de soin",
       "part": "Composante",
@@ -769,7 +773,9 @@
       "sortByName": "Tri par nom",
       "sortByRank": "Tri par rang",
       "sortByType": "Tri par type",
-      "sortByActionType": "Trier par temps d'action"
+      "sortByActionType": "Trier par temps d'action",
+      "saveAbility" : "Sauvegarde basé sur :",
+      "saveDifficulty" : "Seuil de difficulté :"
     },
     "properties": {
       "attack": "Attaque",
@@ -956,7 +962,8 @@
         "heal": "Soin",
         "buff": "Amélioration",
         "debuff": "Affaiblissement",
-        "consumable": "Consommable"
+        "consumable": "Consommable",
+        "save" : "Sauvegarde"
       },
       "equip": "Équiper",
       "unequip": "Déséquiper",
@@ -1077,7 +1084,9 @@
         "elementType": "Type d'énergie pour les dommages",
         "formulaType": "Type",
         "statusAvailable": "Inflige le(s) statut(s)",
-        "statuses": "Liste des statuts"
+        "statuses": "Liste des statuts",
+        "onSaveFailure": "Echec de sauvegarde",
+        "onSaveSuccess": "Succès de sauvegarde"
       },
       "formula": {
         "damage": "Dommages",

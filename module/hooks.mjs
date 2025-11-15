@@ -248,6 +248,69 @@ export default function registerHooks() {
         }
       })
     })
+    // Clic sur le bouton de jet de sauvegarde
+    html.querySelectorAll(".save-roll").forEach((btn) => {
+      btn.addEventListener("click", async (event) => {
+        const messageId = event.currentTarget.closest(".message").dataset.messageId
+        const message = game.messages.get(messageId)
+        console.log("message", message)
+        // j'ai le context dans message.system.context
+        const target = await fromUuid(message.system.context.target)
+
+        //const result = await target.rollSkill(message.system.context.saveAbility, { difficulty: message.system.context.difficulty })
+
+        //const roll = await new Roll(formula).roll()
+        //const difficulty = roll.total
+        /*
+        let rolls = message.rolls
+        rolls[0].options.oppositeRoll = false
+        rolls[0].options.difficulty = difficulty
+
+        let newResult = CORoll.analyseRollResult(rolls[0])
+        if (newResult.isSuccess) {
+          const damageRoll = Roll.fromData(message.system.linkedRoll)
+          await damageRoll.toMessage(
+            { style: CONST.CHAT_MESSAGE_STYLES.OTHER, type: "action", system: { subtype: "damage" }, speaker: message.speaker },
+            { rollMode: rolls[0].options.rollMode },
+          )
+        }
+
+        // Gestion des custom effects
+        const customEffect = message.system.customEffect
+        const additionalEffect = message.system.additionalEffect
+        if (customEffect && additionalEffect && Resolver.shouldManageAdditionalEffect(newResult, additionalEffect)) {
+          if (game.user.isGM) await targetActor.applyCustomEffect(customEffect)
+          else {
+            game.socket.emit(`system.${SYSTEM.ID}`, {
+              action: "customEffect",
+              data: {
+                userId: game.user.id,
+                ce: customEffect,
+                targets: [targetActor.uuid],
+              },
+            })
+          }
+        }
+
+        // Le MJ peut mettre à jour le message de chat
+        if (game.user.isGM) {
+          await message.update({ rolls: rolls, "system.result": newResult })
+        }
+        // Sinon on émet un message pour mettre à jour le message de chat
+        else {
+          game.socket.emit(`system.${SYSTEM.ID}`, {
+            action: "oppositeRoll",
+            data: {
+              userId: game.user.id,
+              messageId: message.id,
+              rolls: rolls,
+              result: newResult,
+            },
+          })
+        }
+      })*/
+      })
+    })
   })
 
   Hooks.on("hotbarDrop", (bar, data, slot) => {

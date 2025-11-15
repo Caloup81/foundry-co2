@@ -11,6 +11,7 @@ export default class CoChat {
    * @property {Object|null} flags - The flags for the chat.
    * @property {Object|null} roll - The roll associated with the chat.
    * @property {Object|null} whisper - The whisper settings for the chat.
+   * @property {Object|null} context - Objet contenant les element que l'on veux suivre pendant la durée de vie du message
    */
   constructor(actor) {
     this.actor = actor
@@ -21,6 +22,8 @@ export default class CoChat {
     this.flags = null
     this.roll = null
     this.whisper = null
+    this.context = null
+    console.log("je crée un COChat avec comme actor : ", actor)
   }
 
   /**
@@ -30,6 +33,16 @@ export default class CoChat {
    */
   withContent(content) {
     this.content = content
+    return this
+  }
+
+  /**
+   * Paramètre l'objet contenant les élément que l'on veux suivre pendant la durée de vie du message
+   * @param {*} content
+   * @returns {CoChat} the instance
+   */
+  withContext(context) {
+    this.context = context
     return this
   }
 
@@ -97,8 +110,9 @@ export default class CoChat {
     if (!this.content) {
       return null
     }
-
-    let speaker = ChatMessage.getSpeaker({ actor: this.actor.id })
+    console.log("je cree le speaker à partir de :  : ", this.actor)
+    let speaker = ChatMessage.getSpeaker({ actor: this.actor })
+    console.log("le speaker créé   : ", speaker)
     // Create the chat data
     const data = {
       user: game.user.id,
@@ -134,6 +148,8 @@ export default class CoChat {
 
     // Create the chat
     this.chat = await ChatMessage.create(data)
+    // on ajoute un context au message pour récupére les valeurs au besoin
+    this.chat.system = { ...this.chat.system, context: this.context }
     return this
   }
 

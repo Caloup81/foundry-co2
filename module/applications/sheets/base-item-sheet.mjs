@@ -172,6 +172,7 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
     context.choiceResolverTypes = SYSTEM.RESOLVER_TYPE
     context.choiceResolverApplyOn = SYSTEM.RESOLVER_RESULT
     context.choiceResolverApplyOnAlways = Object.fromEntries(Object.entries(SYSTEM.RESOLVER_RESULT).filter(([key, value]) => key === "always"))
+    context.choiceResolverApplyOnSave = Object.fromEntries(Object.entries(SYSTEM.RESOLVER_RESULT).filter(([key, value]) => key === "saveFailure" || key === "saveSuccess"))
     context.choiceResolverTargets = SYSTEM.RESOLVER_TARGET
     context.choiceResolverScopes = SYSTEM.RESOLVER_SCOPE
     context.choiceResolverEffectDurationUnit = SYSTEM.COMBAT_UNITE
@@ -188,6 +189,7 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
     context.choiceModifierAttributeTargets = Object.fromEntries(Object.entries(SYSTEM.MODIFIERS.MODIFIERS_TARGET).filter(([key, value]) => value.subtype === "attribute"))
     context.choiceModifierResourceTargets = Object.fromEntries(Object.entries(SYSTEM.MODIFIERS.MODIFIERS_TARGET).filter(([key, value]) => value.subtype === "resource"))
     context.choiceModifierSkillTargets = Object.fromEntries(Object.entries(SYSTEM.MODIFIERS.MODIFIERS_TARGET).filter(([key, value]) => value.subtype === "ability"))
+    context.choiceModifierSkillTargetsWithoutAll = Object.fromEntries(Object.entries(SYSTEM.MODIFIERS.MODIFIERS_TARGET).filter(([key, value]) => value.subtype === "ability" && value.id !== "all"))
     context.choiceModifierStateTargets = Object.fromEntries(Object.entries(SYSTEM.MODIFIERS.MODIFIERS_TARGET).filter(([key, value]) => value.subtype === "state"))
     context.choiceModifierBonusDiceTargets = Object.fromEntries(
       Object.entries(SYSTEM.MODIFIERS.MODIFIERS_TARGET).filter(([key, value]) => value.id !== "all" && (value.subtype === "ability" || value.subtype === "attack")),
