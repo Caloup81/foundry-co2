@@ -660,7 +660,7 @@
       "modifiers": "Modificateurs",
       "resolvers": "Résolutions",
       "skill": "Compétence",
-      "skillUsed" :  "Compétence(s) utilisée(s)",
+      "skillUsed": "Compétence(s) utilisée(s)",
       "formula": "Formule",
       "oppositeRoll": "Jet opposé",
       "skillformula": "Formule de compétence",
@@ -670,6 +670,9 @@
       "difficulty": "Difficulté",
       "dmg": "Dommages",
       "saves": "Sauvegarde",
+      "saveRoll": "Jet de sauvegarde",
+      "saveAbility": "Sauvegarde basé sur :",
+      "saveDifficulty": "Seuil de difficulté :",
       "targets": "Cible(s)",
       "width": "Largeur",
       "range": "Portée",
@@ -886,8 +889,8 @@
       "putridDescription": "Applique des dommages de type putréfaction",
       "sacred": "Sacré",
       "sacredDescription": "Applique des dommages/soins de type sacré",
-      "heal":"Soins",
-      "damage":"Dommages"
+      "heal": "Soins",
+      "damage": "Dommages"
     },
     "tabs": {
       "main": "Principal",
@@ -957,7 +960,8 @@
         "heal": "Soin",
         "buff": "Amélioration",
         "debuff": "Affaiblissement",
-        "consumable": "Consommable"
+        "consumable": "Consommable",
+        "save": "Sauvegarde"
       },
       "equip": "Équiper",
       "unequip": "Déséquiper",
@@ -1078,7 +1082,9 @@
         "elementType": "Type d'énergie pour les dommages",
         "formulaType": "Type",
         "statusAvailable": "Inflige le(s) statut(s)",
-        "statuses": "Liste des statuts"
+        "statuses": "Liste des statuts",
+        "onSaveFailure": "Echec de sauvegarde",
+        "onSaveSuccess": "Succès de sauvegarde"
       },
       "formula": {
         "damage": "Dommages",

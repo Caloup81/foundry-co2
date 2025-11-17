@@ -1,0 +1,54 @@
+<div class="co chat-card roll-card save-card" data-actor-id="{{context.actorId}}">
+  <header class="message-header flexrow">
+    <span class="target-title"><strong>{{localize "CO.ui.target"}} : </strong></span>
+      <h4 class="message-sender">
+        <a class="avatar"><img src="{{targetImg}}" class="actor-img" data-tooltip="{{targetName}}" /></a>
+        <span class="name-stacked"><span class="title"></span><strong>{{targetName}}</strong></span></span>
+      </h4>
+    
+    <div class="type-card"><label><i class="fa-solid fa-user-shield"></i> {{localize "CO.label.long.save"}}</label></div>
+    <div class="action-name"><strong>{{context.actionName}}</strong></div>
+  </header>
+
+  <div class="card-content">
+    <section class="result">
+      <div class="form-group total-result">
+        {{#if context.saveRoll}}
+          <button class="save-roll" data-save-target="{{targetUuid}}">{{localize "CO.ui.saveRoll"}}
+            {{context.saveAbility}}</button>
+        {{else}}
+          <div class="dice-total"><label>{{localize "CO.ui.total"}}</label></div>
+          <div>{{context.total}}</div>
+        {{/if}}
+      </div>
+      {{#if context.isFailure}}
+        {{#if context.hasLuckyPoints}}
+          <div class="lucky-points">
+            <a class="lp-button-attack">
+              <img class="imgLucky" src="icons/magic/control/buff-luck-fortune-green.webp" data-tooltip="{{localize 'CO.dialogs.spendLuckyPoint'}}" />
+            </a>
+          </div>
+        {{/if}}
+      {{/if}}
+      {{#if context.showDifficulty}}
+        {{#if (eq context.difficulty "")}}{{else}}
+          <div class="vs"><label>VS</label></div>
+          <div class="form-group diff-result">
+            <div class="display-difficulty"><label>{{localize "CO.label.long.difficulty"}}</label></div>
+
+            <div><strong class="display-difficulty"></strong>{{context.difficulty}}</div>
+
+          </div>
+        {{/if}}
+      {{/if}}
+    </section>
+  </div>
+  <footer class="card-footer">
+    <div class="dice-roll" data-action="expandRoll">
+      <div class="dice-result">
+        <div class="dice-formula" style>{{localize "CO.ui.formula"}} : {{context.formula}}</div>
+        {{{context.tooltip}}}
+      </div>
+    </div>
+  </footer>
+</div>

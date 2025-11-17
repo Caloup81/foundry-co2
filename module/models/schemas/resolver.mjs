@@ -39,6 +39,9 @@ export class Resolver extends foundry.abstract.DataModel {
         formulaType: new fields.StringField({ required: false, choices: SYSTEM.RESOLVER_FORMULA_TYPE }),
         elementType: new fields.StringField({ required: false }),
       }),
+      // Ajout de la possibilité de faire un jet de sauvegarde pour la cible et applique l'effet en cas d'échec ou de succes selon le "applyOn" (ajout de saveFailure et saveSuccess)
+      saveAbility: new fields.StringField({ required: false, choices: SYSTEM.ABILITIES, initial: "con" }),
+      saveDifficulty: new fields.StringField({ required: false, nullable: false, initial: "0" }), //peux etre une formule
     }
   }
 
@@ -49,6 +52,7 @@ export class Resolver extends foundry.abstract.DataModel {
       auto: function () {},
       consume: function () {},
       buffDebuff: function () {},
+      save: function () {},
     }
   }
 
@@ -64,6 +68,8 @@ export class Resolver extends foundry.abstract.DataModel {
         return await this.consume(actor, item, action)
       case SYSTEM.RESOLVER_TYPE.buffDebuff.id:
         return await this.buffDebuff(actor, item, action)
+      case SYSTEM.RESOLVER_TYPE.save.id:
+        return await this.save(actor, item, action)
       default:
         return false
     }
@@ -125,6 +131,8 @@ export class Resolver extends foundry.abstract.DataModel {
     if (additionalEffect.applyOn === SYSTEM.RESOLVER_RESULT.success.id && result.isSuccess) return true
     if (additionalEffect.applyOn === SYSTEM.RESOLVER_RESULT.successTreshold.id && result.isSuccess && result.total >= result.difficulty + additionalEffect.successThreshold)
       return true
+    if (additionalEffect.applyOn === SYSTEM.RESOLVER_RESULT.saveSuccess.id && result.isSuccess) return true
+    if (additionalEffect.applyOn === SYSTEM.RESOLVER_RESULT.saveFailure.id && !result.isSuccess && result.total) return true
     if (additionalEffect.applyOn === SYSTEM.RESOLVER_RESULT.critical.id && result.isCritical) return true
     if (additionalEffect.applyOn === SYSTEM.RESOLVER_RESULT.failure.id && result.isFailure) return true
     return false
@@ -202,6 +210,52 @@ export class Resolver extends foundry.abstract.DataModel {
     } else {
       return false
     }
+  }
+
+  /**
+   * Resolver pour les actions de type Sauvegarde
+   * @param {COActor} actor : l'acteur pour lequel s'applique l'action
+   * @param {COItem} item : la source de l'action
+   * @param {Action} action : l'action.
+   */
+  async save(actor, item, action) {
+    if (CONFIG.debug.co2?.resolvers) console.debug(Utils.log(`Resolver save`), actor, item, action)
+    console.log("actor", actor, "item", item, "action", action)
+    let difficultyFormula = this.saveDifficulty
+    difficultyFormula = Utils.evaluateFormulaCustomValues(actor, difficultyFormula, item.uuid)
+    let difficultyFormulaEvaluated = Roll.replaceFormulaData(difficultyFormula, actor.getRollData())
+    let showDifficulty = false
+    const displayDifficulty = game.settings.get("co2", "displayDifficulty")
+
+    showDifficulty = displayDifficulty === "all" || (displayDifficulty === "gm" && game.user.isGM)
+
+    if (this.additionalEffect.active) {
+      // Plusieurs cibles possible
+      const targets = actor.acquireTargets(this.target.type, this.target.scope, this.target.number, action.actionName)
+      const context = {
+        actorId: actor.uuid,
+        actionName: action.actionName === undefined ? item.name : action.actionName,
+        difficulty: difficultyFormulaEvaluated,
+        saveAbility: this.saveAbility,
+        ce: this._createCustomEffect(actor, item, action),
+        total: 0,
+        saveRoll: true,
+        showDifficulty,
+        formula: "",
+        tooltip: "",
+      }
+
+      targets.forEach(async (target) => {
+        console.log("actor", target.actor, "context", context)
+        const currentChat = await new CoChat(actor)
+          .withTemplate(SYSTEM.TEMPLATE.SAVE)
+          .withData({ context: context, targetUuid: target.actor.uuid, targetImg: target.actor.img, targetName: target.actor.name })
+          .withContext(context)
+          .create()
+      })
+    }
+
+    return true
   }
 
   /**
