@@ -1052,7 +1052,8 @@
         "attack": "Attaque",
         "heal": "Soin",
         "buffDebuff": "Buff/Debuff",
-        "consumable": "Consommable"
+        "consumable": "Consommable",
+        "save": "Sauvegarde"
       },
       "target": {
         "none": "Aucune",

@@ -28,7 +28,7 @@ export default class ActionMessageData extends BaseMessageData {
         formulaType: new fields.StringField({ required: false, choices: SYSTEM.RESOLVER_FORMULA_TYPE }),
         elementType: new fields.StringField({ required: false }),
       }),
-      applyOn: new fields.StringField({ required: false }),
+      showButton: new fields.BooleanField({ initial: false }),
     })
   }
 
@@ -38,6 +38,10 @@ export default class ActionMessageData extends BaseMessageData {
 
   get isDamage() {
     return this.subtype === SYSTEM.CHAT_MESSAGE_TYPES.DAMAGE
+  }
+
+  get isSave() {
+    return this.subtype === SYSTEM.CHAT_MESSAGE_TYPES.SAVE
   }
 
   get isFailure() {
@@ -230,6 +234,78 @@ export default class ActionMessageData extends BaseMessageData {
         // Sinon on émet un message pour mettre à jour le message de chat
         else {
           await game.users.activeGM.query("co2.updateMessageAfterOpposedRoll", { existingMessageId: message.id, rolls: rolls, result: newResult })
+        }
+      })
+    }
+
+    // click sur le bouton de jet de sauvegarde
+    // On va lancer un jet de compétence basé sur la difficultée récupérée dans le context du message et on envoi le resultat au GM pour mise à jour
+    // du message et application du résultat
+    const saveButton = html.querySelector(".save-roll")
+    const displaySaveButton = game.user.isGM || this.isActorTargeted
+
+    if (saveButton && displaySaveButton) {
+      saveButton.addEventListener("click", async (event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        const messageId = event.currentTarget.closest(".message").dataset.messageId
+        if (!messageId) {
+          console.log("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération de l'ID du message")
+          return
+        }
+        const message = game.messages.get(messageId)
+        if (!message || !message.system) {
+          console.log("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération du message ou de son context")
+          return
+        }
+        console.log("message : ", message)
+        const dataset = event.currentTarget.dataset
+        console.log("dataset : ", dataset)
+        const targetUuid = dataset.savetarget
+        const saveAbility = dataset.saveability
+        const difficulty = dataset.savedifficulty
+
+        const targetActor = fromUuidSync(targetUuid)
+        if (!targetActor) {
+          console.log("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération de l'acteur cible")
+          return
+        }
+        console.log("la cible est : ", targetActor)
+
+        // Ok donc je vais demander à l'acteur cible de faire un rollSkill
+        const retour = await targetActor.rollSkill(saveAbility, { difficulty: difficulty, showResult: false })
+        message.system.result = retour.result
+        message.system.linkedRoll = retour.roll
+
+        console.log("result : ", retour.result)
+
+        let rolls = this.parent.rolls
+        rolls[0] = retour.roll
+
+        // TODO : Doit on prévoir autre chose qu'un effet supplémentaire ? genre des dés de degat bonus appliqué si jet raté ? A voir...
+
+        // Doit on appliquer l'effet s'il y en a
+        const customEffect = message.system.customEffect
+        const additionalEffect = message.system.additionalEffect
+        if (customEffect && additionalEffect && Resolver.shouldManageAdditionalEffect(result, additionalEffect)) {
+          const target = message.system.targets.length > 0 ? message.system.targets[0] : null
+          if (target) {
+            const targetActor = fromUuidSync(target)
+            if (game.user.isGM) await targetActor.applyCustomEffect(customEffect)
+            else {
+              await game.users.activeGM.query("co2.applyCustomEffect", { ce: customEffect, targets: [targetActor.uuid] })
+            }
+          }
+        }
+
+        // Mise à jour du message de chat
+        // Le MJ peut mettre à jour le message de chat
+        if (game.user.isGM) {
+          await message.update({ rolls: rolls, "system.showButton": false, "system.result": result })
+        }
+        // Sinon on émet un message pour mettre à jour le message de chat
+        else {
+          await game.users.activeGM.query("co2.updateMessageAfterSavedRoll", { existingMessageId: message.id, rolls: rolls, result: retour.result })
         }
       })
     }

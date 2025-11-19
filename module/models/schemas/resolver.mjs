@@ -38,8 +38,7 @@ export class Resolver extends foundry.abstract.DataModel {
         formula: new fields.StringField({ required: false }),
         formulaType: new fields.StringField({ required: false, choices: SYSTEM.RESOLVER_FORMULA_TYPE }),
         elementType: new fields.StringField({ required: false }),
-      }),
-      // Ajout de la possibilité de faire un jet de sauvegarde pour la cible et applique l'effet en cas d'échec ou de succes selon le "applyOn" (ajout de saveFailure et saveSuccess)
+      }), // Ajout de la possibilité de faire un jet de sauvegarde pour la cible et applique l'effet en cas d'échec ou de succes selon le "applyOn" (ajout de saveFailure et saveSuccess)
       saveAbility: new fields.StringField({ required: false, choices: SYSTEM.ABILITIES, initial: "con" }),
       saveDifficulty: new fields.StringField({ required: false, nullable: false, initial: "0" }), //peux etre une formule
     }
@@ -232,26 +231,28 @@ export class Resolver extends foundry.abstract.DataModel {
     if (this.additionalEffect.active) {
       // Plusieurs cibles possible
       const targets = actor.acquireTargets(this.target.type, this.target.scope, this.target.number, action.actionName)
-      const context = {
+      // Elements passé au chatMessage pour le system
+      const system = {
+        subtype: SYSTEM.CHAT_MESSAGE_TYPES.SAVE,
+        customEffect: this._createCustomEffect(actor, item, action),
+        additionalEffect: { ...this.additionalEffect },
+        showButton: true,
+      }
+      //Permet de remplir le chatmessage
+      const data = {
         actorId: actor.uuid,
         actionName: action.actionName === undefined ? item.name : action.actionName,
+        targetUuid: target.actor.uuid,
+        targetName: target.actor.name,
+        targetImg: target.actor.img,
+        saveRoll: true,
         difficulty: difficultyFormulaEvaluated,
         saveAbility: this.saveAbility,
-        ce: this._createCustomEffect(actor, item, action),
-        total: 0,
-        saveRoll: true,
-        showDifficulty,
-        formula: "",
-        tooltip: "",
       }
 
       targets.forEach(async (target) => {
         console.log("actor", target.actor, "context", context)
-        const currentChat = await new CoChat(actor)
-          .withTemplate(SYSTEM.TEMPLATE.SAVE)
-          .withData({ context: context, targetUuid: target.actor.uuid, targetImg: target.actor.img, targetName: target.actor.name })
-          .withContext(context)
-          .create()
+        const currentChat = await new CoChat(actor).withTemplate(SYSTEM.TEMPLATE.SAVE).withData(data).withContext({ type: "action", system: system }).create()
       })
     }
 

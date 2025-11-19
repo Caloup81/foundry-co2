@@ -11,6 +11,7 @@ export default class CoChat {
    * @property {Object|null} flags - The flags for the chat.
    * @property {Object|null} roll - The roll associated with the chat.
    * @property {Object|null} whisper - The whisper settings for the chat.
+   * @property {Object|null} context - Objet contenant dees valeurs que l'on veux récupérer dans le chat
    */
   constructor(actor) {
     this.actor = actor
@@ -21,6 +22,7 @@ export default class CoChat {
     this.flags = null
     this.roll = null
     this.whisper = null
+    this.context = null
   }
 
   /**
@@ -30,6 +32,16 @@ export default class CoChat {
    */
   withContent(content) {
     this.content = content
+    return this
+  }
+
+  /**
+   * Objet contenant dees valeurs que l'on veux récupérer dans le chat
+   * @param {*} content
+   * @returns {CoChat} the instance
+   */
+  withContext(context) {
+    this.context = context
     return this
   }
 
@@ -134,6 +146,7 @@ export default class CoChat {
 
     // Create the chat
     this.chat = await ChatMessage.create(data)
+    this.chat.system = { ...this.chat.system, ...this.context }
     return this
   }
 

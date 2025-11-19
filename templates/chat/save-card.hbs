@@ -1,4 +1,5 @@
-<div class="co chat-card roll-card save-card" data-actor-id="{{context.actorId}}">
+{{log "Chroniques Oubliées | save card" this}}
+<div class="co chat-card roll-card save-card" data-actor-id="{{actorId}}">
   <header class="message-header flexrow">
     <span class="target-title"><strong>{{localize "CO.ui.target"}} : </strong></span>
       <h4 class="message-sender">
@@ -7,22 +8,22 @@
       </h4>
     
     <div class="type-card"><label><i class="fa-solid fa-user-shield"></i> {{localize "CO.label.long.save"}}</label></div>
-    <div class="action-name"><strong>{{context.actionName}}</strong></div>
+    <div class="action-name"><strong>{{actionName}}</strong></div>
   </header>
 
   <div class="card-content">
     <section class="result">
       <div class="form-group total-result">
-        {{#if context.saveRoll}}
-          <button class="save-roll" data-save-target="{{targetUuid}}">{{localize "CO.ui.saveRoll"}}
-            {{context.saveAbility}}</button>
+        {{#if this.system.showButton}}
+          <button class="save-roll" data-save-target="{{targetUuid}}" data-save-ability="{{saveAbility}}" data-save-difficulty="{{difficulty}}">{{localize "CO.ui.saveRoll"}}
+            {{saveAbility}}</button>
         {{else}}
           <div class="dice-total"><label>{{localize "CO.ui.total"}}</label></div>
           <div>{{context.total}}</div>
         {{/if}}
       </div>
-      {{#if context.isFailure}}
-        {{#if context.hasLuckyPoints}}
+      {{#if isFailure}}
+        {{#if hasLuckyPoints}}
           <div class="lucky-points">
             <a class="lp-button-attack">
               <img class="imgLucky" src="icons/magic/control/buff-luck-fortune-green.webp" data-tooltip="{{localize 'CO.dialogs.spendLuckyPoint'}}" />
@@ -30,24 +31,24 @@
           </div>
         {{/if}}
       {{/if}}
-      {{#if context.showDifficulty}}
-        {{#if (eq context.difficulty "")}}{{else}}
+      
+        {{#if (eq difficulty "")}}{{else}}
           <div class="vs"><label>VS</label></div>
           <div class="form-group diff-result">
             <div class="display-difficulty"><label>{{localize "CO.label.long.difficulty"}}</label></div>
 
-            <div><strong class="display-difficulty"></strong>{{context.difficulty}}</div>
+            <div><strong class="display-difficulty"></strong>{{difficulty}}</div>
 
           </div>
         {{/if}}
-      {{/if}}
+      
     </section>
   </div>
   <footer class="card-footer">
     <div class="dice-roll" data-action="expandRoll">
       <div class="dice-result">
-        <div class="dice-formula" style>{{localize "CO.ui.formula"}} : {{context.formula}}</div>
-        {{{context.tooltip}}}
+        <div class="dice-formula" style>{{localize "CO.ui.formula"}} : {{this.system.linkedRoll.formula}}</div>
+        {{{tooltip}}}
       </div>
     </div>
   </footer>

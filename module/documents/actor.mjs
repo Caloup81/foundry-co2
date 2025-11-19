@@ -1529,6 +1529,8 @@ export default class COActor extends Actor {
 
   /**
    * Lance un test de compétence pour l'acteur.
+   * Note de Caloup mise à jour 19-11-2025 : Pour l'usage de rollSkill ou on veux juste récupérer les resultat et pa les afficher je modifie la fonction
+   * je retourne le resultat et je met un argument showResult = true par defaut que je peux mettre à false pour récupérer uniquement le resultat dans d'autre circonstance (ex : save, opposite)
    *
    * @param {string} skillId L'ID de la compétence à lancer.
    * @param {Object} [options] Options pour le test de compétence.
@@ -1546,7 +1548,7 @@ export default class COActor extends Actor {
    * @param {boolean} [options.showDifficulty] Si la difficulté doit être affichée : dépend de displayDifficulty et du user
    * @param {boolean} [options.withDialog=true] Si une boîte de dialogue doit être affichée ou non.
    * @param {Array} [options.targets] Les cibles du test.
-   * @returns {Promise} Le résultat du test de compétence.
+   * @returns {Roll, { diceResult, total, isCritical, isFumble, difficulty, isSuccess, isFailure }} Le jet et le résultat du jet de compétence
    */
   async rollSkill(
     skillId,
@@ -1564,6 +1566,7 @@ export default class COActor extends Actor {
       showDifficulty = undefined,
       withDialog = true,
       targets = undefined,
+      showResult = true,
     } = {},
   ) {
     const options = {
@@ -1581,6 +1584,7 @@ export default class COActor extends Actor {
       withDialog,
       targets,
       skillUsed: [],
+      showResult,
     }
     /**
      * A hook event that fires before the roll is made.
@@ -1723,7 +1727,6 @@ export default class COActor extends Actor {
     let roll = await COSkillRoll.prompt(dialogContext, { withDialog: withDialog })
     if (!roll) return null
 
-    console.log("rollSkill", dialogContext)
     /**
      * A hook event that fires after the roll is made.
      * @function co.postRollSkill
@@ -1748,12 +1751,18 @@ export default class COActor extends Actor {
      */
     if (Hooks.call("co.resultRollSkill", skillId, options, roll, result) === false) return
 
-    // Prépare le message de résultat
-    const speaker = ChatMessage.getSpeaker({ actor: this, scene: canvas.scene })
+    if (showResult === true) {
+      // Prépare le message de résultat
+      const speaker = ChatMessage.getSpeaker({ actor: this, scene: canvas.scene })
 
-    let targetsUuid = targets?.map((target) => target.uuid)
+      let targetsUuid = targets?.map((target) => target.uuid)
 
-    await roll.toMessage({ style: CONST.CHAT_MESSAGE_STYLES.OTHER, type: "skill", system: { targets: targetsUuid, result: result }, speaker }, { rollMode: roll.options.rollMode })
+      await roll.toMessage(
+        { style: CONST.CHAT_MESSAGE_STYLES.OTHER, type: "skill", system: { targets: targetsUuid, result: result }, speaker },
+        { rollMode: roll.options.rollMode },
+      )
+    }
+    return { roll: roll, result: result }
   }
 
   /**
@@ -2117,7 +2126,7 @@ export default class COActor extends Actor {
    * @param {Array<COActor>} options.targets : une liste d'acteurs ciblés
    */
   async rollHeal(item, { actionName = "", healFormula = undefined, targetType = SYSTEM.RESOLVER_TARGET.none.id, targets = [] } = {}) {
-    let roll = new Roll(healFormula)
+    let roll = healFormula
     await roll.roll()
     const healAmount = roll.total
 
