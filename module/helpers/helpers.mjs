@@ -69,4 +69,8 @@ export function registerHandlebarsHelpers() {
     if (!subtabs || !subtabs[id]) return false
     return subtabs[id] && subtabs[id].active
   })
+
+  Handlebars.registerHelper("typeOf", function (obj) {
+    return typeof obj
+  })
 }

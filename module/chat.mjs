@@ -1,3 +1,5 @@
+import ActionMessageData from "./models/action-message.mjs"
+
 export default class CoChat {
   /**
    * Creates an instance of a chat
@@ -44,9 +46,7 @@ export default class CoChat {
    */
   withContext(context) {
     this.context = context.context
-    console.log("this context avant", this.type)
     this.type = context.type
-    console.log("this context apres", this.type)
     return this
   }
 
@@ -117,43 +117,48 @@ export default class CoChat {
 
     let speaker = ChatMessage.getSpeaker({ actor: this.actor.id })
     // Create the chat data
-    const data = {
+    let actionsystem = new ActionMessageData()
+    if (this.context) actionsystem = foundry.utils.mergeObject(actionsystem, this.context)
+    if (this.data) actionsystem = foundry.utils.mergeObject(actionsystem, this.data)
+
+    const data2 = {
       user: game.user.id,
       speaker: speaker,
       content: this.content,
       type: this.type,
-      system: this.context,
+      rolls: [],
+      system: actionsystem,
     }
 
     // Set the roll parameter if necessary
     if (this.roll) {
-      data.roll = this.roll
+      data2.push(this.roll)
     }
 
     // Set the flags parameter if necessary
     if (this.flags) {
-      d.flags = this.flags
+      data2.flags = this.flags
     }
 
     // If the whisper has not been defined, set the whisper and blind parameters according to the player roll mode settings
     if (this.whisper === null) {
       switch (game.settings.get("core", "rollMode")) {
         case "gmroll":
-          data.whisper = ChatMessage.getWhisperRecipients("GM").map((u) => u.id)
+          data2.whisper = ChatMessage.getWhisperRecipients("GM").map((u) => u.id)
           break
         case "blindroll":
-          data.whisper = ChatMessage.getWhisperRecipients("GM").map((u) => u.id)
-          data.blind = true
+          data2.whisper = ChatMessage.getWhisperRecipients("GM").map((u) => u.id)
+          data2.blind = true
           break
         case "selfroll":
-          data.whisper = [game.user.id]
+          data2.whisper = [game.user.id]
           break
       }
-    } else data.whisper = this.whisper
+    } else data2.whisper = this.whisper
 
     // Create the chat
-    this.chat = await ChatMessage.create(data)
-    console.log(this.chat)
+    this.chat = await ChatMessage.create(data2)
+    console.log("chat", this.chat)
     return this
   }
 

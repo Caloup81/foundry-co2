@@ -1,4 +1,5 @@
 {{log "Chroniques Oubliées | save card" this}}
+{{ log (typeOf this)}}
 <div class="co chat-card roll-card save-card" data-actor-id="{{actorId}}">
   <header class="message-header flexrow">
     <span class="target-title"><strong>{{localize "CO.ui.target"}} : </strong></span>
@@ -18,8 +19,10 @@
           <button class="save-roll" data-save-target="{{targetUuid}}" data-save-ability="{{saveAbility}}" data-save-difficulty="{{difficulty}}">{{localize "CO.ui.saves"}}
             {{saveAbility}}</button>
         {{else}}
+          {{#if this.rolls}}
           <div class="dice-total"><label>{{localize "CO.ui.total"}}</label></div>
-          <div>{{context.total}}</div>
+          <!--<div></div>-->
+          {{/if}}
         {{/if}}
       </div>
       {{#if isFailure}}

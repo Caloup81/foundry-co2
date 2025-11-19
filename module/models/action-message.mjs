@@ -265,14 +265,11 @@ export default class ActionMessageData extends BaseMessageData {
         const saveAbility = dataset.saveAbility
         const difficulty = dataset.saveDifficulty
 
-        console.log("targetUuid : ", targetUuid, "saveAbility : ", saveAbility, "difficulty : ", difficulty)
-
         const targetActor = fromUuidSync(targetUuid)
         if (!targetActor) {
           console.log("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération de l'acteur cible")
           return
         }
-        console.log("la cible est : ", targetActor)
 
         // Ok donc je vais demander à l'acteur cible de faire un rollSkill
         const retour = await targetActor.rollSkill(saveAbility, { difficulty: difficulty, showResult: false })
@@ -283,6 +280,7 @@ export default class ActionMessageData extends BaseMessageData {
 
         let rolls = this.parent.rolls
         rolls[0] = retour.roll
+        rolls[0].options.oppositeRoll = false
 
         // TODO : Doit on prévoir autre chose qu'un effet supplémentaire ? genre des dés de degat bonus appliqué si jet raté ? A voir...
 
