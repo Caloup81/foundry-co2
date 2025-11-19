@@ -589,7 +589,9 @@
       "fullDef": "En défense totale (L)",
       "fullDefDescription": "+5 en DEF et aux tests opposés pour résister à une attaque ou un effet pendant 1 round",
       "fullDefActivate": "Activer la défense totale (L)",
-      "fullDefDeactivate": "Désactiver la défense totale (L)"
+      "fullDefDeactivate": "Désactiver la défense totale (L)",
+      "enslaved": "Asservi",
+      "enslavedDescription": "Vous êtes sous le contrôle d'une autre entité"
     },
     "ui": {
       "none": "--",
@@ -670,7 +672,6 @@
       "difficulty": "Difficulté",
       "dmg": "Dommages",
       "saves": "Sauvegarde",
-      "saveRoll": "Jet de sauvegarde",
       "saveAbility": "Sauvegarde basé sur :",
       "saveDifficulty": "Seuil de difficulté :",
       "targets": "Cible(s)",

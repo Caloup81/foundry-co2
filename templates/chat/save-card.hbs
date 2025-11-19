@@ -7,15 +7,15 @@
         <span class="name-stacked"><span class="title"></span><strong>{{targetName}}</strong></span></span>
       </h4>
     
-    <div class="type-card"><label><i class="fa-solid fa-user-shield"></i> {{localize "CO.label.long.save"}}</label></div>
+    <div class="type-card"><label><i class="fa-solid fa-user-shield"></i> {{localize "CO.ui.saves"}}</label></div>
     <div class="action-name"><strong>{{actionName}}</strong></div>
   </header>
 
   <div class="card-content">
     <section class="result">
-      <div class="form-group total-result">
-        {{#if this.system.showButton}}
-          <button class="save-roll" data-save-target="{{targetUuid}}" data-save-ability="{{saveAbility}}" data-save-difficulty="{{difficulty}}">{{localize "CO.ui.saveRoll"}}
+      <div class="form-group total-result" style="display: flex; justify-content:center; align-items:center;">
+        {{#if showButton}}
+          <button class="save-roll" data-save-target="{{targetUuid}}" data-save-ability="{{saveAbility}}" data-save-difficulty="{{difficulty}}">{{localize "CO.ui.saves"}}
             {{saveAbility}}</button>
         {{else}}
           <div class="dice-total"><label>{{localize "CO.ui.total"}}</label></div>

@@ -28,7 +28,7 @@ export default class ActionMessageData extends BaseMessageData {
         formulaType: new fields.StringField({ required: false, choices: SYSTEM.RESOLVER_FORMULA_TYPE }),
         elementType: new fields.StringField({ required: false }),
       }),
-      showButton: new fields.BooleanField({ initial: false }),
+      showButton: new fields.BooleanField({ initial: true }),
     })
   }
 
@@ -261,9 +261,11 @@ export default class ActionMessageData extends BaseMessageData {
         console.log("message : ", message)
         const dataset = event.currentTarget.dataset
         console.log("dataset : ", dataset)
-        const targetUuid = dataset.savetarget
-        const saveAbility = dataset.saveability
-        const difficulty = dataset.savedifficulty
+        const targetUuid = dataset.saveTarget
+        const saveAbility = dataset.saveAbility
+        const difficulty = dataset.saveDifficulty
+
+        console.log("targetUuid : ", targetUuid, "saveAbility : ", saveAbility, "difficulty : ", difficulty)
 
         const targetActor = fromUuidSync(targetUuid)
         if (!targetActor) {
@@ -287,21 +289,19 @@ export default class ActionMessageData extends BaseMessageData {
         // Doit on appliquer l'effet s'il y en a
         const customEffect = message.system.customEffect
         const additionalEffect = message.system.additionalEffect
-        if (customEffect && additionalEffect && Resolver.shouldManageAdditionalEffect(result, additionalEffect)) {
-          const target = message.system.targets.length > 0 ? message.system.targets[0] : null
-          if (target) {
-            const targetActor = fromUuidSync(target)
-            if (game.user.isGM) await targetActor.applyCustomEffect(customEffect)
-            else {
-              await game.users.activeGM.query("co2.applyCustomEffect", { ce: customEffect, targets: [targetActor.uuid] })
-            }
+        if (customEffect && additionalEffect && Resolver.shouldManageAdditionalEffect(retour.result, additionalEffect)) {
+          console.log("on va appliquer les effets", "customEffect : ", customEffect)
+
+          if (game.user.isGM) await targetActor.applyCustomEffect(customEffect)
+          else {
+            await game.users.activeGM.query("co2.applyCustomEffect", { ce: customEffect, targets: [targetActor.uuid] })
           }
         }
 
         // Mise à jour du message de chat
         // Le MJ peut mettre à jour le message de chat
         if (game.user.isGM) {
-          await message.update({ rolls: rolls, "system.showButton": false, "system.result": result })
+          await message.update({ rolls: rolls, "system.showButton": false, "system.result": retour.result })
         }
         // Sinon on émet un message pour mettre à jour le message de chat
         else {

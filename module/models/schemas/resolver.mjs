@@ -3,6 +3,7 @@ import Utils from "../../helpers/utils.mjs"
 import COActor from "../../documents/actor.mjs"
 import CustomEffectData from "./custom-effect.mjs"
 import { CORoll } from "../../documents/roll.mjs"
+import CoChat from "../../chat.mjs"
 
 /**
  * Resolver
@@ -219,7 +220,6 @@ export class Resolver extends foundry.abstract.DataModel {
    */
   async save(actor, item, action) {
     if (CONFIG.debug.co2?.resolvers) console.debug(Utils.log(`Resolver save`), actor, item, action)
-    console.log("actor", actor, "item", item, "action", action)
     let difficultyFormula = this.saveDifficulty
     difficultyFormula = Utils.evaluateFormulaCustomValues(actor, difficultyFormula, item.uuid)
     let difficultyFormulaEvaluated = Roll.replaceFormulaData(difficultyFormula, actor.getRollData())
@@ -232,27 +232,26 @@ export class Resolver extends foundry.abstract.DataModel {
       // Plusieurs cibles possible
       const targets = actor.acquireTargets(this.target.type, this.target.scope, this.target.number, action.actionName)
       // Elements passé au chatMessage pour le system
-      const system = {
+      const context = {
         subtype: SYSTEM.CHAT_MESSAGE_TYPES.SAVE,
-        customEffect: this._createCustomEffect(actor, item, action),
+        customEffect: await this._createCustomEffect(actor, item, action),
         additionalEffect: { ...this.additionalEffect },
         showButton: true,
       }
-      //Permet de remplir le chatmessage
-      const data = {
-        actorId: actor.uuid,
-        actionName: action.actionName === undefined ? item.name : action.actionName,
-        targetUuid: target.actor.uuid,
-        targetName: target.actor.name,
-        targetImg: target.actor.img,
-        saveRoll: true,
-        difficulty: difficultyFormulaEvaluated,
-        saveAbility: this.saveAbility,
-      }
 
       targets.forEach(async (target) => {
-        console.log("actor", target.actor, "context", context)
-        const currentChat = await new CoChat(actor).withTemplate(SYSTEM.TEMPLATE.SAVE).withData(data).withContext({ type: "action", system: system }).create()
+        //Permet de remplir le chatmessage
+        const data = {
+          actorId: actor.uuid,
+          actionName: action.actionName === undefined ? item.name : action.actionName,
+          targetUuid: target.actor.uuid,
+          targetName: target.actor.name,
+          targetImg: target.actor.img,
+          difficulty: difficultyFormulaEvaluated,
+          saveAbility: this.saveAbility,
+          showButton: true,
+        }
+        await new CoChat(actor).withTemplate(SYSTEM.TEMPLATE.SAVE).withData(data).withContext({ type: "action", context }).create()
       })
     }
 
