@@ -3201,6 +3201,13 @@ co-toggle-switch[checked] thumb {
   border: 2px solid var(--color-encounterSheet);
   background-color: #5d142b3d;
 }
+#interface #sidebar .chat-message .message-content .save-card .card-content .result .form-group.total-result,
+#interface #ui-right-column-1 .chat-message .message-content .save-card .card-content .result .form-group.total-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 #interface #sidebar .chat-message .message-content strong,
 #interface #ui-right-column-1 .chat-message .message-content strong {
   font-size: 15px;

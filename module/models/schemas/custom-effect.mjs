@@ -76,6 +76,7 @@ export default class CustomEffectData extends foundry.abstract.DataModel {
     }
     // Acteur d'un token
     if (primaryType === "Scene") {
+      const parts = this.source.split(".")
       const tokenId = parts[3]
       actor = fromUuidSync(`Scene.${primaryId}.Token.${tokenId}`).actor
     }

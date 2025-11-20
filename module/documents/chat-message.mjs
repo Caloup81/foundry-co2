@@ -94,14 +94,44 @@ export default class COChatMessage extends ChatMessage {
    * @param {string} options.existingMessageId The ID of the existing message to update
    * @param {Array} options.rolls The array of roll objects to add to the message
    * @param {*} options.result The result value to store in the message's system data
+   * @param {String} options.newcontent div innerHtml for replace button
+   * @param {String} options.luckyContent div innerHtml for add after new content
+   * @param {String} options.formula div innerHtml for formula
    * @returns {Promise<void>} A promise that resolves when the message update is complete
    * @private
    * @static
    * @async
    */
-  static async _handleQueryUpdateMessageAfterSavedRoll({ existingMessageId, rolls, result } = {}) {
+  static async _handleQueryUpdateMessageAfterSavedRoll({ existingMessageId, rolls, result, newcontent, luckyContent, formula } = {}) {
     const message = game.messages.get(existingMessageId)
     if (!message) return
-    await message.update({ rolls: rolls, "system.result": result, "system.showButton": false })
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(message.content, "text/html")
+    const saveButton = doc.querySelector("button.save-roll[data-save-target][data-save-ability][data-save-difficulty]")
+    if (saveButton && newcontent) {
+      const tempDiv = document.createElement("div")
+      tempDiv.innerHTML = newcontent
+      saveButton.replaceWith(...tempDiv.childNodes)
+    }
+    // Gestion du bouton de point de chance
+    const luckyDiv = doc.querySelector("div.card-content section.result div.form-group.total-result")
+    console.log("luckyDiv", luckyDiv)
+    if (luckyDiv && luckyContent && luckyContent !== "") {
+      const tempDiv = document.createElement("div")
+      tempDiv.innerHTML = luckyContent
+      luckyDiv.insertAdjacentHTML("afterend", luckyContent)
+    }
+    //Mise à jour de la formule :
+    const diceFormulaDiv = doc.querySelector("footer.card-footer div.dice-roll div.dice-result div.dice-formula")
+    if (diceFormulaDiv) {
+      const tempDiv = document.createElement("div")
+      tempDiv.innerHTML = formula
+      diceFormulaDiv.replaceWith(...tempDiv.childNodes)
+    }
+
+    const updatedContent = doc.body.innerHTML
+    message.content = updatedContent
+
+    await message.update({ rolls: rolls, "system.result": result, "system.showButton": false, content: updatedContent })
   }
 }

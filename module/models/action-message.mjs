@@ -243,31 +243,28 @@ export default class ActionMessageData extends BaseMessageData {
     // du message et application du résultat
     const saveButton = html.querySelector(".save-roll")
     const displaySaveButton = game.user.isGM || this.isActorTargeted
-
     if (saveButton && displaySaveButton) {
       saveButton.addEventListener("click", async (event) => {
         event.preventDefault()
         event.stopPropagation()
         const messageId = event.currentTarget.closest(".message").dataset.messageId
         if (!messageId) {
-          console.log("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération de l'ID du message")
+          console.warn("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération de l'ID du message")
           return
         }
         const message = game.messages.get(messageId)
         if (!message || !message.system) {
-          console.log("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération du message ou de son context")
+          console.warn("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération du message ou de son context")
           return
         }
-        console.log("message : ", message)
         const dataset = event.currentTarget.dataset
-        console.log("dataset : ", dataset)
         const targetUuid = dataset.saveTarget
         const saveAbility = dataset.saveAbility
         const difficulty = dataset.saveDifficulty
 
         const targetActor = fromUuidSync(targetUuid)
         if (!targetActor) {
-          console.log("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération de l'acteur cible")
+          console.warn("Evenement de click sur le bouton de jet de sauvegarde : erreur dans la récupération de l'acteur cible")
           return
         }
 
@@ -276,34 +273,71 @@ export default class ActionMessageData extends BaseMessageData {
         message.system.result = retour.result
         message.system.linkedRoll = retour.roll
 
-        console.log("result : ", retour.result)
-
         let rolls = this.parent.rolls
         rolls[0] = retour.roll
-        rolls[0].options.oppositeRoll = false
-
         // TODO : Doit on prévoir autre chose qu'un effet supplémentaire ? genre des dés de degat bonus appliqué si jet raté ? A voir...
 
         // Doit on appliquer l'effet s'il y en a
         const customEffect = message.system.customEffect
         const additionalEffect = message.system.additionalEffect
         if (customEffect && additionalEffect && Resolver.shouldManageAdditionalEffect(retour.result, additionalEffect)) {
-          console.log("on va appliquer les effets", "customEffect : ", customEffect)
-
           if (game.user.isGM) await targetActor.applyCustomEffect(customEffect)
           else {
             await game.users.activeGM.query("co2.applyCustomEffect", { ce: customEffect, targets: [targetActor.uuid] })
           }
         }
 
+        // Le bloc que l'on va mettre à la place du bouton :
+        const newcontent = document.createElement("div")
+        newcontent.innerHTML = '<div class="dice-total"><label>' + game.i18n.localize("CO.ui.total") + "</label></div><div>" + retour.roll.total + "</div>"
+        // Si la cible a des point de chances ont doit pouvoir lui proposer de mettre à jour le resultat
+        let hasLuckyPoints = false
+
+        if (targetActor.system.resources?.fortune && targetActor.system.resources.fortune.value > 0) hasLuckyPoints = true
+        console.log("target actor", targetActor, "hasLuckyPoints", hasLuckyPoints)
+        // traitement des points de chances
+        const luckyContent = document.createElement("div")
+        luckyContent.innerHTML = `<div class="lucky-points"><a class="lp-button-attack"><img class="imgLucky" src="icons/magic/control/buff-luck-fortune-green.webp" data-tooltip="${game.i18n.localize("CO.dialogs.spendLuckyPoint")}"/></a></div>`
+
+        // Mise à jour de la formule
+        const formulaDiv = document.createElement("div")
+        formulaDiv.innerHTML = '<div class="dice-formula">' + game.i18n.localize("CO.ui.formula") + " :" + retour.roll.formula + "</div>" + retour.roll.result
+
         // Mise à jour du message de chat
         // Le MJ peut mettre à jour le message de chat
         if (game.user.isGM) {
-          await message.update({ rolls: rolls, "system.showButton": false, "system.result": retour.result })
+          const parser = new DOMParser()
+          const doc = parser.parseFromString(message.content, "text/html")
+          const saveButton = doc.querySelector("button.save-roll[data-save-target][data-save-ability][data-save-difficulty]")
+          if (saveButton && newcontent) {
+            saveButton.replaceWith(...newcontent.childNodes)
+          }
+
+          const luckyDiv = doc.querySelector("div.card-content section.result div.form-group.total-result")
+          if (luckyDiv && hasLuckyPoints) {
+            luckyDiv.insertAdjacentElement("afterend", luckyContent.firstChild)
+          }
+
+          //Mise à jour de la formule :
+          const diceFormulaDiv = doc.querySelector("footer.card-footer div.dice-roll div.dice-result div.dice-formula")
+          if (diceFormulaDiv) {
+            diceFormulaDiv.replaceWith(...formulaDiv.childNodes)
+          }
+          const updatedContent = doc.body.innerHTML
+          message.content = updatedContent
+          console.log("updatedContent : ", updatedContent)
+          await message.update({ rolls: rolls, "system.result": retour.result, content: updatedContent })
         }
         // Sinon on émet un message pour mettre à jour le message de chat
         else {
-          await game.users.activeGM.query("co2.updateMessageAfterSavedRoll", { existingMessageId: message.id, rolls: rolls, result: retour.result })
+          await game.users.activeGM.query("co2.updateMessageAfterSavedRoll", {
+            existingMessageId: message.id,
+            rolls: rolls,
+            result: retour.result,
+            newcontent: newcontent.innerHTML,
+            luckyContent: hasLuckyPoints ? luckyContent.innerHTML : null,
+            formula: formulaDiv.innerHTML,
+          })
         }
       })
     }

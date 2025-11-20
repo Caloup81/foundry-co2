@@ -232,13 +232,8 @@ export class Resolver extends foundry.abstract.DataModel {
       // Plusieurs cibles possible
       const targets = actor.acquireTargets(this.target.type, this.target.scope, this.target.number, action.actionName)
       // Elements passé au chatMessage pour le system
-      const context = {
-        subtype: SYSTEM.CHAT_MESSAGE_TYPES.SAVE,
-        customEffect: await this._createCustomEffect(actor, item, action),
-        additionalEffect: { ...this.additionalEffect },
-        showButton: true,
-      }
 
+      const ce = await this._createCustomEffect(actor, item, action)
       targets.forEach(async (target) => {
         //Permet de remplir le chatmessage
         const data = {
@@ -249,8 +244,15 @@ export class Resolver extends foundry.abstract.DataModel {
           targetImg: target.actor.img,
           difficulty: difficultyFormulaEvaluated,
           saveAbility: this.saveAbility,
-          showButton: true,
         }
+        const context = {
+          subtype: SYSTEM.CHAT_MESSAGE_TYPES.SAVE,
+          customEffect: ce,
+          additionalEffect: { ...this.additionalEffect },
+          targets: [],
+        }
+        context.targets.push(target.actor.uuid)
+
         await new CoChat(actor).withTemplate(SYSTEM.TEMPLATE.SAVE).withData(data).withContext({ type: "action", context }).create()
       })
     }

@@ -86,7 +86,7 @@ export default class CoChat {
    * @returns {CoChat} the instance.
    */
   withRoll(roll) {
-    this.roll = roll
+    this.rolls.push(roll)
     return this
   }
 
@@ -117,22 +117,17 @@ export default class CoChat {
 
     let speaker = ChatMessage.getSpeaker({ actor: this.actor.id })
     // Create the chat data
-    let actionsystem = new ActionMessageData()
-    if (this.context) actionsystem = foundry.utils.mergeObject(actionsystem, this.context)
-    if (this.data) actionsystem = foundry.utils.mergeObject(actionsystem, this.data)
-
     const data2 = {
       user: game.user.id,
       speaker: speaker,
       content: this.content,
       type: this.type,
-      rolls: [],
-      system: actionsystem,
+      system: { ...this.context },
     }
 
     // Set the roll parameter if necessary
     if (this.roll) {
-      data2.push(this.roll)
+      data2.roll = this.roll
     }
 
     // Set the flags parameter if necessary
@@ -155,10 +150,8 @@ export default class CoChat {
           break
       }
     } else data2.whisper = this.whisper
-
     // Create the chat
     this.chat = await ChatMessage.create(data2)
-    console.log("chat", this.chat)
     return this
   }
 
