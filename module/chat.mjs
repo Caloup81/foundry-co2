@@ -127,7 +127,7 @@ export default class CoChat {
       content: this.content,
       type: this.type,
       rolls: [],
-      system: actionsystem,
+      system: { ...actionsystem },
     }
 
     // Set the roll parameter if necessary

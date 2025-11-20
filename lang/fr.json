@@ -1086,7 +1086,8 @@
         "statusAvailable": "Inflige le(s) statut(s)",
         "statuses": "Liste des statuts",
         "onSaveFailure": "Echec de sauvegarde",
-        "onSaveSuccess": "Succès de sauvegarde"
+        "onSaveSuccess": "Succès de sauvegarde",
+        "never": "Jamais"
       },
       "formula": {
         "damage": "Dommages",

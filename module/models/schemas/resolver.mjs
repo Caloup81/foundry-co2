@@ -31,7 +31,7 @@ export class Resolver extends foundry.abstract.DataModel {
       }),
       additionalEffect: new fields.SchemaField({
         active: new fields.BooleanField({ initial: false }),
-        applyOn: new fields.StringField({ required: true, choices: SYSTEM.RESOLVER_RESULT, initial: SYSTEM.RESOLVER_RESULT.success.id }),
+        applyOn: new fields.StringField({ required: true, choices: SYSTEM.RESOLVER_RESULT, initial: SYSTEM.RESOLVER_RESULT.never.id }),
         successThreshold: new fields.NumberField({ integer: true, positive: true }),
         statuses: new fields.SetField(new fields.StringField({ required: true, blank: true, choices: SYSTEM.RESOLVER_ADDITIONAL_EFFECT_STATUS })),
         duration: new fields.StringField({ required: true, nullable: false, initial: "0" }),

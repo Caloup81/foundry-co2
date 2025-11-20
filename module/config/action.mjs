@@ -232,6 +232,10 @@ export const RESOLVER_RESULT = Object.freeze({
     id: "saveSuccess",
     label: "CO.resolver.additionalEffect.onSaveSuccess",
   },
+  never: {
+    id: "never",
+    label: "CO.resolver.additionalEffect.never",
+  },
 })
 
 export const RESOLVER_FORMULA_TYPE = Object.freeze({
@@ -314,5 +318,9 @@ export const RESOLVER_ADDITIONAL_EFFECT_STATUS = {
   confused: {
     id: "confused",
     label: "CO.customStatus.confused",
+  },
+  enslaved: {
+    id: "enslaved",
+    label: "CO.customStatus.enslaved",
   },
 }
