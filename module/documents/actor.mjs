@@ -1013,7 +1013,6 @@ export default class COActor extends Actor {
 
   // #endregion
 
-
   /**
    * Update this Document using a provided JSON string.
    * @param {string} json                 Raw JSON data to import
@@ -2480,7 +2479,7 @@ export default class COActor extends Actor {
    */
   async expireEffects() {
     for (const effect of this.system.currentEffects) {
-      if (effect.remainingTurn <= 0 && effect.unit !== SYSTEM.COMBAT_UNITE.combat) await this.deleteCustomEffect(effect)
+      if (effect.remainingTurn <= 0 && effect.unit !== SYSTEM.COMBAT_UNITE.combat && effect.unit !== SYSTEM.COMBAT_UNITE.unlimited) await this.deleteCustomEffect(effect)
     }
   }
 
