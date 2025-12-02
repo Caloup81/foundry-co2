@@ -836,6 +836,12 @@
         "def": "DEF"
       }
     },
+    "combat_unit": {
+      "round": "round(s)",
+      "second": "seconde(s)",
+      "combat": "Combat",
+      "unlimited": "Illimité"
+    },
     "resources": {
       "long": {
         "fortune": "Points de chance",
