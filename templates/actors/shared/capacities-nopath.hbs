@@ -52,7 +52,20 @@
                             </div>
                     {{/if}}                    
                 {{/if}}
-            {{/if}}
+            {{else}}
+                 {{#if @root.unlocked}}
+                    <li class="item flexrow" data-item-uuid="{{capacity.uuid}}" data-item-id="{{capacity._id}}" data-item-type="capacity" style="opacity: 40% ; font-style: Italic">                        
+                        <div class="item-name flexrow">
+                            <a class="item-img" data-action="editItem" style="background-image: url('{{capacity.img}}')" data-tooltip="{{capacity.enrichedTooltip}}"></a>
+                            <h4 data-tooltip="{{localize 'CO.notif.unknownCapacity'}}">{{capacity.name}}{{#if capacity.system.isSpell}} * {{/if}}{{#if capacity.system.hasActionType}} ({{capacity.system.actionTypeShortLabel}}){{/if}}</h4>
+                        </div>
+                        <div class="item-controls-2">
+                            <a class="edit" data-action="editItem" data-tooltip="{{localize 'CO.label.long.edit'}}"><i class="fas fa-fw fa-edit"></i></a>
+                            <a class="item-control" data-action="learnCapacity" data-tooltip="{{localize 'CO.ui.buy'}}"><i class="fa-solid gray fa-check"></i></a>
+                         </div>
+                    </li>
+                 {{/if}}
+             {{/if}}
         {{/each}}
     </ol>
 </ol>
