@@ -2153,16 +2153,16 @@ co-toggle-switch[checked] thumb {
 .theme-light .co.application.sheet.item.feature .modifiers-container .modifier {
   border: 1px solid var(--color-feature-light);
 }
-.co.application.sheet.item.feature .modifiers-container .modifier :nth-child(5),
-.co.application.sheet.item.feature .modifiers-container .modifier :nth-child(6) {
+.co.application.sheet.item.feature .modifiers-container .modifier .form-group:nth-last-child(2),
+.co.application.sheet.item.feature .modifiers-container .modifier .form-group:nth-last-child(3) {
   grid-column: auto / span 2;
 }
-.co.application.sheet.item.feature .modifiers-container .modifier :nth-child(5) label,
-.co.application.sheet.item.feature .modifiers-container .modifier :nth-child(6) label {
+.co.application.sheet.item.feature .modifiers-container .modifier .form-group:nth-last-child(2) label,
+.co.application.sheet.item.feature .modifiers-container .modifier .form-group:nth-last-child(3) label {
   flex: 2;
 }
-.co.application.sheet.item.feature .modifiers-container .modifier :nth-child(5) input[type="text"],
-.co.application.sheet.item.feature .modifiers-container .modifier :nth-child(6) input[type="text"] {
+.co.application.sheet.item.feature .modifiers-container .modifier .form-group:nth-last-child(2) input[type="text"],
+.co.application.sheet.item.feature .modifiers-container .modifier .form-group:nth-last-child(3) input[type="text"] {
   flex: 11;
 }
 .co.application.sheet.item.feature .modifiers-container .modifier input,
