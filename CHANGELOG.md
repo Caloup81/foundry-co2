@@ -1,8 +1,9 @@
 # 2.1.5
 
 ## Corrections
-
-- Corrige l'affichage des capacités dans les rencontre qui ne s'affichaient plus si on decochais la case 'appris' (#412)
+- Affiche correctement les champs d'un trait en mode édition lorsqu'il est possédé par un personnage
+- Retire l'ajout automatique de l'équipement Mains nues d'une rencontre, car elle a un butin et non un inventaire
+- Corrige l'affichage des capacités dans les rencontres qui n'affichait plus si on décochait la case 'appris' (#412)
 
 # 2.1.4
 
