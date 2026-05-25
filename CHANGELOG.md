@@ -1,3 +1,9 @@
+# 2.1.5
+
+## Corrections
+
+- Corrige l'affichage des capacités dans les rencontre qui ne s'affichaient plus si on decochais la case 'appris' (#412)
+
 # 2.1.4
 
 ## Améliorations
