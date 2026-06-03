@@ -62,6 +62,7 @@
                     <span class="target-name">{{target.name}}</span>
                     
                     <span class="target-damage" data-multiplier="{{#if target.isFailure}}0{{else if target.isCritical}}2{{else}}1{{/if}}">{{#if target.isFailure}}0{{else}}-{{../total}}{{/if}}</span>
+                    <button type="button" class="force-damage-btn" data-tooltip="{{localize 'CO.ui.editDamage'}}" data-tooltip-direction="UP"><i class="fa-solid fa-pen"></i></button>
                   </div>
                   <div class="target-controls">
 

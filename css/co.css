@@ -4386,6 +4386,58 @@ co-toggle-switch[checked] thumb {
   color: var(--color-chatDamages);
   font-variant-numeric: tabular-nums;
 }
+#interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn,
+#interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn {
+  flex: 0 0 auto;
+  --button-size: 1rem;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-11);
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+#interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn:hover,
+#interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--color-chatDamages) 12%, transparent);
+}
+#interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn.active,
+#interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn.active {
+  opacity: 1;
+  color: white;
+  background: var(--color-chatDamages);
+  border-color: var(--color-chatDamages);
+}
+#interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row .target-damage-input,
+#interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row .target-damage-input {
+  width: 48px;
+  min-width: 48px;
+  height: 24px;
+  padding: 0 4px;
+  font-weight: bold;
+  font-size: var(--font-size-20);
+  text-align: right;
+  color: var(--color-chatDamages);
+  font-variant-numeric: tabular-nums;
+  border: 1px solid var(--color-chatDamages);
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--color-chatDamages) 8%, transparent);
+}
+#interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row.manual .target-damage,
+#interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row.manual .target-damage {
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row .target-controls,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row .target-controls {
   display: flex;
@@ -4432,6 +4484,12 @@ co-toggle-switch[checked] thumb {
   border-color: var(--color-chatDamages);
   color: white;
   box-shadow: 0 1px 3px color-mix(in srgb, var(--color-chatDamages) 40%, transparent);
+}
+#interface #sidebar .co.chat-card.roll-card.damage-card .damage-multipliers .multiplier-btn.disabled,
+#interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .damage-multipliers .multiplier-btn.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  box-shadow: none;
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .damage-multipliers .btn-heal.active,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .damage-multipliers .btn-heal.active {

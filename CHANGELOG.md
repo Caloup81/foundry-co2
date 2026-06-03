@@ -1,3 +1,9 @@
+# 2.1.6
+
+## Améliorations
+
+- Carte de dommages : le MJ peut désormais forcer manuellement la valeur des DM appliqués à une cible (par exemple le maximum) via une icône d'édition. En mode manuel, la valeur saisie remplace le total de base (la RD et le minimum de 1 restent appliqués) et les boutons multiplicateurs sont désactivés. La valeur forcée est conservée et restaurée à l'affichage du message
+
 # 2.1.5
 
 ## Corrections

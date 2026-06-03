@@ -731,6 +731,8 @@
       "targeted": "Ciblé",
       "selected": "Sélectionné",
       "noDamage": "Pas de dommages",
+      "editDamage": "Forcer la valeur des dommages",
+      "editDamageActive": "Valeur forcée manuellement (cliquer pour revenir au calcul automatique)",
       "halfDmgOnSave": "Demi-DM si sauvegarde réussie",
       "applied": "Appliqué",
       "newAction": "",
