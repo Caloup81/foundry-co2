@@ -694,6 +694,30 @@ export default class COActor extends Actor {
       }
     }
 
+    // Imunisé à l'étourdissement ?
+    if (effectid === "stun" && state) {
+      if (this.system.modifiers) {
+        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.stunImmunity.id)
+        if (state && state.length > 0) {
+          // Immunisé on ne l'applique pas
+          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.stunImmunity")}`)
+          return false
+        }
+      }
+    }
+
+    // Imunisé à l'affaiblissement ?
+    if (effectid === "weakened" && state) {
+      if (this.system.modifiers) {
+        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.weakenedImmunity.id)
+        if (state && state.length > 0) {
+          // Immunisé on ne l'applique pas
+          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.weakenedImmunity")}`)
+          return false
+        }
+      }
+    }
+
     let hasEffect = this.statuses.has(effectid)
     if (hasEffect && !state) return await this.toggleStatusEffect(effectid, state)
     if (!hasEffect && state) return await this.toggleStatusEffect(effectid, state)
@@ -2121,8 +2145,7 @@ export default class COActor extends Actor {
     }
 
     if (targetScope && targetScope !== SYSTEM.RESOLVER_SCOPE.all.id && canvas.ready) {
-      const scopeDisposition =
-        targetScope === SYSTEM.RESOLVER_SCOPE.allies.id ? CONST.TOKEN_DISPOSITIONS.FRIENDLY : CONST.TOKEN_DISPOSITIONS.HOSTILE
+      const scopeDisposition = targetScope === SYSTEM.RESOLVER_SCOPE.allies.id ? CONST.TOKEN_DISPOSITIONS.FRIENDLY : CONST.TOKEN_DISPOSITIONS.HOSTILE
       dialogTargets = dialogTargets.map((target) => {
         const d = target.token?.document?.disposition
         const isNeutralOrSecret = d === CONST.TOKEN_DISPOSITIONS.NEUTRAL || d === CONST.TOKEN_DISPOSITIONS.SECRET
@@ -2704,7 +2727,10 @@ export default class COActor extends Actor {
       const disposition = token.document.disposition
       const isNeutralOrSecret = disposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL || disposition === CONST.TOKEN_DISPOSITIONS.SECRET
       const isValidTarget =
-        scope === "all" || isNeutralOrSecret || (scope === "allies" && disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY) || (scope === "enemies" && disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE)
+        scope === "all" ||
+        isNeutralOrSecret ||
+        (scope === "allies" && disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY) ||
+        (scope === "enemies" && disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE)
 
       if (isValidTarget) {
         targets.push(this._getTargetFromToken(token))

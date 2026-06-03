@@ -447,6 +447,8 @@
         "enslavementImmunity": "Immunisé à l'asservissement",
         "movemenAlterationImmunity": "Immunisé aux altérations de mouvement",
         "bleedingImmunity": "Immunisé au saignement",
+        "stunImmunity": "Immunisé à l'étourdissement",
+        "weakenedImmunity": "Immunisé à l'affaiblissement",
         "improvedDice": "Dé évolutif",
         "sendToChat": "Envoyer sur le chat",
         "edit": "Éditer",

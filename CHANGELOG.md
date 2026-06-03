@@ -7,9 +7,11 @@
 # 2.1.5
 
 ## Corrections
+
 - Affiche correctement les champs d'un trait en mode édition lorsqu'il est possédé par un personnage
 - Retire l'ajout automatique de l'équipement Mains nues d'une rencontre, car elle a un butin et non un inventaire
 - Corrige l'affichage des capacités dans les rencontres qui n'affichait plus si on décochait la case 'appris' (#412)
+- Ajout l'immunité à l'étourdisement et à l'affaiblissement (Le compagnon p 50)
 
 # 2.1.4
 

@@ -227,6 +227,16 @@ export const MODIFIERS_TARGET = Object.freeze({
     label: "CO.label.long.bleedingImmunity",
     subtype: "state",
   },
+  stunImmunity: {
+    id: "stunImmunity",
+    label: "CO.label.long.stunImmunity",
+    subtype: "state",
+  },
+  weakenedImmunity: {
+    id: "weakenedImmunity",
+    label: "CO.label.long.weakenedImmunity",
+    subtype: "state",
+  },
 })
 
 export const MODIFIERS_CHOICE_GROUP = Object.freeze({
