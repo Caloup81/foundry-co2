@@ -632,6 +632,31 @@ export default class COActor extends Actor {
   }
 
   /**
+   * Vérifie si l'unité est immunisée contre un effet donné.
+   * @param {string} immunityTargetId - L'ID de la cible d'immunité à vérifier (e.g., SYSTEM.MODIFIERS_TARGET.poisonImmunity.id).
+   * @param {string} immunityLabelKey - La clé de localisation du message ("CO.label.long.poisonImmunity").
+   * @returns {boolean} True si l'effet peut être appliqué, False sinon.
+   */
+  checkImmunity(immunityTargetId, immunityLabelKey) {
+    // Les vérifications initiales (state, this.system.modifiers)
+    if (!state || !this.system || !this.system.modifiers) {
+      return true // On ne peut pas vérifier, donc on laisse passer
+    }
+
+    // 1. Filtrer les modificateurs pour voir s'il y a une immunité
+    const states = this.system.modifiers.filter((m) => m.target === immunityTargetId)
+
+    if (states && states.length > 0) {
+      // 2. Logique d'immunité déclenchée
+      ui.notifications.info(`${this.name} ${game.i18n.localize(immunityLabelKey)}`)
+      return false // L'effet ne peut pas être appliqué
+    }
+
+    // 3. Pas d'immunité détectée
+    return true
+  }
+
+  /**
    * Active ou désactive un effet de statut spécifique CO
    * Assure que les effets de défense partielle et totale ne peuvent pas être actifs simultanément.
    *
@@ -658,63 +683,42 @@ export default class COActor extends Actor {
       }
     }
 
-    // Imunisé aux altération de mouvement ?
-    if ((effectid === "stun" || effectid === "immobilized" || effectid === "paralysis") && state) {
-      if (this.system.modifiers) {
-        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.movemenAlterationImmunity.id)
-        if (state && state.length > 0) {
-          // Immunisé on ne l'applique pas
-          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.movemenAlterationImmunity")}`)
-          return false
-        }
-      }
-    }
-
-    // Imunisé aux poisons ?
-    if (effectid === "poison" && state) {
-      if (this.system.modifiers) {
-        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.poisonImmunity.id)
-        if (state && state.length > 0) {
-          // Immunisé on ne l'applique pas
-          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.poisonImmunity")}`)
-          return false
-        }
-      }
-    }
-
-    // Imunisé au saignement ?
-    if (effectid === "bleeding" && state) {
-      if (this.system.modifiers) {
-        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.bleedingImmunity.id)
-        if (state && state.length > 0) {
-          // Immunisé on ne l'applique pas
-          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.bleedingImmunity")}`)
-          return false
-        }
-      }
-    }
-
-    // Imunisé à l'étourdissement ?
-    if (effectid === "stun" && state) {
-      if (this.system.modifiers) {
-        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.stunImmunity.id)
-        if (state && state.length > 0) {
-          // Immunisé on ne l'applique pas
-          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.stunImmunity")}`)
-          return false
-        }
-      }
-    }
-
-    // Imunisé à l'affaiblissement ?
-    if (effectid === "weakened" && state) {
-      if (this.system.modifiers) {
-        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.weakenedImmunity.id)
-        if (state && state.length > 0) {
-          // Immunisé on ne l'applique pas
-          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.weakenedImmunity")}`)
-          return false
-        }
+    if (state) {
+      //Si on doit activer un effet, on vérifie les immunités
+      switch (effectid) {
+        case "poison":
+          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.poisonImmunity.id, "CO.label.long.poisonImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "bleeding":
+          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.bleedingImmunity.id, "CO.label.long.bleedingImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "stun":
+          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.stunImmunity.id, "CO.label.long.stunImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.movemenAlterationImmunity.id, "CO.label.long.movemenAlterationImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "immobilized":
+          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.movemenAlterationImmunity.id, "CO.label.long.movemenAlterationImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "paralysis":
+          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.movemenAlterationImmunity.id, "CO.label.long.movemenAlterationImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "weakened":
+          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.weakenedImmunity.id, "CO.label.long.weakenedImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
       }
     }
 
