@@ -3,10 +3,9 @@
 ## Améliorations
 
 - Cartes de dommages et de sauvegarde : le MJ peut désormais forcer manuellement la valeur des DM appliqués à une cible (par exemple le maximum) via une icône d'édition. En mode manuel, la valeur saisie remplace le total de base (la RD et le minimum de 1 restent appliqués) et les boutons multiplicateurs sont désactivés. La valeur forcée est conservée et restaurée à l'affichage du message
+- Ajout l'immunité à l'étourdisement et à l'affaiblissement (Le compagnon p. 50)
 
 # 2.1.5
-
-- Ajout l'immunité à l'étourdisement et à l'affaiblissement (Le compagnon p 50)
 
 ## Corrections
 
