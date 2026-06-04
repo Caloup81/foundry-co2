@@ -638,15 +638,15 @@ export default class COActor extends Actor {
    * @returns {boolean} True si l'effet peut être appliqué, False sinon.
    */
   checkImmunity(immunityTargetId, immunityLabelKey) {
-    // Les vérifications initiales (state, this.system.modifiers)
-    if (!state || !this.system || !this.system.modifiers) {
+    // Les vérifications initiales
+    if (!this.system || !this.system.modifiers) {
       return true // On ne peut pas vérifier, donc on laisse passer
     }
 
     // 1. Filtrer les modificateurs pour voir s'il y a une immunité
     const states = this.system.modifiers.filter((m) => m.target === immunityTargetId)
 
-    if (states && states.length > 0) {
+    if (states.length > 0) {
       // 2. Logique d'immunité déclenchée
       ui.notifications.info(`${this.name} ${game.i18n.localize(immunityLabelKey)}`)
       return false // L'effet ne peut pas être appliqué
@@ -665,21 +665,22 @@ export default class COActor extends Actor {
    * @param {string} params.effectid L'ID de l'effet à basculer.
    * @returns {Promise<boolean>} Renvoi true si ça a été appliqué et false sinon (immunisé ?)
    *
-   * @throws {Error} Si les effets de défense partielle et totale sont tentés d'être activés simultanément.
    */
   async activateCOStatusEffect({ state, effectid } = {}) {
     // FIXME Trouver pourquoi ça vaut ""
-    if (effectid === "") return
+    if (effectid === "") return false
 
     // On ne peut pas activer à la fois la défense partielle et la défense totale
     if (effectid === "partialDef" && state) {
       if (this.hasEffect("fullDef")) {
-        return ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
+        ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
+        return false
       }
     }
     if (effectid === "fullDef" && state) {
       if (this.hasEffect("partialDef")) {
-        return ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
+        ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
+        return false
       }
     }
 
@@ -687,35 +688,35 @@ export default class COActor extends Actor {
       //Si on doit activer un effet, on vérifie les immunités
       switch (effectid) {
         case "poison":
-          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.poisonImmunity.id, "CO.label.long.poisonImmunity")) {
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.poisonImmunity.id, "CO.label.long.poisonImmunity")) {
             return false // Bloqué par l'immunité
           }
           break
         case "bleeding":
-          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.bleedingImmunity.id, "CO.label.long.bleedingImmunity")) {
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.bleedingImmunity.id, "CO.label.long.bleedingImmunity")) {
             return false // Bloqué par l'immunité
           }
           break
         case "stun":
-          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.stunImmunity.id, "CO.label.long.stunImmunity")) {
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.stunImmunity.id, "CO.label.long.stunImmunity")) {
             return false // Bloqué par l'immunité
           }
-          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.movemenAlterationImmunity.id, "CO.label.long.movemenAlterationImmunity")) {
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.movementAlterationImmunity.id, "CO.label.long.movementAlterationImmunity")) {
             return false // Bloqué par l'immunité
           }
           break
         case "immobilized":
-          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.movemenAlterationImmunity.id, "CO.label.long.movemenAlterationImmunity")) {
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.movementAlterationImmunity.id, "CO.label.long.movementAlterationImmunity")) {
             return false // Bloqué par l'immunité
           }
           break
         case "paralysis":
-          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.movemenAlterationImmunity.id, "CO.label.long.movemenAlterationImmunity")) {
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.movementAlterationImmunity.id, "CO.label.long.movementAlterationImmunity")) {
             return false // Bloqué par l'immunité
           }
           break
         case "weakened":
-          if (!checkImmunity(SYSTEM.MODIFIERS_TARGET.weakenedImmunity.id, "CO.label.long.weakenedImmunity")) {
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.weakenedImmunity.id, "CO.label.long.weakenedImmunity")) {
             return false // Bloqué par l'immunité
           }
           break
