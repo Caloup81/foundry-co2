@@ -48,6 +48,7 @@ export default class SaveMessageData extends BaseMessageData {
           rollTooltip: new fields.StringField({ required: false, nullable: true, blank: true }),
           appliedMultiplier: new fields.NumberField({ required: false, nullable: true, initial: null }),
           appliedDrChecked: new fields.BooleanField({ initial: true }),
+          forcedDamage: new fields.NumberField({ required: false, nullable: true, initial: null }),
         }),
         { required: false, initial: [] },
       ),
@@ -88,6 +89,7 @@ export default class SaveMessageData extends BaseMessageData {
     const hasDmg = message.system.hasDmg
     const dmgTotal = message.system.dmgTotal ?? 0
     const halfDmgOnSave = message.system.halfDmgOnSave
+    const canModify = game.user.isGM || (game.settings.get("co2", "allowPlayersToModifyTargets") && message.isAuthor)
 
     if (displayDifficulty === "gm" && !game.user.isGM) {
       html.querySelectorAll(".display-difficulty").forEach((el) => el.remove())
@@ -236,6 +238,17 @@ export default class SaveMessageData extends BaseMessageData {
           dmgSpan.dataset.multiplier = effectiveMultiplier
           dmgSpan.textContent = initialDmgDisplay
           infoLine.appendChild(dmgSpan)
+
+          // Icône "forcer la valeur" (MJ / auteur autorisé)
+          if (canModify) {
+            const forceBtn = document.createElement("button")
+            forceBtn.type = "button"
+            forceBtn.classList.add("force-damage-btn")
+            forceBtn.dataset.tooltip = game.i18n.localize("CO.ui.editDamage")
+            forceBtn.dataset.tooltipDirection = "UP"
+            forceBtn.innerHTML = `<i class="fa-solid fa-pen"></i>`
+            infoLine.appendChild(forceBtn)
+          }
         }
 
         // Bouton point de chance
@@ -282,6 +295,12 @@ export default class SaveMessageData extends BaseMessageData {
           </div>
         `
         li.appendChild(controlsLine)
+
+        // Restaure le mode manuel si une valeur a été forcée
+        if (canModify && tr.forcedDamage !== null && tr.forcedDamage !== undefined) {
+          SaveMessageData.enterManualMode(li, tr.forcedDamage)
+          li.dataset.autoMultiplier = defaultMultiplier
+        }
       }
 
       ul.appendChild(li)
@@ -321,6 +340,152 @@ export default class SaveMessageData extends BaseMessageData {
     let computed = Math.ceil(Math.abs(total * multiplier))
     if (drChecked) computed = Math.max(multiplier > 0 ? 1 : 0, computed - targetDr)
     return multiplier < 0 ? `+${computed}` : `-${computed}`
+  }
+
+  /**
+   * Met à jour l'affichage DM d'une ligne (span en ligne 1) à partir d'une base et d'un multiplicateur.
+   * @param {HTMLElement} li La ligne cible `.target-row`
+   * @param {number} base Total de base des dommages
+   * @param {number} multiplier Multiplicateur
+   */
+  static refreshDamageDisplay(li, base, multiplier) {
+    const dmgDisplay = li.querySelector(".target-damage")
+    if (!dmgDisplay) return
+    const controlsRow = li.querySelector(".save-target-dmg-row")
+    const drChecked = controlsRow?.querySelector(".target-dr")?.checked ?? true
+    const targetDr = parseInt(controlsRow?.dataset.targetDr) || 0
+    dmgDisplay.textContent = SaveMessageData.computeDamageDisplay(base, multiplier, drChecked, targetDr)
+    dmgDisplay.dataset.multiplier = multiplier
+  }
+
+  /**
+   * Calcule la valeur de base courante d'une ligne (avant RD) à partir du multiplicateur actif.
+   * @param {HTMLElement} li La ligne cible `.target-row`
+   * @param {number} dmgTotal Total brut des dommages
+   * @returns {number} Valeur de base entière (toujours positive)
+   */
+  static computeCurrentBase(li, dmgTotal) {
+    const activeBtn = li.querySelector(".save-target-dmg-row .multiplier-btn.active")
+    const mult = activeBtn ? parseFloat(activeBtn.dataset.multiplier) : 1
+    return Math.max(0, Math.ceil(Math.abs(dmgTotal * mult)))
+  }
+
+  /**
+   * Bascule une ligne cible en mode manuel : la valeur saisie remplace le total de base,
+   * les multiplicateurs sont neutralisés (figés à 1). La RD et le min 1 restent appliqués.
+   * @param {HTMLElement} li La ligne cible `.target-row`
+   * @param {number} base Valeur de base forcée (avant RD)
+   */
+  static enterManualMode(li, base) {
+    const controlsRow = li.querySelector(".save-target-dmg-row")
+    const activeBtn = controlsRow?.querySelector(".multiplier-btn.active")
+    if (activeBtn) li.dataset.autoMultiplier = activeBtn.dataset.multiplier
+    li.classList.add("manual")
+    li.dataset.forcedDamage = base
+    const editBtn = li.querySelector(".force-damage-btn")
+    if (editBtn) {
+      editBtn.classList.add("active")
+      editBtn.dataset.tooltip = game.i18n.localize("CO.ui.editDamageActive")
+    }
+    controlsRow?.querySelectorAll(".multiplier-btn").forEach((b) => {
+      b.classList.remove("active")
+      b.classList.add("disabled")
+    })
+    SaveMessageData.refreshDamageDisplay(li, base, 1)
+  }
+
+  /**
+   * Revient au mode automatique : réactive les multiplicateurs et recalcule l'affichage.
+   * @param {HTMLElement} li La ligne cible `.target-row`
+   * @param {number} dmgTotal Total brut des dommages
+   */
+  static exitManualMode(li, dmgTotal) {
+    const controlsRow = li.querySelector(".save-target-dmg-row")
+    li.classList.remove("manual")
+    delete li.dataset.forcedDamage
+    const editBtn = li.querySelector(".force-damage-btn")
+    if (editBtn) {
+      editBtn.classList.remove("active")
+      editBtn.dataset.tooltip = game.i18n.localize("CO.ui.editDamage")
+    }
+    const prev = li.dataset.autoMultiplier !== undefined ? parseFloat(li.dataset.autoMultiplier) : 1
+    delete li.dataset.autoMultiplier
+    controlsRow?.querySelectorAll(".multiplier-btn").forEach((b) => {
+      b.classList.remove("disabled")
+      b.classList.toggle("active", parseFloat(b.dataset.multiplier) === prev)
+    })
+    SaveMessageData.refreshDamageDisplay(li, dmgTotal, prev)
+  }
+
+  /**
+   * Ouvre un champ de saisie en ligne pour forcer la valeur de base des dommages d'une cible.
+   * @param {HTMLElement} li La ligne cible `.target-row`
+   */
+  static openForcedDamageEditor(li) {
+    const dmgDisplay = li.querySelector(".target-damage")
+    if (!dmgDisplay || li.querySelector(".target-damage-input")) return
+    const current = parseInt(li.dataset.forcedDamage) || 0
+    const input = document.createElement("input")
+    input.type = "number"
+    input.min = "0"
+    input.classList.add("target-damage-input")
+    input.value = current
+    dmgDisplay.style.display = "none"
+    dmgDisplay.after(input)
+    input.focus()
+    input.select()
+
+    const commit = () => {
+      let val = parseInt(input.value)
+      if (isNaN(val) || val < 0) val = 0
+      li.dataset.forcedDamage = val
+      SaveMessageData.refreshDamageDisplay(li, val, 1)
+      input.remove()
+      dmgDisplay.style.display = ""
+    }
+    input.addEventListener("click", (event) => event.stopPropagation())
+    input.addEventListener("blur", commit)
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault()
+        input.blur()
+      } else if (event.key === "Escape") {
+        event.preventDefault()
+        input.remove()
+        dmgDisplay.style.display = ""
+      }
+    })
+  }
+
+  /**
+   * Câble l'icône "forcer la valeur" et la réouverture de l'éditeur au clic sur la valeur, pour une ligne.
+   * @param {HTMLElement} li La ligne cible `.target-row`
+   * @param {number} dmgTotal Total brut des dommages
+   */
+  static setupForceDamage(li, dmgTotal) {
+    const editBtn = li.querySelector(".force-damage-btn")
+    if (editBtn) {
+      editBtn.addEventListener("click", (event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        if (li.classList.contains("manual")) {
+          SaveMessageData.exitManualMode(li, dmgTotal)
+        } else {
+          const base = SaveMessageData.computeCurrentBase(li, dmgTotal)
+          SaveMessageData.enterManualMode(li, base)
+          SaveMessageData.openForcedDamageEditor(li)
+        }
+      })
+    }
+    const dmgDisplay = li.querySelector(".target-damage")
+    if (dmgDisplay) {
+      dmgDisplay.addEventListener("click", (event) => {
+        if (!li.classList.contains("manual")) return
+        event.preventDefault()
+        event.stopPropagation()
+        SaveMessageData.openForcedDamageEditor(li)
+      })
+    }
   }
 
   // ----------------------------------------------------------------
@@ -461,17 +626,12 @@ export default class SaveMessageData extends BaseMessageData {
           event.preventDefault()
           const controlsRow = btn.closest(".save-target-dmg-row")
           const targetRow = controlsRow.closest(".target-row")
+          // En mode manuel, les multiplicateurs sont inertes
+          if (targetRow.classList.contains("manual")) return
           controlsRow.querySelectorAll(".multiplier-btn").forEach((b) => b.classList.remove("active"))
           btn.classList.add("active")
           const multiplier = parseFloat(btn.dataset.multiplier)
-          const drCheckbox = controlsRow.querySelector(".target-dr")
-          const drChecked = drCheckbox?.checked ?? true
-          const targetDr = parseInt(controlsRow.dataset.targetDr) || 0
-          const dmgDisplay = targetRow.querySelector(".target-damage")
-          if (dmgDisplay) {
-            dmgDisplay.textContent = SaveMessageData.computeDamageDisplay(dmgTotal, multiplier, drChecked, targetDr)
-            dmgDisplay.dataset.multiplier = multiplier
-          }
+          SaveMessageData.refreshDamageDisplay(targetRow, dmgTotal, multiplier)
         })
       })
 
@@ -480,14 +640,22 @@ export default class SaveMessageData extends BaseMessageData {
         checkbox.addEventListener("change", () => {
           const controlsRow = checkbox.closest(".save-target-dmg-row")
           const targetRow = controlsRow.closest(".target-row")
+          // En mode manuel : base = valeur forcée, multiplicateur figé à 1
+          if (targetRow.classList.contains("manual")) {
+            const base = parseInt(targetRow.dataset.forcedDamage) || 0
+            SaveMessageData.refreshDamageDisplay(targetRow, base, 1)
+            return
+          }
           const activeBtn = controlsRow.querySelector(".multiplier-btn.active")
           const multiplier = activeBtn ? parseFloat(activeBtn.dataset.multiplier) : 1
-          const targetDr = parseInt(controlsRow.dataset.targetDr) || 0
-          const dmgDisplay = targetRow.querySelector(".target-damage")
-          if (dmgDisplay) {
-            dmgDisplay.textContent = SaveMessageData.computeDamageDisplay(dmgTotal, multiplier, checkbox.checked, targetDr)
-          }
+          SaveMessageData.refreshDamageDisplay(targetRow, dmgTotal, multiplier)
         })
+      })
+
+      // Icône "forcer la valeur" par ligne résolue avec DM
+      html.querySelectorAll(".save-target-dmg-row").forEach((controlsRow) => {
+        const li = controlsRow.closest(".target-row")
+        if (li) SaveMessageData.setupForceDamage(li, dmgTotal)
       })
 
       // Checkbox DM temporaires
@@ -515,22 +683,32 @@ export default class SaveMessageData extends BaseMessageData {
           for (const row of dmgRows) {
             const targetUuid = row.dataset.targetUuid
             if (!targetUuid) continue
-            const activeBtn = row.querySelector(".multiplier-btn.active")
-            const multiplier = activeBtn ? parseFloat(activeBtn.dataset.multiplier) : 1
-            if (multiplier === 0) continue
+            const targetRow = row.closest(".target-row")
 
             let type
-            if (multiplier === 2) type = "double"
-            else if (multiplier === 0.5) type = "half"
-            else if (multiplier < 0) type = "heal"
-            else type = "full"
+            let amount
+            // Mode manuel : la valeur forcée remplace le total de base, multiplicateur ignoré (dégâts)
+            if (targetRow?.classList.contains("manual")) {
+              amount = parseInt(targetRow.dataset.forcedDamage) || 0
+              type = "full"
+            } else {
+              const activeBtn = row.querySelector(".multiplier-btn.active")
+              const multiplier = activeBtn ? parseFloat(activeBtn.dataset.multiplier) : 1
+              if (multiplier === 0) continue
+
+              if (multiplier === 2) type = "double"
+              else if (multiplier === 0.5) type = "half"
+              else if (multiplier < 0) type = "heal"
+              else type = "full"
+              amount = dmgTotal
+            }
 
             const drCheckbox = row.querySelector(".target-dr")
             const drChecked = drCheckbox?.checked ?? true
 
             const targetActor = fromUuidSync(targetUuid)
             if (targetActor) {
-              await Hitpoints.applyToSingleTarget({ targetActor, fromActor: actorId, source: flavor, type, amount: dmgTotal, drChecked, tempDamage })
+              await Hitpoints.applyToSingleTarget({ targetActor, fromActor: actorId, source: flavor, type, amount, drChecked, tempDamage })
             }
           }
 
@@ -556,6 +734,8 @@ export default class SaveMessageData extends BaseMessageData {
           const targetResults = foundry.utils.deepClone(message.system.targetResults ?? [])
           for (const row of dmgRows) {
             const uuid = row.dataset.targetUuid
+            const targetRow = row.closest(".target-row")
+            const isManual = targetRow?.classList.contains("manual")
             const activeBtn = row.querySelector(".multiplier-btn.active")
             const mult = activeBtn ? parseFloat(activeBtn.dataset.multiplier) : 1
             const drCheckbox = row.querySelector(".target-dr")
@@ -564,6 +744,7 @@ export default class SaveMessageData extends BaseMessageData {
             if (tr) {
               tr.appliedMultiplier = mult
               tr.appliedDrChecked = drChecked
+              tr.forcedDamage = isManual ? parseInt(targetRow.dataset.forcedDamage) || 0 : null
             }
           }
 
