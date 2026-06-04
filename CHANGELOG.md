@@ -1,6 +1,15 @@
+# 2.1.6
+
+## Améliorations
+
+- Cartes de dommages et de sauvegarde : le MJ peut désormais forcer manuellement la valeur des DM appliqués à une cible (par exemple le maximum) via une icône d'édition. En mode manuel, la valeur saisie remplace le total de base (la RD et le minimum de 1 restent appliqués) et les boutons multiplicateurs sont désactivés. La valeur forcée est conservée et restaurée à l'affichage du message
+
 # 2.1.5
 
+- Ajout l'immunité à l'étourdisement et à l'affaiblissement (Le compagnon p 50)
+
 ## Corrections
+
 - Affiche correctement les champs d'un trait en mode édition lorsqu'il est possédé par un personnage
 - Retire l'ajout automatique de l'équipement Mains nues d'une rencontre, car elle a un butin et non un inventaire
 - Corrige l'affichage des capacités dans les rencontres qui n'affichait plus si on décochait la case 'appris' (#412)

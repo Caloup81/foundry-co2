@@ -632,6 +632,31 @@ export default class COActor extends Actor {
   }
 
   /**
+   * Vérifie si l'unité est immunisée contre un effet donné.
+   * @param {string} immunityTargetId - L'ID de la cible d'immunité à vérifier (e.g., SYSTEM.MODIFIERS_TARGET.poisonImmunity.id).
+   * @param {string} immunityLabelKey - La clé de localisation du message ("CO.label.long.poisonImmunity").
+   * @returns {boolean} True si l'effet peut être appliqué, False sinon.
+   */
+  checkImmunity(immunityTargetId, immunityLabelKey) {
+    // Les vérifications initiales
+    if (!this.system || !this.system.modifiers) {
+      return true // On ne peut pas vérifier, donc on laisse passer
+    }
+
+    // 1. Filtrer les modificateurs pour voir s'il y a une immunité
+    const states = this.system.modifiers.filter((m) => m.target === immunityTargetId)
+
+    if (states.length > 0) {
+      // 2. Logique d'immunité déclenchée
+      ui.notifications.info(`${this.name} ${game.i18n.localize(immunityLabelKey)}`)
+      return false // L'effet ne peut pas être appliqué
+    }
+
+    // 3. Pas d'immunité détectée
+    return true
+  }
+
+  /**
    * Active ou désactive un effet de statut spécifique CO
    * Assure que les effets de défense partielle et totale ne peuvent pas être actifs simultanément.
    *
@@ -640,57 +665,61 @@ export default class COActor extends Actor {
    * @param {string} params.effectid L'ID de l'effet à basculer.
    * @returns {Promise<boolean>} Renvoi true si ça a été appliqué et false sinon (immunisé ?)
    *
-   * @throws {Error} Si les effets de défense partielle et totale sont tentés d'être activés simultanément.
    */
   async activateCOStatusEffect({ state, effectid } = {}) {
     // FIXME Trouver pourquoi ça vaut ""
-    if (effectid === "") return
+    if (effectid === "") return false
 
     // On ne peut pas activer à la fois la défense partielle et la défense totale
     if (effectid === "partialDef" && state) {
       if (this.hasEffect("fullDef")) {
-        return ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
+        ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
+        return false
       }
     }
     if (effectid === "fullDef" && state) {
       if (this.hasEffect("partialDef")) {
-        return ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
+        ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
+        return false
       }
     }
 
-    // Imunisé aux altération de mouvement ?
-    if ((effectid === "stun" || effectid === "immobilized" || effectid === "paralysis") && state) {
-      if (this.system.modifiers) {
-        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.movemenAlterationImmunity.id)
-        if (state && state.length > 0) {
-          // Immunisé on ne l'applique pas
-          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.movemenAlterationImmunity")}`)
-          return false
-        }
-      }
-    }
-
-    // Imunisé aux poisons ?
-    if (effectid === "poison" && state) {
-      if (this.system.modifiers) {
-        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.poisonImmunity.id)
-        if (state && state.length > 0) {
-          // Immunisé on ne l'applique pas
-          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.poisonImmunity")}`)
-          return false
-        }
-      }
-    }
-
-    // Imunisé au saignement ?
-    if (effectid === "bleeding" && state) {
-      if (this.system.modifiers) {
-        const state = this.system.modifiers.filter((m) => m.target === SYSTEM.MODIFIERS_TARGET.bleedingImmunity.id)
-        if (state && state.length > 0) {
-          // Immunisé on ne l'applique pas
-          ui.notifications.info(`${this.name} ${game.i18n.localize("CO.label.long.bleedingImmunity")}`)
-          return false
-        }
+    if (state) {
+      //Si on doit activer un effet, on vérifie les immunités
+      switch (effectid) {
+        case "poison":
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.poisonImmunity.id, "CO.label.long.poisonImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "bleeding":
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.bleedingImmunity.id, "CO.label.long.bleedingImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "stun":
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.stunImmunity.id, "CO.label.long.stunImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.movementAlterationImmunity.id, "CO.label.long.movementAlterationImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "immobilized":
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.movementAlterationImmunity.id, "CO.label.long.movementAlterationImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "paralysis":
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.movementAlterationImmunity.id, "CO.label.long.movementAlterationImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
+        case "weakened":
+          if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.weakenedImmunity.id, "CO.label.long.weakenedImmunity")) {
+            return false // Bloqué par l'immunité
+          }
+          break
       }
     }
 
@@ -2121,8 +2150,7 @@ export default class COActor extends Actor {
     }
 
     if (targetScope && targetScope !== SYSTEM.RESOLVER_SCOPE.all.id && canvas.ready) {
-      const scopeDisposition =
-        targetScope === SYSTEM.RESOLVER_SCOPE.allies.id ? CONST.TOKEN_DISPOSITIONS.FRIENDLY : CONST.TOKEN_DISPOSITIONS.HOSTILE
+      const scopeDisposition = targetScope === SYSTEM.RESOLVER_SCOPE.allies.id ? CONST.TOKEN_DISPOSITIONS.FRIENDLY : CONST.TOKEN_DISPOSITIONS.HOSTILE
       dialogTargets = dialogTargets.map((target) => {
         const d = target.token?.document?.disposition
         const isNeutralOrSecret = d === CONST.TOKEN_DISPOSITIONS.NEUTRAL || d === CONST.TOKEN_DISPOSITIONS.SECRET
@@ -2704,7 +2732,10 @@ export default class COActor extends Actor {
       const disposition = token.document.disposition
       const isNeutralOrSecret = disposition === CONST.TOKEN_DISPOSITIONS.NEUTRAL || disposition === CONST.TOKEN_DISPOSITIONS.SECRET
       const isValidTarget =
-        scope === "all" || isNeutralOrSecret || (scope === "allies" && disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY) || (scope === "enemies" && disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE)
+        scope === "all" ||
+        isNeutralOrSecret ||
+        (scope === "allies" && disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY) ||
+        (scope === "enemies" && disposition === CONST.TOKEN_DISPOSITIONS.HOSTILE)
 
       if (isValidTarget) {
         targets.push(this._getTargetFromToken(token))

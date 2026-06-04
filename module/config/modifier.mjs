@@ -217,14 +217,24 @@ export const MODIFIERS_TARGET = Object.freeze({
     label: "CO.label.long.enslavementImmunity",
     subtype: "state",
   },
-  movemenAlterationImmunity: {
-    id: "movemenAlterationImmunity",
-    label: "CO.label.long.movemenAlterationImmunity",
+  movementAlterationImmunity: {
+    id: "movementAlterationImmunity",
+    label: "CO.label.long.movementAlterationImmunity",
     subtype: "state",
   },
   bleedingImmunity: {
     id: "bleedingImmunity",
     label: "CO.label.long.bleedingImmunity",
+    subtype: "state",
+  },
+  stunImmunity: {
+    id: "stunImmunity",
+    label: "CO.label.long.stunImmunity",
+    subtype: "state",
+  },
+  weakenedImmunity: {
+    id: "weakenedImmunity",
+    label: "CO.label.long.weakenedImmunity",
     subtype: "state",
   },
 })
