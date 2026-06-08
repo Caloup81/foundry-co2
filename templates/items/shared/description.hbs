@@ -11,4 +11,10 @@
                 {{ formInput systemFields.inGame enriched=enrichedInGame value=system.inGame name="system.inGame" toggled=true }}
             </fieldset>
         {{/if}}
+        {{#if isGM}}
+            <fieldset class="item-gm-notes">
+                <legend>{{localize "CO.ui.gmNotes"}}</legend>
+                {{formInput systemFields.gmNotes enriched=enrichedGmNotes value=system.gmNotes name="system.gmNotes" toggled=true}}
+            </fieldset>
+        {{/if}}
 </section>

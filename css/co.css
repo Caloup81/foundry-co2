@@ -1689,6 +1689,9 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.item .window-content .border-right input {
   border-right: none;
 }
+.co.application.sheet.item .window-content .item-gm-notes {
+  margin: auto;
+}
 .co.application.sheet.item .window-content .tab[data-tab].actions {
   margin-left: -10px;
   padding-top: 4px;
