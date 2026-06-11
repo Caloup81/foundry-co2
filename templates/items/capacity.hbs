@@ -50,6 +50,13 @@
                     {{formGroup systemFields.manaCost value=systemSource.manaCost localize=true disabled=locked}}
                 {{/if}}
             </fieldset>
+             <fieldSet class="spell">
+                <legend>{{localize "CO.ui.psionic"}}</legend>
+                {{formGroup systemFields.properties.fields.psionic value=systemSource.properties.psionic disabled=locked}}
+                {{#if system.isPsionic}}
+                    {{formGroup systemFields.egoCost value=systemSource.egoCost localize=true disabled=locked}}
+                {{/if}}
+            </fieldset>
 
             <fieldSet class="allowCapacity">
                 <legend>{{localize "CO.ui.allowCapacity"}}</legend>

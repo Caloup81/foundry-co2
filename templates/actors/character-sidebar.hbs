@@ -528,6 +528,58 @@
         </div>
       {{/if}}
     </div>
+    <!-- EP -->
+    <div class="sidebar-section resource-section">
+      <div class="sidebar-section-header">
+        <div class="sidebar-label">
+          <h4>{{localize "CO.resources.medium.ego"}}</h4>
+        </div>
+        <div class="resource-points labelled-field">
+          {{#if viewLimited}}
+            <i class="fas fa-brain"></i>??
+          {{else}}
+            <i class="fas fa-brain"></i>
+            <input class="current" name="system.resources.ego.value" value="{{resources.ego.value}}" type="number" data-dtype="Number" placeholder="0" />
+            <span class="slash">/</span>
+            <span class="max" data-tooltip="{{resources.ego.tooltip}}">{{resources.ego.max}}</span>
+          {{/if}}
+        </div>
+      </div>
+      {{#if unlocked}}
+        <div class="sidebar-section-content">
+          <div class="field">
+            {{!--<label>{{localize "CO.label.short.ability"}}</label>--}}
+            <select name="system.resources.ego.ability" data-type="String">
+              {{selectOptions choiceAbilities selected=resources.ego.ability localize=true}}
+            </select>
+          </div>
+        </div>
+        <div class="sidebar-section-content">
+          <div class="field">
+            <input
+              class="ep-base"
+              type="number"
+              name="system.resources.ego.base"
+              value="{{resources.ego.base}}"
+              data-dtype="Number"
+              placeholder="0"
+              readonly
+              data-tooltip="{{localize 'CO.label.long.base'}}"
+            />
+            <span class="slash">/</span>
+            <input
+              class="ep-bonus"
+              type="text"
+              name="system.resources.ego.bonuses.sheet"
+              value="{{numberFormat resources.ego.bonuses.sheet decimals=0 sign=true}}"
+              data-dtype="Number"
+              data-tooltip="{{localize 'CO.label.long.bonus'}}"
+              placeholder="0"
+            />
+          </div>
+        </div>
+      {{/if}}
+    </div>
     <!-- MOVEMENT -->
     <div class="sidebar-section speed-section">
       <div class="sidebar-section-header">

@@ -51,6 +51,7 @@ export default class COPartySheet extends HandlebarsApplicationMixin(foundry.app
           fortune: c.system.resources.fortune,
           recovery: c.system.resources.recovery,
           mana: c.system.resources.mana,
+          ego: c.system.resources.ego,
         }
       })
     return context

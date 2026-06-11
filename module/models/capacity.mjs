@@ -23,6 +23,7 @@ export default class CapacityData extends ItemData {
    * - `path` {DocumentUUIDField}: A field representing a document UUID of type "Item".
    * - `cost` {NumberField}: A required, non-nullable integer field with an initial value of -1.
    * - `manaCost` {NumberField}: A required, non-nullable integer field with an initial value of -1.
+   * - `egoCost` {NumberField}: A required, non-nullable integer field with an initial value of -1.
    * - `actions` {ArrayField}: An array field containing embedded data fields of type `Action`.
    * - `allowLinkedCapacity` {BooleanField}: A boolean field indicating if linked capacity is allowed.
    * - `linkedCapacity` {DocumentUUIDField}: A field representing a document UUID of type "Item" for linked capacity.
@@ -43,10 +44,12 @@ export default class CapacityData extends ItemData {
       }),
       properties: new fields.SchemaField({
         spell: new fields.BooleanField({}),
+        psionic: new fields.BooleanField({}),
       }),
       path: new fields.DocumentUUIDField({ type: "Item" }),
       cost: new fields.NumberField({ required: true, nullable: false, integer: true, initial: -1, min: -1 }),
       manaCost: new fields.NumberField({ required: true, nullable: false, integer: true, initial: -1, min: -1 }),
+      egoCost: new fields.NumberField({ required: true, nullable: false, integer: true, initial: -1, min: -1 }),
       actions: new fields.ArrayField(new fields.EmbeddedDataField(Action)),
       allowLinkedCapacity: new fields.BooleanField({ initial: false }),
       linkedCapacity: new fields.DocumentUUIDField({ type: "Item" }),
@@ -59,6 +62,10 @@ export default class CapacityData extends ItemData {
 
   get isSpell() {
     return this.properties.spell
+  }
+
+  get isPsionic() {
+    return this.properties.psionic
   }
 
   get actionTypeShortLabel() {
@@ -84,6 +91,10 @@ export default class CapacityData extends ItemData {
 
   get hasManaCost() {
     return this.manaCost !== -1
+  }
+
+  get hasEgoCost() {
+    return this.egoCost !== -1
   }
 
   get hasParent() {
@@ -121,6 +132,20 @@ export default class CapacityData extends ItemData {
    */
   getManaCost() {
     if (this.hasManaCost) return this.manaCost
+    if (this.path === null) return 0 // Off path capacity
+    return this.rank
+  }
+
+  /**
+   * Calculates and returns the ego cost for the current instance.
+   *
+   * @returns {number} The ego cost, which is determined by the following:
+   *   - If `hasEgoCost` is true, returns `egoCost`.
+   *   - If `path` is null, returns 0.
+   *   - Otherwise, returns `rank`.
+   */
+  getEgoCost() {
+    if (this.hasEgoCost) return this.egoCost
     if (this.path === null) return 0 // Off path capacity
     return this.rank
   }

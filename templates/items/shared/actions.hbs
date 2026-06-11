@@ -85,6 +85,12 @@
                                                 {{action.schema.fields.properties.fields.noManaCost.label}}
                                             </label>
                                         {{/if}}
+                                        {{#if (and (eq ../itemType 'capacity') ../system.isPsionic) }}
+                                            <label>
+                                                <input type="checkbox" name="{{concat 'system.actions.' idx '.properties.noEgoCost'}}" {{checked action.properties.noEgoCost}} {{#if @root.locked}}class="disabled"{{/if}} />
+                                                {{action.schema.fields.properties.fields.noEgoCost.label}}
+                                            </label>
+                                        {{/if}}
                                     </div>
                                 </fieldSet>
                                 {{#if @root.debugMode}}

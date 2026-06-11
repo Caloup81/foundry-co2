@@ -202,6 +202,9 @@
         },
         "mainProfile": {
           "label": "Profil principal"
+        },
+        "isPsionic": {
+          "label": "Est un psionic"
         }
       }
     },
@@ -231,6 +234,9 @@
         "manaCost": {
           "label": "Coût en points de mana"
         },
+        "egoCost": {
+          "label": "Coût en points d'ego"
+        },
         "actionType": {
           "label": "Temps d'action"
         },
@@ -248,6 +254,9 @@
         "properties": {
           "spell": {
             "label": "Sortilège"
+          },
+          "psionic": {
+            "label": "Pouvoir psionic"
           }
         },
         "linkedCapacity": {
@@ -291,6 +300,9 @@
           },
           "reloadable": {
             "label": "Rechargeable"
+          },
+          "psionic": {
+            "label": "Pouvoir psionic"
           }
         },
         "charges": {
@@ -329,6 +341,9 @@
           },
           "noManaCost": {
             "label": "Sans coût en mana"
+          },
+          "noEgoCost": {
+            "label": "Sans coût en ego"
           },
           "noChargesUsed": {
             "label": "Ne consomme pas de charges"
@@ -373,6 +388,7 @@
       "warningCannotTargetSelf": "Vous ne pouvez pas cibler vous-même !",
       "warningProfileCreated": "Le profil a été créé.",
       "warningNotEnoughMana": "Pas assez de mana pour lancer le sort.",
+      "warningNotEnoughEgo": "Pas assez d'Ego pour lancer le sort.",
       "warningLevelTooLow": "Vous n'avez pas le niveau minimum pour apprendre cette capacité.",
       "warningTargetCapacityRankLowerThanPathRank": "Vous connaissez une capacité d'un rang supérieur à celui de \"{capacityName}\" dans cette voie.",
       "warningApplyDamageNoTarget": "Aucun token sélectionné",
@@ -387,6 +403,7 @@
       "tmpDamaged": "{actorName} prend {amount} point(s) de dommages temporaires",
       "tmpDamagedBy": "{actorName} prend {amount} point(s) de dommages temporaires par {source}",
       "manaBurn": "{actorName} brûle {amount} point(s) de vigueur pour accomplir son sort {capacityName}",
+      "egoBurn": "{actorName} brûle {amount} point(s) de vigueur pour accomplir son pouvoir psi {capacityName}",
       "warningNeedLearnedCapacities": "Vous devez apprendre les capacités des rangs précédents avant d'apprendre celle-ci",
       "consume": "{actorName} a consommé un(e) {itemName}",
       "attackActionLimit": "Une attaque de créature ne peut avoir qu'une seule action",
@@ -469,6 +486,7 @@
         "fp": "Points de chance",
         "rp": "Dés de récupération",
         "mp": "Points de mana",
+        "ep": "Points d'égo",
         "recoveryFast": "Récupération rapide",
         "recoveryFull": "Récupération complète",
         "type": "Type",
@@ -758,6 +776,7 @@
       "editStats": "Editez vos caractéristiques",
       "xpCost": "Coût en points de capacité",
       "manaCost": "Coût en mana",
+      "egoCost": "Coût en ego",
       "defense": "Défense",
       "magicalDefense": "Défense magique",
       "maxDefenseArmor": "Défense max de l'armure",
@@ -794,6 +813,7 @@
       "typeFrequency": "Temps d'Action et Fréquence",
       "typeFrequencyShort": "Temps d'Action",
       "spell": "Sort",
+      "psionic": "Pouvoir psionic",
       "allowCapacity": "Autoriser une capacité liée",
       "typeEquipment": "Type d'Équipement",
       "typeAttack": "Type d'Attaque",
@@ -830,7 +850,8 @@
       "visible": "Visible",
       "activable": "Activable",
       "temporary": "Temporaire",
-      "noManaCost": "Sans coût en mana"
+      "noManaCost": "Sans coût en mana",
+      "noEgoCost": "Sans coût en ego"
     },
     "abilities": {
       "long": {
@@ -882,6 +903,7 @@
       "long": {
         "fortune": "Points de chance",
         "mana": "Points de mana",
+        "ego": "Points d'ego",
         "recovery": "Dés de récupération",
         "primary": "Primaire",
         "secondary": "Secondaire",
@@ -890,6 +912,7 @@
       "medium": {
         "fortune": "Chance",
         "mana": "Mana",
+        "ego": "Ego",
         "recovery": "Récupération",
         "primary": "Primaire",
         "secondary": "Secondaire",
@@ -898,6 +921,7 @@
       "short": {
         "fortune": "PC",
         "mana": "PM",
+        "ego": "PE",
         "recovery": "PR",
         "primary": "Prim.",
         "secondary": "Sec.",
@@ -966,13 +990,17 @@
       "acceptResult": "Accepter le résultat",
       "fastRest": {
         "title": "Récupération rapide",
-        "content": "Souhaitez-vous effectuer une récupération rapide ?"
+        "content": "Souhaitez-vous effectuer une récupération rapide ? (-1 DR)",
+        "psiContent": "Souhaitez-vous récupérer des points d'Ego ? (-1 DR)",
+        "psiTitle": "Récupération d'Ego"
       },
       "fullRest": {
         "title": "Récupération complète",
         "content": "Souhaitez-vous effectuer une récupération complète ?",
         "manaContent": "Récupérez-vous le maximum de points de mana ?",
-        "manaTitle": "Récupération de mana"
+        "manaTitle": "Récupération de mana",
+        "egoContent": "Récupérez-vous des points d'égo ? (-1 DR)",
+        "egoTitle": "Récupération d'égo"
       },
       "editYourAbilities": {
         "title": "Éditez vos Caractéristiques",
@@ -1093,6 +1121,7 @@
         "hp": "Points de vigueur",
         "rp": "Dés de récupération",
         "mp": "Points de mana",
+        "ep": "Points d'égo",
         "fp": "Points de chance"
       },
       "apply": {

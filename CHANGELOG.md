@@ -1,3 +1,9 @@
+# 2.1.7
+
+## Améliorations
+
+- Ajout des points d'EGO (psionic). Les capacité peuvent maintenant être déclarées comme des pouvoir psionic et les cout en point d'EGO sont calculés de la même façon que les PM. Un profil peux maintenant avoir une case à cocher "Est un psionic" ce qui permettrea de fixer les point de vigueur par niveau à 4 tout en pouvant modifier la famille (aventurier, mystique etc.) et va permettre de proposer de nouvelles options de récupération. Lors d'une récupération si le profil du personnage "Est un psionic" et s'il n'a pas le maximum de point d'EGO, il lui ssera demandé s'il souhaite utiliser un DR pour récupérer des points d'EGO. Par la suite s'il possède une capacité dont le slud est 'controle-du-metabolisme' un jet de récupération de PV sera lancé automatiquement sans dépense de DR supplémentaire, sinon on lui proposera de dépenser un DR pour celà. Les pouvoirs psionics sont repéré par le symbole \* à coté du nom comme pour les sorts.
+
 # 2.1.6
 
 ## Améliorations

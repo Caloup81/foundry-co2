@@ -15,7 +15,8 @@
                                 {{#if action.hasLabel}} - {{action.label}}{{/if}}
                                 {{#if action.hasQuantity}}<span data-tooltip=" {{localize "CO.ui.remainingQuantity"}}" data-tooltip-direction="UP">({{action.quantity}})</span>{{/if}}
                                 {{#if action.hasCharges}}<span data-tooltip=" {{localize "CO.ui.remainingQuantity"}}" data-tooltip-direction="UP">({{action.charges}})</span>{{/if}}
-                                {{#if action.parent.isSpell}} - *({{action.manaCost}} PM{{#if (gt (manaCostFromArmor action.parent.parent @root.actor) 0)}} Malus armure : {{manaCostFromArmor action.parent.parent @root.actor}} {{/if}}){{/if}}                            
+                                {{#if action.parent.isSpell}} - *({{action.manaCost}} PM{{#if (gt (manaCostFromArmor action.parent.parent @root.actor) 0)}} Malus armure : {{manaCostFromArmor action.parent.parent @root.actor}} {{/if}}){{/if}}   
+                                {{#if action.parent.isPsionic}} - *({{action.egoCost}} PE{{/if}})                         
                                 {{#each action.resolvers as |resolver|}}
                                     {{#if resolver.hasAdditionalEffect}}
                                         <i class="fa-solid fa-hourglass-half icon-effet" data-tooltip="{{localize "CO.label.long.customEffectInCombat"}}"></i>

@@ -15,6 +15,7 @@ export default class ProfileData extends ItemData {
       paths: new fields.ArrayField(new fields.DocumentUUIDField({ type: "Item" })),
       proficiencies: new fields.ArrayField(new fields.StringField()),
       mainProfile: new fields.BooleanField(),
+      isPsionic: new fields.BooleanField(),
     })
   }
 
@@ -25,7 +26,7 @@ export default class ProfileData extends ItemData {
   prepareBaseData() {
     super.prepareBaseData()
     if (this.family) {
-      this.hp = SYSTEM.FAMILIES[this.family].hp
+      this.hp = this.isPsionic ? SYSTEM.PSIONICS.hp : SYSTEM.FAMILIES[this.family].hp
       this.fp = SYSTEM.FAMILIES[this.family].fp
       this.recoveryDice = SYSTEM.FAMILIES[this.family].recoveryDice
       this.recoveryBonus = SYSTEM.FAMILIES[this.family].recoveryBonus

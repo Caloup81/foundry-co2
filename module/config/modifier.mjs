@@ -187,6 +187,11 @@ export const MODIFIERS_TARGET = Object.freeze({
     label: "CO.label.long.mp",
     subtype: "resource",
   },
+  ep: {
+    id: "ep",
+    label: "CO.label.long.ep",
+    subtype: "resource",
+  },
   darkvision: {
     id: "darkvision",
     label: "CO.label.long.darkvision",

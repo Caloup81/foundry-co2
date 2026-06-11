@@ -3,6 +3,7 @@ import { BaseValue } from "./schemas/base-value.mjs"
 import ActorData from "./actor.mjs"
 import Utils from "../helpers/utils.mjs"
 import CoChat from "../chat.mjs"
+import { CORoll } from "../documents/roll.mjs"
 
 import DefaultConfiguration from "../config/configuration.mjs"
 import { Modifier } from "./schemas/modifier.mjs"
@@ -338,6 +339,11 @@ export default class CharacterData extends ActorData {
       // Points de mana - Mana Points - MP
       if (key === SYSTEM.RESOURCES.mana.id) {
         this._prepareMP(skill, bonuses)
+      }
+
+      // Points d'égo - Ego Points - EP
+      if (key === SYSTEM.RESOURCES.ego.id) {
+        this._prepareEP(skill, bonuses)
       }
 
       // Dés de récupération - Recovery Points - RP
@@ -691,6 +697,40 @@ export default class CharacterData extends ActorData {
   }
 
   /**
+   * Calcule les points d'ego
+   * Dans COF : si le personnage a au moins un pouvoir psi, VOLONTE + Nombre de pouvoir psi Modificateurs
+   * Prepares the EP (Ego Points) for a given skill by calculating its base value,
+   * applying resource modifiers, and adding any additional bonuses.
+   *
+   * @param {Object} skill The skill object to prepare EP for.
+   * @param {number} bonuses Additional bonuses to be added to the skill's EP.
+   */
+  _prepareEP(skill, bonuses) {
+    const baseEP = this._computeBaseEP()
+    skill.base = baseEP.value
+    skill.tooltipBase = baseEP.tooltip
+
+    const resourceModifiers = this.computeTotalModifiersByTarget(this.resourceModifiers, SYSTEM.MODIFIERS_TARGET.ep.id)
+    skill.max = skill.base + bonuses + resourceModifiers.total
+    skill.value = Math.min(skill.max, skill.value) // On ne depasse pas le max
+    skill.tooltip = skill.tooltipBase.concat(resourceModifiers.tooltip, Utils.getTooltip("Bonus", bonuses))
+  }
+
+  /**
+   * Computes the base EP (Ego Points) for the character.
+   * Si le personnage a au moins une capacité signalée par un * (donc un pouvoir psi), il a alors VOL + nb de pouvoir psi points d'Ego
+   * @returns {number} The base EP value. Returns 0 if the character has no psi power.
+   */
+  _computeBaseEP() {
+    let value = 0
+    if (!this.hasPsionicPowers) return { value, tooltip: "Pas de pouvoir psi" }
+    const nbPower = this.nbPsionicPowers
+    let tooltip = Utils.getTooltip("Nb de pouvoirs", nbPower)
+    tooltip = tooltip.concat(Utils.getTooltip("Volonté", this.abilities.vol.value))
+    return { value: this.abilities.vol.value + nbPower, tooltip }
+  }
+
+  /**
    * Computes the base MP (Magic Points) for the character.
    * Si le personnage a au moins une capacité signalée par un * (donc un sort), il a alors VOL + nb de sorts points de Mana
    * @returns {number} The base MP value. Returns 0 if the character has no spells.
@@ -752,6 +792,10 @@ export default class CharacterData extends ActorData {
     return this.parent.items.filter((item) => item.type === SYSTEM.ITEM_TYPE.capacity.id && item.system.isSpell && item.system.learned)
   }
 
+  get psiPowers() {
+    return this.parent.items.filter((item) => item.type === SYSTEM.ITEM_TYPE.capacity.id && item.system.isPsionic && item.system.learned)
+  }
+
   /**
    * Checks if the character has any spells.
    *
@@ -768,6 +812,24 @@ export default class CharacterData extends ActorData {
    */
   get nbSpells() {
     return this.spells.length
+  }
+
+  /**
+   * Checks if the character has any psi power.
+   *
+   * @returns {boolean} True if the character has psi power, otherwise false.
+   */
+  get hasPsionicPowers() {
+    return this.psiPowers.length > 0
+  }
+
+  /**
+   * Gets the number of psi power : item of type capacity with property psionic at true
+   *
+   * @returns {number} The number of psi power.
+   */
+  get nbPsionicPowers() {
+    return this.psiPowers.length
   }
 
   /**
@@ -795,6 +857,50 @@ export default class CharacterData extends ActorData {
 
   // #endregion
 
+  async proceedToRest(isFullRest) {
+    if (!isFullRest) {
+      // Si on accepte on dépense d'un DR et récupération de PV
+      const level = Math.round(this.attributes.level / 2) // +1/2 niveau
+
+      // Récupération des modificateurs de récupération rapide
+      const recoveryModifiers = this.computeTotalModifiersByTarget(this.attributeModifiers, "recoveryFast", true)
+      let formula = `${this.hd} + ${level}`
+      if (recoveryModifiers.total !== 0 && recoveryModifiers.total !== "") {
+        formula = `${formula} + ${recoveryModifiers.total}`
+      }
+
+      const labelTooltip = game.i18n.format("CO.ui.fastRestLabelTooltip", { formula: formula })
+
+      // Await this._applyRecovery(hp, formula, game.i18n.localize("CO.dialogs.fastRest.title"), labelTooltip)
+      await this.parent.rollHeal(null, { actionName: game.i18n.format("CO.ui.fastRest"), healFormula: formula, targetType: SYSTEM.RESOLVER_TARGET.self.id, targets: [this.parent] })
+    } else {
+      // Cas particulier : plus de DR avant la récupération
+      const level = Math.round(this.attributes.level / 2) // +1/2 niveau
+
+      // Récupération des modificateurs de récupération complète
+      const recoveryModifiers = this.computeTotalModifiersByTarget(this.attributeModifiers, "recoveryFull", true)
+      let formula
+      if (this.resources.recovery.max === 0) {
+        formula = `${this.hd} + ${level}`
+      } else {
+        formula = `${this.hd.replace("d", "")} + ${level}`
+      }
+      if (recoveryModifiers.total !== 0 && recoveryModifiers.total !== "") {
+        formula = `${formula} + ${recoveryModifiers.total}`
+      }
+
+      const labelTooltip = game.i18n.format("CO.ui.fullRestLabelTooltip", { formula: formula })
+      // Await this._applyRecovery(hp, formula, game.i18n.localize("CO.dialogs.fullRest.title"), labelTooltip)
+      await this.parent.rollHeal(null, {
+        actionName: game.i18n.format("CO.ui.fullRest"),
+        healFormula: formula,
+        targetType: SYSTEM.RESOLVER_TARGET.self.id,
+        targets: [this.parent],
+      })
+      // On aurait dû gagner 1 DR mais si on l'utilise pour la récup on va pas faire +1 et -1.
+    }
+  }
+
   /**
    * Gère le processus de récupération pour un personnage, soit par un repos rapide, soit par un repos complet.
    *
@@ -805,6 +911,7 @@ export default class CharacterData extends ActorData {
     let hp = this.attributes.hp
     let rp = this.resources.recovery
     let mp = this.resources.mana
+    let ep = this.resources.ego
     const hd = this.hd
     const newRp = foundry.utils.duplicate(rp)
 
@@ -814,9 +921,58 @@ export default class CharacterData extends ActorData {
     // Dans les deux cas je remet les points de vies temporaires à 0
     await this.parent.update({ "system.attributes.tempDm": 0 })
 
+    // Récupération des charges des capacités
+    await this.recoverCapacityCharges(isFullRest) // on le met avant parce que si on refuse les DR on sortait sans reinitialiser les charges !
+
     // Récupération rapide
+    let hasMetabolismControl = this.parent.capacities.some((c) => c.system.slug === "controle-du-metabolisme" && c.system.learned === true) // Si le pj est un psi et a la capacité controle du metabolisme il recupere aussi des PV sur 1 DR pour recup de l'ego
+
     if (!isFullRest) {
       if (rp.value <= 0) return ui.notifications.warn(game.i18n.localize("CO.notif.warningNoMoreRecoveryPoints"))
+      // Si c'est un psionic
+      if (this.hasPsionicPowers && ep.value < ep.max) {
+        // On propose de récupérer des points d'égo avec un point de DR
+        const proceedPsionicRest = await foundry.applications.api.DialogV2.confirm({
+          window: { title: game.i18n.localize("CO.dialogs.fastRest.psiTitle") },
+          content: game.i18n.localize("CO.dialogs.fastRest.psiContent"),
+          rejectClose: false,
+          modal: true,
+        })
+        // Si on accepte on jette les dés et on met à jour
+        if (proceedPsionicRest) {
+          let formula = SYSTEM.PSI_POWER_RECOVERY
+          let newFormula = Utils.evaluateCoModifierWithDiceValue(this.parent, formula, null)
+          const roll = new CORoll(newFormula)
+          let recovered = (await roll.evaluate()).total
+          console.log("Nombre de pts d'ego récupérés : " + recovered)
+          if (ep.value + recovered > ep.max) recovered = ep.max - ep.value
+          await this.parent.update({ "system.resources.ego.value": ep.value + recovered })
+          const speaker = ChatMessage.getSpeaker({ actor: this.parent, scene: canvas.scene })
+          await roll.toMessage(
+            {
+              speaker,
+              style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+              type: "skill",
+              system: {
+                result: recovered,
+              },
+            },
+            { messageMode: roll.options.rollMode },
+          )
+          // Dépense du DR.
+          newRp.value = rp.value - 1
+          rp.value -= 1
+          await this.parent.update({ "system.resources.recovery": newRp })
+
+          if (hasMetabolismControl) {
+            // on a pas besoin de payer un autre DR donc on récupere des PV et on quitte
+            await this.proceedToRest(isFullRest)
+            return
+          }
+
+          if (newRp.value == 0) return
+        }
+      }
       // On propose d'utiliser un point de DR
       const proceedFastRest = await foundry.applications.api.DialogV2.confirm({
         window: { title: game.i18n.localize("CO.dialogs.fastRest.title") },
@@ -827,25 +983,8 @@ export default class CharacterData extends ActorData {
       // Si on refuse, on sort
       if (!proceedFastRest) return
 
-      // Si on accepte on dépense d'un DR et récupération de PV
-      const level = Math.round(this.attributes.level / 2) // +1/2 niveau
-
-      // Récupération des modificateurs de récupération rapide
-      const recoveryModifiers = this.computeTotalModifiersByTarget(this.attributeModifiers, "recoveryFast", true)
-      let formula = `${hd} + ${level}`
-      if (recoveryModifiers.total !== 0 && recoveryModifiers.total !== "") {
-        formula = `${formula} + ${recoveryModifiers.total}`
-      }
-
-      const labelTooltip = game.i18n.format("CO.ui.fastRestLabelTooltip", { formula: formula })
-
-      // Await this._applyRecovery(hp, formula, game.i18n.localize("CO.dialogs.fastRest.title"), labelTooltip)
-      await this.parent.rollHeal(null, { actionName: game.i18n.format("CO.ui.fastRest"), healFormula: formula, targetType: SYSTEM.RESOLVER_TARGET.self.id, targets: [this.parent] })
-
-      // Récupération des charges des capacités
-      await this.recoverCapacityCharges(isFullRest)
-
-      // Dépense du DR
+      await this.proceedToRest(isFullRest)
+      // Dépense du DR.
       newRp.value = rp.value - 1
       await this.parent.update({ "system.resources.recovery": newRp })
     }
@@ -864,6 +1003,41 @@ export default class CharacterData extends ActorData {
         }
       }
 
+      //récupération des points d'ego
+      let proceedPsionicRest = false
+      if (this.hasPsionicPowers && ep.value < ep.max) {
+        // On propose de récupérer des points d'égo avec un point de DR
+        proceedPsionicRest = await foundry.applications.api.DialogV2.confirm({
+          window: { title: game.i18n.localize("CO.dialogs.fastRest.psiTitle") },
+          content: game.i18n.localize("CO.dialogs.fastRest.psiContent"),
+          rejectClose: false,
+          modal: true,
+        })
+        // Si on accepte on redonne le max du dé
+        if (proceedPsionicRest) {
+          let formula = SYSTEM.PSI_POWER_RECOVERY
+          let newFormula = Utils.evaluateCoModifierWithDiceValue(this.parent, formula, null)
+          // On récupère le max du dé
+          let recovered = Utils.getMaxRollValue(newFormula)
+          if (recovered !== null) {
+            console.log("Nombre de pts d'ego récupérés : " + recovered)
+            if (ep.value + recovered > ep.max) recovered = ep.max - ep.value
+            await this.parent.update({ "system.resources.ego.value": ep.value + recovered })
+          }
+
+          // Dépense du DR
+          newRp.value = rp.value - 1
+          await this.parent.update({ "system.resources.recovery": newRp })
+
+          if (hasMetabolismControl) {
+            // on a pas besoin de payer un autre DR donc on récupere des PV et on quitte
+            await this.proceedToRest(isFullRest)
+            return
+          }
+          if (newRp.value == 0) return
+        }
+      }
+
       const proceedFullRestRollDice = await foundry.applications.api.DialogV2.confirm({
         window: { title: game.i18n.localize("CO.dialogs.spendRecoveryPoint.title") },
         content: game.i18n.localize("CO.dialogs.spendRecoveryPoint.content"),
@@ -872,31 +1046,8 @@ export default class CharacterData extends ActorData {
       })
 
       if (proceedFullRestRollDice) {
-        // Cas particulier : plus de DR avant la récupération
-        const level = Math.round(this.attributes.level / 2) // +1/2 niveau
-
-        // Récupération des modificateurs de récupération complète
-        const recoveryModifiers = this.computeTotalModifiersByTarget(this.attributeModifiers, "recoveryFull", true)
-        let formula
-        if (rp.max === 0) {
-          formula = `${hd} + ${level}`
-        } else {
-          formula = `${this.hd.replace("d", "")} + ${level}`
-        }
-        if (recoveryModifiers.total !== 0 && recoveryModifiers.total !== "") {
-          formula = `${formula} + ${recoveryModifiers.total}`
-        }
-
-        const labelTooltip = game.i18n.format("CO.ui.fullRestLabelTooltip", { formula: formula })
-        // Await this._applyRecovery(hp, formula, game.i18n.localize("CO.dialogs.fullRest.title"), labelTooltip)
-        await this.parent.rollHeal(null, {
-          actionName: game.i18n.format("CO.ui.fullRest"),
-          healFormula: formula,
-          targetType: SYSTEM.RESOLVER_TARGET.self.id,
-          targets: [this.parent],
-        })
-        // On aurait dû gagner 1 DR mais si on l'utilise pour la récup on va pas faire +1 et -1.
-      } else {
+        await this.proceedToRest(isFullRest)
+      } else if (!proceedPsionicRest) {
         // Récupération d'un DR puisqu'on en dépense pas
         if (rp.value < rp.max) {
           newRp.value = rp.value + 1

@@ -7,7 +7,7 @@ import Utils from "../../helpers/utils.mjs"
  * @param {*} source L'action à l'origine du modifier
  * @param {string} type Le type de modificateur qui indique l'origine : Equipement, Trait, Profil, Capacité, Attaque
  * @param {string} subtype Indique sur quel type de cible on va appliquer le modificateur : ability (agi, for, con etc), combat (melee, ranged, magic, init, def),
- *  ressource (fortune, mana, recorvery), attribute (hp, recovery dice), skill (bonus sur le sjet d'attribut à selectionner selon le jet)
+ *  ressource (fortune, mana,ego, recorvery), attribute (hp, recovery dice), skill (bonus sur le sjet d'attribut à selectionner selon le jet)
  * @param {string} target : Sous element de subtype ciblé par le modificateur : agi, for, con, melee etc.
  * @param {string} value : Valeur à appliquer, peux être une formule (ex +1, -5, 1 * @[variable])
  */

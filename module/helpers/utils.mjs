@@ -213,6 +213,24 @@ export default class Utils {
   }
 
   /**
+   * Permet d'obtenir la valeur maximum d'un dé dans une formule
+   * @param {string} formula : ex pour  '1d6+2' retournera 6 pour 3d6+1 il retournera 3*6 = 18
+   * @returns {int} le nombre maximum que l'on peux obtenir sur un jet de dé.
+   * Note : Ne prend pas en compte les formule du genre 3d6 + 2d4.Pour les dés évolutifs
+   * il faudra penser à convertir le dé évolutif avant d'appeler cette fonction
+   */
+  static getMaxRollValue(formula) {
+    // Utilise une regex pour trouver le nombre après 'd'
+    const match = formula.match(/(\d+)d(\d+)/)
+    if (match && match[2]) {
+      const numDice = match[1] === "" ? 1 : parseInt(match[1], 10) // Si vide = 1. Chiffre avant le 'd'
+      const maxDieValue = parseInt(match[2], 10) // Chiffre après le 'd'
+      return numDice * maxDieValue
+    }
+    return null // ou une valeur par défaut si la formule n'est pas valide
+  }
+
+  /**
    * Évalue un modificateur basé sur la formule fournie.
    *
    * @param {Object} actor L'objet acteur contenant les données pertinentes.

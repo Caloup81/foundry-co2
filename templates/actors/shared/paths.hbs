@@ -44,7 +44,7 @@
                                     <div class="item-detail rank">{{capacity.system.rank}}</div>
                                     <div class="item-name flexrow">
                                         <a class="item-img" data-action="editItem" style="background-image: url('{{capacity.img}}')" data-tooltip="{{capacity.enrichedTooltip}}"></a>
-                                        <h4>{{capacity.name}}{{#if capacity.system.isSpell}} * {{/if}}</h4>
+                                        <h4>{{capacity.name}}{{#if capacity.system.isSpell}} * {{/if}}{{#if capacity.system.isPsionic}} * {{/if}}</h4>
                                     </div>
                                     <div class="item-controls-3">
                                         <a class="chat" data-action="sendToChat" data-chat-type="item" data-tooltip="{{localize 'CO.label.long.sendToChat'}}"><i class="fas fa-fw fa-comment-alt"></i></a>
@@ -61,7 +61,7 @@
                                                 {{#if (and (isNotNull capacity.system.linkedCapacity) (isNotNull capacity.linkedCapacityItem))}}
                                                     <div class="item-name flexrow">                                            
                                                             <a class="item-img" data-action="editItem" style="background-image: url('{{capacity.linkedCapacityImg}}')" data-tooltip="{{capacity.enrichedLinkedTooltip}}"></a>
-                                                            <h4>{{capacity.linkedCapacityItem.name}}{{#if capacity.linkedCapacityItem.system.isSpell}} * {{/if}}{{#if capacity.linkedCapacityItem.system.hasActionType}} ({{capacity.linkedCapacityItem.system.actionTypeShortLabel}}){{/if}}</h4>
+                                                            <h4>{{capacity.linkedCapacityItem.name}}{{#if capacity.linkedCapacityItem.system.isSpell}} * {{/if}}{{#if capacity.linkedCapacityItem.system.isPsionic}} * {{/if}}{{#if capacity.linkedCapacityItem.system.hasActionType}} ({{capacity.linkedCapacityItem.system.actionTypeShortLabel}}){{/if}}</h4>
                                                     </div>
                                                     <div class="item-controls-3">
                                                         <a class="chat" data-action="sendToChat" data-tooltip="{{localize 'CO.label.long.sendToChat'}}" data-chat-type="item"><i class="fas fa-fw fa-comment-alt"></i></a>
@@ -85,7 +85,7 @@
                                         <div class="item-detail rank">{{capacity.system.rank}}</div>
                                         <div class="item-name flexrow">
                                             <a class="item-img" data-action="editItem" style="background-image: url('{{capacity.img}}')" data-tooltip="{{capacity.enrichedTooltip}}"></a>
-                                            <h4 data-tooltip="{{localize 'CO.notif.unknownCapacity'}}">{{capacity.name}}{{#if capacity.system.isSpell}} * {{/if}}{{#if capacity.system.hasActionType}} ({{capacity.system.actionTypeShortLabel}}){{/if}}</h4>
+                                            <h4 data-tooltip="{{localize 'CO.notif.unknownCapacity'}}">{{capacity.name}}{{#if capacity.system.isSpell}} * {{/if}}{{#if capacity.system.isPsionic}} * {{/if}}{{#if capacity.system.hasActionType}} ({{capacity.system.actionTypeShortLabel}}){{/if}}</h4>
                                         </div>
                                         <div class="item-controls-2">
                                             <a class="edit" data-action="editItem" data-tooltip="{{localize 'CO.label.long.edit'}}"><i class="fas fa-fw fa-edit"></i></a>

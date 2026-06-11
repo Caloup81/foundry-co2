@@ -42,6 +42,7 @@ export class Action extends foundry.abstract.DataModel {
         enabled: new fields.BooleanField(),
         temporary: new fields.BooleanField(),
         noManaCost: new fields.BooleanField(),
+        noEgoCost: new fields.BooleanField(),
         noChargesUsed: new fields.BooleanField(),
       }),
       conditions: new fields.ArrayField(new fields.EmbeddedDataField(Condition)),
@@ -231,6 +232,12 @@ export class Action extends foundry.abstract.DataModel {
   get manaCost() {
     if (this.properties.noManaCost) return 0
     if (this.parent.isSpell) return this.parent.getManaCost()
+    return 0
+  }
+
+  get egoCost() {
+    if (this.properties.noEgoCost) return 0
+    if (this.parent.isPsionic) return this.parent.getEgoCost()
     return 0
   }
 

@@ -4,3 +4,7 @@ export const FAMILIES = {
   mage: { label: "CO.profile.family.mage", hp: 3, recoveryDice: "d6", recoveryBonus: 0, fp: 0 },
   mystique: { label: "CO.profile.family.mystique", hp: 4, recoveryDice: "d8", recoveryBonus: 1, fp: 0 },
 }
+
+export const PSIONICS = {
+  hp: 4,
+}

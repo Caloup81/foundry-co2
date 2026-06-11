@@ -795,6 +795,25 @@ export default class COActor extends Actor {
         }
       }
     }
+    // Si l'action consomme de l'ego, que la capacité est un pouvoir psionic et qu'on l'active, on vérifie que le nombre de PE restants est suffisant
+    if (!item.system.actions[indice].properties.noEgoCost && state && item.type === SYSTEM.ITEM_TYPE.capacity.id && item.system.properties.psionic) {
+      const psiEgoCost = item.system.actions[indice].egoCost - (manaConcentration ? 2 : 0)
+      if (psiEgoCost > 0) {
+        if (this.system.resources.ego.value < psiEgoCost) {
+          const needed = psiEgoCost - this.system.resources.ego.value
+          const content = `Vous n'avez pas assez de point d'ego : il vous manque ${needed} point(s) d'ego. Voulez-vous tout de même lancer le pouvoir psi en sacrifiant votre énergie vitale ?`
+          const proceed = await foundry.applications.api.DialogV2.confirm({
+            window: { title: "Brûlure d'égo" },
+            content: content,
+            rejectClose: false,
+            modal: true,
+          })
+          if (!proceed) return
+          manaBurned = true
+          manaBurnedCost = needed
+        }
+      }
+    }
 
     let results = []
     let allResolversTrue
@@ -849,6 +868,27 @@ export default class COActor extends Actor {
               const burnRoll = new Roll(`${manaBurnedCost}${recoveryDice}`)
               let result = await burnRoll.roll()
               const message = game.i18n.format("CO.notif.manaBurn", { actorName: this.name, amount: result.total, capacityName: item.name })
+              new CoChat(this).withTemplate(SYSTEM.TEMPLATE.MESSAGE).withData({ message: message }).create()
+              const newHP = Math.max(this.system.attributes.hp.value - burnRoll.total, 0)
+              await this.update({ "system.attributes.hp.value": newHP })
+            }
+          }
+        }
+      }
+      // Si c'est une capacité qui est un pouvoir psi avec un coût en ego et qu'on l'active, il faut consommer les Points d'ego
+      if (state && item.type === SYSTEM.ITEM_TYPE.capacity.id && item.system.properties.psionic && !item.system.actions[indice].properties.noEgoCost) {
+        const psiEgoCost = item.system.getEgoCost() - (manaConcentration ? 2 : 0)
+        if (psiEgoCost > 0) {
+          const newEgo = Math.max(this.system.resources.ego.value - psiEgoCost, 0)
+          await this.update({ "system.resources.ego.value": newEgo })
+
+          // Brûlure d'égo
+          if (manaBurned) {
+            const recoveryDice = this.system.hd
+            if (recoveryDice) {
+              const burnRoll = new Roll(`${manaBurnedCost}${recoveryDice}`)
+              let result = await burnRoll.roll()
+              const message = game.i18n.format("CO.notif.egoBurn", { actorName: this.name, amount: result.total, capacityName: item.name })
               new CoChat(this).withTemplate(SYSTEM.TEMPLATE.MESSAGE).withData({ message: message }).create()
               const newHP = Math.max(this.system.attributes.hp.value - burnRoll.total, 0)
               await this.update({ "system.attributes.hp.value": newHP })

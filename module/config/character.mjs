@@ -45,6 +45,11 @@ export const RESOURCES = {
     label: "CO.resources.long.mana",
     ability: "vol",
   },
+  ego: {
+    id: "ego",
+    label: "CO.resources.long.ego",
+    ability: "vol",
+  },
 }
 
 export const COMBAT = {
@@ -108,3 +113,4 @@ export const BASE_RECOVERY = 2
 export const BASE_INITIATIVE = 10
 export const BASE_DEFENSE = 10
 export const BASE_CRITICAL = 20
+export const PSI_POWER_RECOVERY = "1d4°"
