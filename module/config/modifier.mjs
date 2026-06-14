@@ -56,7 +56,8 @@ export const MODIFIERS_SUBTYPE = Object.freeze({
   },
 })
 
-export const MODIFIERS_TARGET = Object.freeze({
+// Non figé (pas d'Object.freeze) afin qu'un module puisse ajouter des cibles de modificateur (ex. "ep" / Points d'Ego)
+export const MODIFIERS_TARGET = {
   all: {
     id: "all",
     label: "CO.abilities.long.all",
@@ -237,7 +238,7 @@ export const MODIFIERS_TARGET = Object.freeze({
     label: "CO.label.long.weakenedImmunity",
     subtype: "state",
   },
-})
+}
 
 export const MODIFIERS_CHOICE_GROUP = Object.freeze({
   0: {

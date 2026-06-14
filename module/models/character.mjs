@@ -418,7 +418,10 @@ export default class CharacterData extends ActorData {
       // Calcul de la base de PV sans le bonus de constitution
       // Au niveau 1 : 2 * PV de la famille
       // Pour chaque niveau supplémentaire : + PV de la famille
-      const pvFromFamily = this.profile ? SYSTEM.FAMILIES[this.profile.system.family].hp : 0
+      // Point d'extension : un module (ex. cof2-compagnon / profil Psionique) peut surcharger les PV/niveau du profil
+      const pvData = { profile: this.profile, value: this.profile ? SYSTEM.FAMILIES[this.profile.system.family].hp : 0 }
+      Hooks.callAll("co.computeProfileHpPerLevel", this.parent, pvData)
+      const pvFromFamily = pvData.value
       this.attributes.hp.base = 2 * pvFromFamily + (this.attributes.level - 1) * pvFromFamily
 
       // Si une voie de prestige offre des PV/rang appris il faut les ajouter ici
@@ -904,6 +907,9 @@ export default class CharacterData extends ActorData {
         }
       }
     }
+
+    // Hook d'extension : récupération des Points d'Ego (ex. cof2-compagnon) après un repos
+    Hooks.callAll("co.postUseRecovery", this.parent, { isFullRest })
   }
 
   /**
