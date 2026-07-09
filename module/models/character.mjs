@@ -801,7 +801,7 @@ export default class CharacterData extends ActorData {
   /**
    * Construit la formule de soin d'une récupération (rapide ou complète) : dé de récupération + demi-niveau
    * + modificateurs de récupération. Extrait ici pour être réutilisé à la fois par le flux par défaut et par
-   * les extensions (ex. cof2-compagnon, qui soigne les PV dans sa propre fenêtre de récupération psionique).
+   * les extensions (ex. cof2-compagnon, qui soigne les PV dans sa propre fenêtre de récupération).
    *
    * @param {boolean} isFullRest true pour une récupération complète (résultat maximal du dé), false pour rapide.
    * @returns {string} La formule de soin (ex. "d8 + 3").
@@ -824,15 +824,22 @@ export default class CharacterData extends ActorData {
   }
 
   /**
-   * Point d'extension asynchrone : un module (ex. cof2-compagnon) peut prendre en charge la récupération
-   * liée à un DR (PV et/ou ressource propre au module, ex. Points d'Ego) via sa propre fenêtre unique.
-   * Le module enregistre une promesse-garde via `guard` ; si l'une résout sur true, il a pris la main et le
-   * flux de récupération par défaut (dépense de DR + soin) est ignoré.
+   * Point d'extension asynchrone de la récupération. Émet le hook `co2.preUseRecovery` et attend les
+   * gardes enregistrées par d'éventuels modules (même mécanisme async que `co2.preActivateAction`).
    *
-   * @param {boolean} isFullRest
-   * @returns {Promise<boolean>} true si un module a pris en charge la récupération.
+   * Un module qui souhaite **remplacer** la récupération liée à un DR (son propre dialogue, la dépense
+   * du DR, le soin, d'éventuelles ressources propres) enregistre une garde — via `guard(promise)` —
+   * dont la promesse résout sur `true` : le système saute alors son flux par défaut (dialogue + dépense
+   * de DR + soin). Toute autre valeur (ou aucune garde) laisse la récupération standard s'exécuter.
+   *
+   * Pour seulement **ajouter** au soin, préférer les modificateurs `recoveryFast`/`recoveryFull` ;
+   * pour **réagir après** la récupération, écouter le hook `co2.postUseRecovery`.
+   * (Ex. de consommateur : le module cof2-compagnon, fenêtre de récupération PV/PE.)
+   *
+   * @param {boolean} isFullRest true pour une récupération complète, false pour une rapide.
+   * @returns {Promise<boolean>} true si un module a pris en charge la récupération à la place du système.
    */
-  async _tryPsiRecovery(isFullRest) {
+  async _isRecoveryHandledByModule(isFullRest) {
     const guards = []
     Hooks.callAll("co2.preUseRecovery", this.parent, { isFullRest, guard: (p) => guards.push(Promise.resolve(p)) })
     if (guards.length === 0) return false
@@ -861,8 +868,8 @@ export default class CharacterData extends ActorData {
     if (!isFullRest) {
       if (rp.value <= 0) return ui.notifications.warn(game.i18n.localize("CO.notif.warningNoMoreRecoveryPoints"))
 
-      // Une extension (ex. cof2-compagnon) peut proposer sa propre fenêtre de récupération (PV/PE) pour un psi
-      if (await this._tryPsiRecovery(isFullRest)) return
+      // Un module peut prendre en charge lui-même la récupération à la place du système (voir co2.preUseRecovery)
+      if (await this._isRecoveryHandledByModule(isFullRest)) return
 
       // On propose d'utiliser un point de DR
       const proceedFastRest = await foundry.applications.api.DialogV2.confirm({
@@ -904,8 +911,8 @@ export default class CharacterData extends ActorData {
         }
       }
 
-      // Une extension (ex. cof2-compagnon) peut proposer sa propre fenêtre de récupération (PV/PE) pour un psi
-      if (await this._tryPsiRecovery(isFullRest)) return
+      // Un module peut prendre en charge lui-même la récupération à la place du système (voir co2.preUseRecovery)
+      if (await this._isRecoveryHandledByModule(isFullRest)) return
 
       const proceedFullRestRollDice = await foundry.applications.api.DialogV2.confirm({
         window: { title: game.i18n.localize("CO.dialogs.spendRecoveryPoint.title") },
