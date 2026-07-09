@@ -174,7 +174,6 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
     context.modifiers = this.document.system.modifiers
     context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(this.document.system.description, { async: true })
     context.tags = this.document.tags
-    context.enrichedGmNotes = await foundry.applications.ux.TextEditor.implementation.enrichHTML(this.document.system.gmNotes, { async: true })
 
     context.unlocked = this.isEditMode
     context.locked = this.isPlayMode
@@ -183,6 +182,10 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
     context.isGmDebugUnlock = game.user.isGM && debugMode && this.isEditMode
     context.isNotGmInDebugUnlock = !game.user.isGM || !debugMode || this.isPlayMode
     context.isGM = game.user.isGM
+
+    if (context.isGM) {
+      context.enrichedGmNotes = await foundry.applications.ux.TextEditor.implementation.enrichHTML(this.document.system.gmNotes, { async: true })
+    }
 
     // Select options
     context.choiceActionTypes = SYSTEM.ACTION_TYPES
