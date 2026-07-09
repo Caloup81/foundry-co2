@@ -799,6 +799,47 @@ export default class CharacterData extends ActorData {
   // #endregion
 
   /**
+   * Construit la formule de soin d'une récupération (rapide ou complète) : dé de récupération + demi-niveau
+   * + modificateurs de récupération. Extrait ici pour être réutilisé à la fois par le flux par défaut et par
+   * les extensions (ex. cof2-compagnon, qui soigne les PV dans sa propre fenêtre de récupération psionique).
+   *
+   * @param {boolean} isFullRest true pour une récupération complète (résultat maximal du dé), false pour rapide.
+   * @returns {string} La formule de soin (ex. "d8 + 3").
+   */
+  getRecoveryHealFormula(isFullRest) {
+    const hd = this.hd
+    const level = Math.round(this.attributes.level / 2) // +1/2 niveau
+    let formula
+    if (!isFullRest) {
+      formula = `${hd} + ${level}`
+    } else {
+      // Récupération complète : résultat maximal du dé (sauf s'il n'y a pas de DR max, on lance alors le dé)
+      formula = this.resources.recovery.max === 0 ? `${hd} + ${level}` : `${hd.replace("d", "")} + ${level}`
+    }
+    const recoveryModifiers = this.computeTotalModifiersByTarget(this.attributeModifiers, isFullRest ? "recoveryFull" : "recoveryFast", true)
+    if (recoveryModifiers.total !== 0 && recoveryModifiers.total !== "") {
+      formula = `${formula} + ${recoveryModifiers.total}`
+    }
+    return formula
+  }
+
+  /**
+   * Point d'extension asynchrone : un module (ex. cof2-compagnon) peut prendre en charge la récupération
+   * liée à un DR (PV et/ou ressource propre au module, ex. Points d'Ego) via sa propre fenêtre unique.
+   * Le module enregistre une promesse-garde via `guard` ; si l'une résout sur true, il a pris la main et le
+   * flux de récupération par défaut (dépense de DR + soin) est ignoré.
+   *
+   * @param {boolean} isFullRest
+   * @returns {Promise<boolean>} true si un module a pris en charge la récupération.
+   */
+  async _tryPsiRecovery(isFullRest) {
+    const guards = []
+    Hooks.callAll("co2.preUseRecovery", this.parent, { isFullRest, guard: (p) => guards.push(Promise.resolve(p)) })
+    if (guards.length === 0) return false
+    return (await Promise.all(guards)).some((v) => v === true)
+  }
+
+  /**
    * Gère le processus de récupération pour un personnage, soit par un repos rapide, soit par un repos complet.
    *
    * @param {boolean} isFullRest Indique si la récupération est un repos complet (true) ou un repos rapide (false).
@@ -808,7 +849,6 @@ export default class CharacterData extends ActorData {
     let hp = this.attributes.hp
     let rp = this.resources.recovery
     let mp = this.resources.mana
-    const hd = this.hd
     const newRp = foundry.utils.duplicate(rp)
 
     // Récupération des charges des capacités
@@ -820,6 +860,10 @@ export default class CharacterData extends ActorData {
     // Récupération rapide
     if (!isFullRest) {
       if (rp.value <= 0) return ui.notifications.warn(game.i18n.localize("CO.notif.warningNoMoreRecoveryPoints"))
+
+      // Une extension (ex. cof2-compagnon) peut proposer sa propre fenêtre de récupération (PV/PE) pour un psi
+      if (await this._tryPsiRecovery(isFullRest)) return
+
       // On propose d'utiliser un point de DR
       const proceedFastRest = await foundry.applications.api.DialogV2.confirm({
         window: { title: game.i18n.localize("CO.dialogs.fastRest.title") },
@@ -831,14 +875,7 @@ export default class CharacterData extends ActorData {
       if (!proceedFastRest) return
 
       // Si on accepte on dépense d'un DR et récupération de PV
-      const level = Math.round(this.attributes.level / 2) // +1/2 niveau
-
-      // Récupération des modificateurs de récupération rapide
-      const recoveryModifiers = this.computeTotalModifiersByTarget(this.attributeModifiers, "recoveryFast", true)
-      let formula = `${hd} + ${level}`
-      if (recoveryModifiers.total !== 0 && recoveryModifiers.total !== "") {
-        formula = `${formula} + ${recoveryModifiers.total}`
-      }
+      const formula = this.getRecoveryHealFormula(isFullRest)
 
       const labelTooltip = game.i18n.format("CO.ui.fastRestLabelTooltip", { formula: formula })
 
@@ -867,6 +904,9 @@ export default class CharacterData extends ActorData {
         }
       }
 
+      // Une extension (ex. cof2-compagnon) peut proposer sa propre fenêtre de récupération (PV/PE) pour un psi
+      if (await this._tryPsiRecovery(isFullRest)) return
+
       const proceedFullRestRollDice = await foundry.applications.api.DialogV2.confirm({
         window: { title: game.i18n.localize("CO.dialogs.spendRecoveryPoint.title") },
         content: game.i18n.localize("CO.dialogs.spendRecoveryPoint.content"),
@@ -875,20 +915,7 @@ export default class CharacterData extends ActorData {
       })
 
       if (proceedFullRestRollDice) {
-        // Cas particulier : plus de DR avant la récupération
-        const level = Math.round(this.attributes.level / 2) // +1/2 niveau
-
-        // Récupération des modificateurs de récupération complète
-        const recoveryModifiers = this.computeTotalModifiersByTarget(this.attributeModifiers, "recoveryFull", true)
-        let formula
-        if (rp.max === 0) {
-          formula = `${hd} + ${level}`
-        } else {
-          formula = `${this.hd.replace("d", "")} + ${level}`
-        }
-        if (recoveryModifiers.total !== 0 && recoveryModifiers.total !== "") {
-          formula = `${formula} + ${recoveryModifiers.total}`
-        }
+        const formula = this.getRecoveryHealFormula(isFullRest)
 
         const labelTooltip = game.i18n.format("CO.ui.fullRestLabelTooltip", { formula: formula })
         // Await this._applyRecovery(hp, formula, game.i18n.localize("CO.dialogs.fullRest.title"), labelTooltip)
