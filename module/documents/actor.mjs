@@ -747,7 +747,7 @@ export default class COActor extends Actor {
     // Point d'extension asynchrone : un module (ex. cof2-compagnon / Points d'Ego) peut enregistrer une promesse-garde
     // via la fonction `guard`. Si l'une des gardes résout sur false, l'activation est annulée.
     const coActivateGuards = []
-    Hooks.callAll("co.preActivateAction", this, { item, indice, state, type, shiftKey, guard: (p) => coActivateGuards.push(Promise.resolve(p)) })
+    Hooks.callAll("co2.preActivateAction", this, { item, indice, state, type, shiftKey, guard: (p) => coActivateGuards.push(Promise.resolve(p)) })
     if (coActivateGuards.length > 0 && (await Promise.all(coActivateGuards)).some((v) => v === false)) return false
 
     if (CONFIG.debug.co2?.actions) console.debug(Utils.log(`COActor - activateAction`), state, source, indice, type, item)
@@ -865,7 +865,7 @@ export default class COActor extends Actor {
     }
 
     // Hook d'extension : notifie un module (ex. cof2-compagnon / Points d'Ego) après une activation (success = resolvers OK)
-    Hooks.callAll("co.postActivateAction", this, { item, indice, state, type, shiftKey, success: results.length === 0 || allResolversTrue })
+    Hooks.callAll("co2.postActivateAction", this, { item, indice, state, type, shiftKey, success: results.length === 0 || allResolversTrue })
 
     return true
   }

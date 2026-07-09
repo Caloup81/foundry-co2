@@ -420,7 +420,7 @@ export default class CharacterData extends ActorData {
       // Pour chaque niveau supplémentaire : + PV de la famille
       // Point d'extension : un module (ex. cof2-compagnon / profil Psionique) peut surcharger les PV/niveau du profil
       const pvData = { profile: this.profile, value: this.profile ? SYSTEM.FAMILIES[this.profile.system.family].hp : 0 }
-      Hooks.callAll("co.computeProfileHpPerLevel", this.parent, pvData)
+      Hooks.callAll("co2.computeProfileHpPerLevel", this.parent, pvData)
       const pvFromFamily = pvData.value
       this.attributes.hp.base = 2 * pvFromFamily + (this.attributes.level - 1) * pvFromFamily
 
@@ -909,7 +909,7 @@ export default class CharacterData extends ActorData {
     }
 
     // Hook d'extension : récupération des Points d'Ego (ex. cof2-compagnon) après un repos
-    Hooks.callAll("co.postUseRecovery", this.parent, { isFullRest })
+    Hooks.callAll("co2.postUseRecovery", this.parent, { isFullRest })
   }
 
   /**
