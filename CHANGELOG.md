@@ -1,3 +1,9 @@
+# 2.1.7
+
+## Corrections
+
+- Capacité liée : Cliquer sur Envoyer dans le chat envoie bien la capacité liée et non la capacité mère
+
 # 2.1.6
 
 ## Améliorations

@@ -9,6 +9,7 @@ import * as models from "./module/models/_module.mjs"
 import * as documents from "./module/documents/_module.mjs"
 import * as applications from "./module/applications/_module.mjs"
 import * as helpers from "./module/helpers/_module.mjs"
+import CoChat from "./module/chat.mjs"
 
 Hooks.once("init", async function () {
   console.info(SYSTEM.ASCII)
@@ -24,6 +25,7 @@ Hooks.once("init", async function () {
     documents,
     helpers,
     macros: helpers.Macros,
+    CoChat,
   }
 
   // Actor
