@@ -47,7 +47,10 @@ export class CORoll extends Roll {
         isFailure = false
       }
       if (isCritical) isSuccess = true
-      if (isFumble) isFailure = true
+      if (isFumble) {
+        isFailure = true
+        isSuccess = false
+      }
 
       result = { diceResult, total, isCritical, isFumble, difficulty, isSuccess, isFailure, isSuccessThreshold }
     }

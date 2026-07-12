@@ -1,3 +1,15 @@
+# 2.2.0
+
+## Corrections
+
+- Envoie bien la capacité liée dans le chat et non la capacité mère
+- Corrige les dommages lancés malgré un échec critique ([#421](https://github.com/BlackBookEditions/foundry-co2/issues/421))
+
+## Améliorations
+
+- Ajout de points d'extension pour gérer les points d'ego et les pouvoirs psioniques
+
+
 # 2.1.7
 
 ## Corrections

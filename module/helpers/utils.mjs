@@ -595,6 +595,14 @@ export default class Utils {
     })
   }
 
+  /**
+   * Calcule le résultat d'un jet en fonction de la difficulté et du résultat de l'attaque.
+   *
+   * @param {number|null} difficulty Difficulté du jet.
+   * @param {number} rollTotal Total du jet.
+   * @param {Object} attackResult Résultat analysé du jet.
+   * @returns {Object} Objet contenant les flags isSuccess, isFailure, isCritical, isFumble.
+   */
   static _computeOutcome(difficulty, rollTotal, attackResult) {
     let isSuccess = false
     let isFailure = false
