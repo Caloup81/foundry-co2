@@ -181,6 +181,11 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
     context.isNotOwned = !this.document.isOwned
     context.isGmDebugUnlock = game.user.isGM && debugMode && this.isEditMode
     context.isNotGmInDebugUnlock = !game.user.isGM || !debugMode || this.isPlayMode
+    context.isGM = game.user.isGM
+
+    if (context.isGM) {
+      context.enrichedGmNotes = await foundry.applications.ux.TextEditor.implementation.enrichHTML(this.document.system.gmNotes, { async: true })
+    }
 
     // Select options
     context.choiceActionTypes = SYSTEM.ACTION_TYPES

@@ -632,6 +632,7 @@
       "dice20kl": "2d20 Garder le plus bas",
       "description": "Description",
       "inGame": "Usage en jeu",
+      "gmNotes": "Notes secrètes uniquement pour le MJ",
       "duration": "Durée",
       "remainingRound": "Round(s) restant(s)",
       "action": "Action",
