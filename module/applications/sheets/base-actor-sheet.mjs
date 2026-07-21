@@ -34,6 +34,9 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
       sendToChat: COBaseActorSheet.#onSendToChat,
       createItem: COBaseActorSheet.#onCreateItem,
       editItem: COBaseActorSheet.#onEditItem,
+      toggleContainer: COBaseActorSheet.#onContainerToggle,
+      removeContent: COBaseActorSheet.#onRemoveContent,
+      deleteContent: COBaseActorSheet.#onDeleteContent,
       learnCapacity: COBaseActorSheet.#onLearnCapacity,
       unlearnCapacity: COBaseActorSheet.#onUnlearnCapacity,
       deleteCustomEffect: COBaseActorSheet.#onDeleteCustomEffect,
@@ -211,6 +214,19 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
         item.enrichedTooltip = await enrichHTML(item.system.description ?? "")
       }
     }
+
+    // Contenants : contenu résolu, tooltips enrichis et état déplié mémorisé
+    context.containers = this.document.containers
+    for (const container of context.containers) {
+      container.enrichedTooltip = await enrichHTML(container.system.description ?? "")
+      container.contents = await container.system.getContents()
+      for (const content of container.contents) {
+        content.enrichedTooltip = await enrichHTML(content.system.description ?? "")
+      }
+      container.expanded = Utils.getExpandedState(`co-${this.document.id}-container-${container.id}`, false)
+    }
+    context.containersExpanded = Utils.getExpandedState(`co-${this.document.id}-containers`)
+
     context.currenciesExpanded = Utils.getExpandedState(`co-${this.document.id}-currencies`)
 
     context.visibleActions = await this.document.getVisibleActions()
@@ -462,9 +478,178 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
         itemData.system.subtype = "MELEE"
         itemData.system.learned = true
         break
+      case SYSTEM.ITEM_TYPE.container.id:
+        itemData.name = game.i18n.format("CO.ui.newItem", { item: game.i18n.localize("CO.itemTypes.container") })
+        break
     }
 
     return this.actor.createEmbeddedDocuments("Item", [itemData])
+  }
+
+  /**
+   * Déplie/replie le contenu d'un contenant affiché dans l'inventaire.
+   * @param {PointerEvent} event The originating click event
+   * @param {HTMLElement} target The capturing HTML element which defined a [data-action]
+   * @returns {boolean}
+   */
+  static #onContainerToggle(event, target) {
+    event.preventDefault()
+    const li = target.closest(".container-item")
+    if (!li) return false
+    const containerUuid = li.dataset.containerUuid
+    // La sous-liste du contenu est le frère suivant portant la classe container-contents
+    let foldable = li.nextElementSibling
+    while (foldable && !foldable.classList.contains("container-contents")) {
+      foldable = foldable.nextElementSibling
+    }
+    if (foldable) {
+      const { id } = foundry.utils.parseUuid(containerUuid)
+      Utils.toggleExpandedState(`co-${this.document.id}-container-${id}`)
+      slideToggle(foldable)
+      // Bascule immédiate du chevron : vertical si déplié, horizontal si replié
+      const icon = target.querySelector("i.fa-caret-down, i.fa-caret-right")
+      if (icon) {
+        icon.classList.toggle("fa-caret-down")
+        icon.classList.toggle("fa-caret-right")
+      }
+    }
+    return true
+  }
+
+  /**
+   * Retire un objet d'un contenant (sans le supprimer de l'acteur), depuis la liste inline.
+   * @param {PointerEvent} event The originating click event
+   * @param {HTMLElement} target The capturing HTML element which defined a [data-action]
+   * @returns {Promise}
+   */
+  static async #onRemoveContent(event, target) {
+    if (!this.isEditable) return
+    event.preventDefault()
+    const containerUuid = target.dataset.containerUuid
+    const contentUuid = target.dataset.contentUuid
+    const container = await fromUuid(containerUuid)
+    if (container) return container.removeContent(contentUuid)
+  }
+
+  /**
+   * Supprime définitivement un objet contenu : le retire du contenant puis le supprime de l'acteur.
+   * @param {PointerEvent} event The originating click event
+   * @param {HTMLElement} target The capturing HTML element which defined a [data-action]
+   * @returns {Promise}
+   */
+  static async #onDeleteContent(event, target) {
+    if (!this.isEditable) return
+    event.preventDefault()
+    const containerUuid = target.dataset.containerUuid
+    const contentUuid = target.dataset.contentUuid
+    const container = await fromUuid(containerUuid)
+    if (container) await container.removeContent(contentUuid)
+    const { id } = foundry.utils.parseUuid(contentUuid)
+    if (id) await this.actor.deleteEmbeddedDocuments("Item", [id])
+  }
+
+  /**
+   * Si l'événement de drop cible la ligne (ou la sous-liste) d'un contenant, retourne son UUID.
+   * @param {DragEvent} event
+   * @returns {string|null}
+   */
+  _getContainerDropTarget(event) {
+    const el = event.target?.closest?.("[data-container-uuid]")
+    return el?.dataset.containerUuid ?? null
+  }
+
+  /**
+   * Dépôt d'un équipement sur un contenant de l'acteur.
+   * Objet externe (compendium/autre acteur) : ajouté au contenant (le SHIFT « 1 unité » est déjà
+   * appliqué en amont dans `_onDrop`). Objet du même acteur : transfert (contenant/inventaire libre
+   * → ce contenant) via `_transferItem`, avec la logique SHIFT.
+   * @param {string} containerUuid L'UUID du contenant cible
+   * @param {COItem} item L'équipement déposé
+   * @param {boolean} [shiftKey=false] SHIFT enfoncé → transfert d'1 unité
+   * @returns {Promise<boolean>}
+   */
+  async _dropItemInContainer(containerUuid, item, shiftKey = false) {
+    const target = await fromUuid(containerUuid)
+    if (!target) return false
+    if (item.type !== SYSTEM.ITEM_TYPE.equipment.id) return false
+    // Déjà dans la cible : réorganisation, rien à faire
+    if (target.system.contents.includes(item.uuid)) return true
+
+    // Objet externe : ajout tel quel (le clone d'1 unité pour le SHIFT est déjà fait dans _onDrop)
+    if (item.parent?.uuid !== this.actor.uuid) {
+      return await target.addOrIncrementContent(item)
+    }
+
+    const source = this.actor.containers.find((c) => c.uuid !== target.uuid && c.system.contents.includes(item.uuid)) ?? null
+    await this._transferItem(item, source, target, shiftKey)
+    return true
+  }
+
+  /**
+   * Transfère un objet entre deux emplacements du même acteur (contenant ou inventaire libre).
+   * Comportement calqué sur le transfert inter-acteurs : sans SHIFT l'objet complet est transféré,
+   * avec SHIFT une seule unité (pour les empilables).
+   * @param {COItem} item L'objet déplacé
+   * @param {COItem|null} source Contenant d'origine (null = inventaire libre)
+   * @param {COItem|null} target Contenant destination (null = inventaire libre)
+   * @param {boolean} shiftKey SHIFT → transfert d'1 unité (empilables)
+   * @returns {Promise<COItem|null>} L'objet à destination (pour un éventuel tri), ou null
+   */
+  async _transferItem(item, source, target, shiftKey) {
+    const stackable = item.system.properties?.stackable
+    const full = item.system.quantity.current
+    const amount = shiftKey && stackable ? 1 : full
+
+    // Exemplaire identique déjà présent à destination (même slug, empilable)
+    const dest = await this._findStackDestination(item, target)
+
+    // Transfert complet sans fusion : on déplace simplement l'objet (change d'appartenance)
+    if (amount >= full && !dest) {
+      if (source) await source.removeContent(item.uuid)
+      if (target) await target.addContent(item.uuid)
+      return item
+    }
+
+    // Ajout de `amount` unités à destination
+    let destItem = dest
+    if (dest) {
+      let quantity = dest.system.quantity.current + amount
+      if (dest.system.quantity.max) quantity = Math.min(quantity, dest.system.quantity.max)
+      await dest.update({ "system.quantity.current": quantity })
+    } else {
+      const newUuid = await this.actor.addEquipment(item.clone({ "system.quantity.current": amount }), target?.uuid ?? null)
+      if (target && newUuid) await target.addContent(newUuid)
+      destItem = newUuid ? await fromUuid(newUuid) : null
+    }
+
+    // Réduction de la source (suppression si 0, sans tenir compte de destroyIfEmpty)
+    const remaining = full - amount
+    if (remaining <= 0) {
+      if (source) await source.removeContent(item.uuid)
+      await this.actor.deleteEmbeddedDocuments("Item", [item.id])
+    } else {
+      await item.update({ "system.quantity.current": remaining })
+    }
+    return destItem
+  }
+
+  /**
+   * Cherche à destination un exemplaire empilable identique (même slug) pour y cumuler des unités.
+   * @param {COItem} item
+   * @param {COItem|null} target Contenant destination, ou null pour l'inventaire libre
+   * @returns {Promise<COItem|null>}
+   */
+  async _findStackDestination(item, target) {
+    if (!item.system.properties?.stackable) return null
+    if (target) {
+      const contents = await target.system.getContents()
+      return contents.find((c) => c?.system.slug === item.system.slug && c.id !== item.id) ?? null
+    }
+    return (
+      this.actor.items.find(
+        (c) => c.type === SYSTEM.ITEM_TYPE.equipment.id && !c.system.container && c.system.properties?.stackable && c.system.slug === item.system.slug && c.id !== item.id,
+      ) ?? null
+    )
   }
 
   /**

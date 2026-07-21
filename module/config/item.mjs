@@ -5,6 +5,7 @@ export const ITEM_ICONS = {
   profile: "icons/svg/upgrade.svg",
   path: "icons/svg/upgrade.svg",
   attack: "icons/svg/sword.svg",
+  container: "icons/svg/chest.svg",
 }
 
 export const ITEM_TYPE = {
@@ -25,5 +26,8 @@ export const ITEM_TYPE = {
   },
   attack: {
     id: "attack",
+  },
+  container: {
+    id: "container",
   },
 }

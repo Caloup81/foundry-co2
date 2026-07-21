@@ -49,6 +49,8 @@ export default class EquipmentData extends ItemData {
       }),
       rarity: new fields.StringField({ required: true, initial: "common", choices: SYSTEM.EQUIPMENT_RARITY }),
       equipped: new fields.BooleanField(),
+      // UUID du contenant dans lequel l'objet est rangé, ou null s'il est libre
+      container: new fields.DocumentUUIDField({ type: "Item", required: false, nullable: true, initial: null }),
       properties: new fields.SchemaField({
         equipable: new fields.BooleanField(),
         reloadable: new fields.BooleanField(),

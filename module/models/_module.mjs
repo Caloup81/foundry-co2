@@ -1,5 +1,6 @@
 export { default as AttackData } from "./attack.mjs"
 export { default as CapacityData } from "./capacity.mjs"
+export { default as ContainerData } from "./container.mjs"
 export { default as EquipmentData } from "./equipment.mjs"
 export { default as FeatureData } from "./feature.mjs"
 export { default as PathData } from "./path.mjs"

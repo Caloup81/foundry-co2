@@ -211,11 +211,15 @@ export default class COActor extends Actor {
       SYSTEM.EQUIPMENT_SUBTYPES.misc.id,
     ]
 
+    // Les objets rangés dans un contenant ne sont affichés que dans le contenant : on les exclut
+    // des catégories de l'inventaire libre.
+    const contained = this.containedItemUuids
+
     categories.forEach((category) => {
       const expanded = Utils.getExpandedState(`co-${this.id}-${category}`)
 
       // Trier selon la valeur de sort
-      const items = this.equipments.filter((item) => item.system.subtype === category).sort((a, b) => a.sort - b.sort)
+      const items = this.equipments.filter((item) => item.system.subtype === category && !contained.has(item.uuid)).sort((a, b) => a.sort - b.sort)
 
       inventory.push({
         category,
@@ -226,6 +230,28 @@ export default class COActor extends Actor {
     })
 
     return inventory
+  }
+
+  /**
+   * Retourne les Items de type container, triés par sort.
+   * @returns {Array}
+   */
+  get containers() {
+    return this.items.filter((item) => item.type === SYSTEM.ITEM_TYPE.container.id).sort((a, b) => a.sort - b.sort)
+  }
+
+  /**
+   * Ensemble des UUID de tous les objets rangés dans un contenant de l'acteur (d'après les `contents`
+   * de chaque contenant). Sert à masquer ces objets des catégories de l'inventaire libre.
+   * @returns {Set<string>}
+   */
+  get containedItemUuids() {
+    const set = new Set()
+    for (const container of this.items) {
+      if (container.type !== SYSTEM.ITEM_TYPE.container.id) continue
+      for (const uuid of container.system.contents) set.add(uuid)
+    }
+    return set
   }
 
   /**
@@ -440,8 +466,8 @@ export default class COActor extends Actor {
   async getVisibleActions() {
     let allActions = []
     for (const item of this.items) {
-      // Actions des équipements
-      if (SYSTEM.ITEM_TYPE.equipment.id === item.type) {
+      // Actions des équipements — sauf ceux rangés dans un contenant (non accessibles directement)
+      if (SYSTEM.ITEM_TYPE.equipment.id === item.type && !item.system.container) {
         const itemActions = await item.getVisibleActions(this)
         allActions.push(...itemActions)
       }
@@ -633,8 +659,8 @@ export default class COActor extends Actor {
 
   /**
    * Vérifie si l'unité est immunisée contre un effet donné.
-   * @param {string} immunityTargetId - L'ID de la cible d'immunité à vérifier (e.g., SYSTEM.MODIFIERS_TARGET.poisonImmunity.id).
-   * @param {string} immunityLabelKey - La clé de localisation du message ("CO.label.long.poisonImmunity").
+   * @param {string} immunityTargetId L'ID de la cible d'immunité à vérifier (e.g., SYSTEM.MODIFIERS_TARGET.poisonImmunity.id).
+   * @param {string} immunityLabelKey La clé de localisation du message ("CO.label.long.poisonImmunity").
    * @returns {boolean} True si l'effet peut être appliqué, False sinon.
    */
   checkImmunity(immunityTargetId, immunityLabelKey) {
@@ -685,7 +711,7 @@ export default class COActor extends Actor {
     }
 
     if (state) {
-      //Si on doit activer un effet, on vérifie les immunités
+      // Si on doit activer un effet, on vérifie les immunités
       switch (effectid) {
         case "poison":
           if (!this.checkImmunity(SYSTEM.MODIFIERS_TARGET.poisonImmunity.id, "CO.label.long.poisonImmunity")) {
@@ -1333,7 +1359,14 @@ export default class COActor extends Actor {
       const originalEquipment = await fromUuid(uuid)
       // Item is null if the item has been deleted in the compendium or in the world
       if (originalEquipment !== null) {
-        const newEquipmentUuid = await this.addEquipment(originalEquipment)
+        let newEquipmentUuid
+        // Un contenant est créé avec son contenu (addContainer) ; sinon équipement simple
+        if (originalEquipment.type === SYSTEM.ITEM_TYPE.container.id) {
+          const newContainer = await this.addContainer(originalEquipment)
+          newEquipmentUuid = newContainer?.uuid
+        } else {
+          newEquipmentUuid = await this.addEquipment(originalEquipment)
+        }
         if (newEquipmentUuid) updatedEquipmentUuids.push(newEquipmentUuid)
       }
     }
@@ -1471,22 +1504,31 @@ export default class COActor extends Actor {
   /**
    * Add an equipment as an embedded item
    * @param {COItem} equipment
+   * @param {string|null} [container=null] UUID du contenant dans lequel ranger l'objet (ou null s'il est libre)
    * Retourne {number} id of the created path
    */
-  async addEquipment(equipment) {
+  async addEquipment(equipment, container = null) {
     let equipmentData = equipment.toObject()
+    // Appartenance à un contenant (UUID) ou objet libre (null)
+    equipmentData.system.container = container
 
-    // Cas des objets stackable : on augmente juste la quantité de la quantité de l'objet déposé
-    if (this.hasItemWithKey(equipmentData.system.slug)) {
-      let item = this.getItemWithKey(equipmentData.system.slug)
-      if (item?.system?.properties?.stackable) {
-        let quantity = item.system.quantity.current + equipmentData.system.quantity.current
-        if (item.system.quantity.max) {
-          quantity = Math.min(quantity, item.system.quantity.max)
-        }
-        await item.update({ "system.quantity.current": quantity })
-        return item.uuid
+    // Fusion des empilables : uniquement avec un objet de même clé situé dans le MÊME contexte
+    // (même contenant, ou tous deux hors contenant). Un container pointant vers un contenant
+    // inexistant est traité comme null pour ne pas bloquer l'empilement d'objets orphelins.
+    const targetContainer = container || null
+    const existing = this.items.find((i) => {
+      if (i.type !== SYSTEM.ITEM_TYPE.equipment.id || i.system.slug !== equipmentData.system.slug) return false
+      let itemContainer = i.system.container || null
+      if (itemContainer && !this.items.get(foundry.utils.parseUuid(itemContainer).id)) itemContainer = null
+      return itemContainer === targetContainer
+    })
+    if (existing?.system?.properties?.stackable) {
+      let quantity = existing.system.quantity.current + equipmentData.system.quantity.current
+      if (existing.system.quantity.max) {
+        quantity = Math.min(quantity, existing.system.quantity.max)
       }
+      await existing.update({ "system.quantity.current": quantity })
+      return existing.uuid
     }
 
     // Création de l'objet
@@ -1508,6 +1550,50 @@ export default class COActor extends Actor {
       }
     }
     return newEquipment[0].uuid
+  }
+
+  /**
+   * Ajoute un contenant comme item embarqué, en copiant aussi les objets qu'il contient sur
+   * l'acteur et en re-ciblant les liens (system.contents) du contenant vers ces nouvelles copies.
+   * @param {COItem} container Le contenant déposé
+   * @returns {Promise<COItem>} Le contenant créé sur l'acteur
+   */
+  async addContainer(container) {
+    // On crée d'abord le contenant afin de connaître son UUID
+    const containerData = container.toObject()
+    containerData.system.contents = []
+    const created = await this.createEmbeddedDocuments("Item", [containerData])
+    const newContainer = created[0]
+
+    // Mettre à jour la source des actions et de leurs modifiers
+    if (newContainer.actions.length > 0) {
+      const actions = newContainer.toObject().system.actions
+      for (const action of actions) {
+        action.source = newContainer.uuid
+        if (action.modifiers.length > 0) {
+          for (const modifier of action.modifiers) {
+            modifier.source = newContainer.uuid
+          }
+        }
+      }
+      await newContainer.update({ "system.actions": actions })
+    }
+
+    // Copier les objets contenus sur l'acteur en les rattachant au nouveau contenant.
+    // On passe l'UUID du contenant à addEquipment : la fusion des empilables reste cantonnée à ce
+    // contenant, ce qui évite tout mélange avec les objets d'un autre contenant.
+    const newUuids = []
+    for (const uuid of container.system.contents ?? []) {
+      const source = await fromUuid(uuid)
+      if (!source || source.type !== SYSTEM.ITEM_TYPE.equipment.id) continue
+      const newUuid = await this.addEquipment(source, newContainer.uuid)
+      if (newUuid && !newUuids.includes(newUuid)) newUuids.push(newUuid)
+    }
+
+    // Renseigner la liste contents du contenant (autorité d'affichage)
+    await newContainer.update({ "system.contents": newUuids })
+
+    return newContainer
   }
 
   /**
@@ -1564,7 +1650,10 @@ export default class COActor extends Actor {
     for (const equipmentUuid of profile.system.equipment) {
       const { id: equipmentId } = foundry.utils.parseUuid(equipmentUuid)
       const equipment = this.items.get(equipmentId)
-      if (equipment) await this.deleteEmbeddedDocuments("Item", [equipment.id])
+      if (!equipment) continue
+      // Un contenant est supprimé avec son contenu
+      if (equipment.type === SYSTEM.ITEM_TYPE.container.id) await this.deleteContainer(equipment.uuid)
+      else await this.deleteEmbeddedDocuments("Item", [equipment.id])
     }
     const idProfile = foundry.utils.parseUuid(profileUuid)?.id
     await this.deleteEmbeddedDocuments("Item", [idProfile])
@@ -1626,6 +1715,28 @@ export default class COActor extends Actor {
     // Suppression de la capacité
     await this.deleteEmbeddedDocuments("Item", [capacity.id])
   }
+
+  /**
+   * Supprime un contenant et les objets qu'il contient.
+   *
+   * @param {string} containerUuid L'UUID du contenant à supprimer.
+   * @returns {Promise<void>} Une promesse qui se résout lorsque le contenant et son contenu sont supprimés.
+   */
+  async deleteContainer(containerUuid) {
+    const { id } = foundry.utils.parseUuid(containerUuid)
+    const container = this.items.get(id)
+    if (!container) return
+
+    // Suppression des objets contenus
+    for (const uuid of container.system.contents) {
+      const { id: contentId } = foundry.utils.parseUuid(uuid)
+      const content = this.items.get(contentId)
+      if (content) await this.deleteEmbeddedDocuments("Item", [content.id])
+    }
+
+    // Suppression du contenant
+    await this.deleteEmbeddedDocuments("Item", [container.id])
+  }
   // #endregion
 
   // #region Rolls
@@ -1651,6 +1762,8 @@ export default class COActor extends Actor {
    * @param {boolean} [options.withDialog=true] Si une boîte de dialogue doit être affichée ou non.
    * @param {Array} [options.targets] Les cibles du test.
    * @param {boolean} [options.showResult=true] Whether to show the result in chat or just return it.
+   * @param options.skills
+   * @param options.showOppositeRoll
    * @returns {Roll, { diceResult, total, isCritical, isFumble, difficulty, isSuccess, isFailure }} Le jet et le résultat du jet de compétence
    */
   async rollSkill(

@@ -105,7 +105,6 @@ export default class COItem extends Item {
     return modifiers
   }
 
-
   get tags() {
     return this.system.tags
   }
@@ -281,6 +280,96 @@ export default class COItem extends Item {
       return this.update({ "system.equipment": newEquipment })
     }
     return false
+  }
+
+  /**
+   * Ajoute un objet (par UUID) dans un contenant : ajoute l'UUID à `contents` (autorité d'affichage)
+   * et synchronise le champ inverse `system.container` de l'objet. Respecte la limite `maxItems`.
+   * @param {string} uuid L'UUID de l'objet à ajouter
+   * @returns {Promise<boolean>} true si ajouté/synchronisé, false si l'ajout est refusé
+   */
+  async addContent(uuid) {
+    if (this.type !== SYSTEM.ITEM_TYPE.container.id) return false
+    let newContents = foundry.utils.duplicate(this.system.contents)
+    if (!newContents.includes(uuid)) {
+      const max = this.system.maxItems
+      if (max > 0 && this.system.contentsCount >= max) {
+        ui.notifications.warn(game.i18n.format("CO.notif.containerFull", { name: this.name, max }))
+        return false
+      }
+      newContents.push(uuid)
+      await this.update({ "system.contents": newContents })
+    }
+    // Synchroniser le champ inverse de l'objet — uniquement pour un item embarqué sur un acteur
+    // (les items du monde/compendium n'ont pas besoin de ce champ et peuvent être en lecture seule)
+    const item = await fromUuid(uuid)
+    if (item?.isEmbedded && item.system.container !== this.uuid) await item.update({ "system.container": this.uuid })
+    return true
+  }
+
+  /**
+   * Ajoute un équipement déposé dans le contenant.
+   * - Si l'objet est empilable et qu'un objet de même clé (slug) est déjà présent dans CE contenant,
+   *   sa quantité est augmentée de la quantité déposée (plafonnée par `quantity.max`).
+   * - Sinon l'objet est rangé dans le contenant (créé sur l'acteur au préalable s'il est externe,
+   *   directement dans ce contenant).
+   * Un objet de type contenant est refusé (pas de nidification).
+   * @param {COItem} item L'équipement déposé
+   * @returns {Promise<Item|boolean>} L'objet incrémenté/rangé, ou false si l'ajout est refusé
+   */
+  async addOrIncrementContent(item) {
+    if (this.type !== SYSTEM.ITEM_TYPE.container.id) return false
+    // Pas de nidification : seul un équipement peut être rangé dans un contenant
+    if (item.type !== SYSTEM.ITEM_TYPE.equipment.id) return false
+    const actor = this.actor
+
+    // Objet empilable déjà présent dans le contenant : on augmente sa quantité de la quantité déposée
+    // (vaut aussi pour un contenant du monde, où this.actor est null)
+    if (item.system.properties?.stackable) {
+      const contents = await this.system.getContents()
+      const existing = contents.find((c) => c?.system.slug === item.system.slug && c.id !== item.id)
+      // On n'incrémente que si l'objet existant est modifiable (pas dans un compendium verrouillé).
+      // Sinon on laisse passer pour ajouter une nouvelle référence plutôt que de planter.
+      const existingLocked = existing?.pack && game.packs.get(existing.pack)?.locked
+      if (existing && !existingLocked) {
+        const max = this.system.maxItems
+        if (max > 0 && this.system.contentsCount >= max) {
+          ui.notifications.warn(game.i18n.format("CO.notif.containerFull", { name: this.name, max }))
+          return false
+        }
+        let quantity = existing.system.quantity.current + item.system.quantity.current
+        if (existing.system.quantity.max) quantity = Math.min(quantity, existing.system.quantity.max)
+        await existing.update({ "system.quantity.current": quantity })
+        return existing
+      }
+    }
+
+    // Sinon : on range l'objet. S'il est externe, on le crée sur l'acteur directement dans ce contenant.
+    let uuid = item.uuid
+    if (actor && item.parent?.uuid !== actor.uuid) {
+      uuid = await actor.addEquipment(item, this.uuid)
+    }
+    return this.addContent(uuid)
+  }
+
+  /**
+   * Retire un objet (par UUID) d'un contenant : retire l'UUID de `contents` et remet le champ
+   * inverse `system.container` de l'objet à null. L'objet n'est pas supprimé de l'acteur.
+   * @param {string} uuid L'UUID de l'objet à retirer
+   * @returns {Promise<boolean>} true si retiré/détaché, false sinon
+   */
+  async removeContent(uuid) {
+    if (this.type !== SYSTEM.ITEM_TYPE.container.id) return false
+    let newContents = foundry.utils.duplicate(this.system.contents)
+    const idx = newContents.indexOf(uuid)
+    if (idx !== -1) {
+      newContents.splice(idx, 1)
+      await this.update({ "system.contents": newContents })
+    }
+    // Détacher l'objet (champ inverse) — uniquement pour un item embarqué sur un acteur
+    const item = await fromUuid(uuid)
+    if (item?.isEmbedded && item.system.container) await item.update({ "system.container": null })
+    return true
   }
 
   // #endregion

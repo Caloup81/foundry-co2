@@ -57,5 +57,60 @@
             </ol>
         </ol>
     {{/each}}
+
+    <!-- Contenants -->
+    <ol class="items-container containers" data-tab="inventory">
+        <li class="items-container-header flexrow">
+            <h4 class="item-name flexrow">
+                <a data-action="toggleSection" data-toggle-type="containers">{{localize "CO.ui.containers"}} ({{containers.length}})</a>
+            </h4>
+            <div class="item-detail">{{localize "CO.label.short.quantity"}}</div>
+            <div class="item-controls-2">
+                {{#if @root/unlocked}}
+                    <a class="item-control" data-action="createItem" data-type="container" data-tooltip="{{localize 'CO.label.long.add'}}"><i class="fas fa-plus"></i></a>
+                {{/if}}
+            </div>
+        </li>
+        <ol class="item-list foldable {{ifThen containersExpanded 'expanded' 'folded'}}">
+            {{#each containers as |container|}}
+                <li class="item container-item flexrow draggable container-dropzone" data-item-uuid="{{container.uuid}}" data-item-id="{{container._id}}" data-item-type="{{container.type}}" data-container-uuid="{{container.uuid}}">
+                    <div class="item-name flexrow">
+                        <a class="item-img" data-action="editItem" style="background-image: url('{{container.img}}')" data-tooltip="{{container.enrichedTooltip}}"></a>
+                        <a class="container-toggle" data-action="toggleContainer"><h4>{{container.name}} <i class="fas {{#if container.expanded}}fa-caret-down{{else}}fa-caret-right{{/if}}"></i></h4></a>
+                    </div>
+                    <div class="item-detail">
+                        <span class="container-count" data-tooltip="{{localize 'CO.ui.containerContents'}}">{{container.system.contentsCount}}{{#if (gt container.system.maxItems 0)}} / {{container.system.maxItems}}{{/if}}</span>
+                    </div>
+                    <div class="item-controls-2">
+                        <a class="chat" data-action="sendToChat" data-chat-type="item" data-tooltip="{{localize 'CO.label.long.sendToChat'}}"><i class="fas fa-fw fa-comment-alt"></i></a>
+                        {{#if @root/unlocked}}
+                            <a class="item-edit" data-action="editItem" data-tooltip="{{localize 'CO.label.long.edit'}}"><i class="fas fa-fw fa-edit"></i></a>
+                            <a class="item-control" data-action="deleteItem" data-tooltip="{{localize 'CO.ui.remove'}}"><i class="fas fa-trash"></i></a>
+                        {{/if}}
+                    </div>
+                </li>
+                <ol class="item-list container-contents foldable {{ifThen container.expanded 'expanded' 'folded'}}" data-container-uuid="{{container.uuid}}">
+                    {{#each container.contents as |content|}}
+                        <li class="item content-item flexrow draggable" data-item-uuid="{{content.uuid}}" data-item-id="{{content._id}}" data-item-type="{{content.type}}">
+                            <div class="item-name flexrow">
+                                <a class="item-img" data-action="editItem" style="background-image: url('{{content.img}}')" data-tooltip="{{content.enrichedTooltip}}"></a>
+                                <h4>{{content.name}}</h4>
+                            </div>
+                            <div class="item-detail">
+                                <span class="inventory-qty">{{content.system.quantity.current}}</span>
+                            </div>
+                            <div class="item-controls-2">
+                                <a class="chat" data-action="sendToChat" data-chat-type="item" data-tooltip="{{localize 'CO.label.long.sendToChat'}}"><i class="fas fa-fw fa-comment-alt"></i></a>
+                                {{#if @root/unlocked}}
+                                    <a class="item-control" data-action="removeContent" data-container-uuid="{{container.uuid}}" data-content-uuid="{{content.uuid}}" data-tooltip="{{localize 'CO.action.removeFromContainer'}}"><i class="fas fa-arrow-up-from-bracket"></i></a>
+                                    <a class="item-control" data-action="deleteContent" data-container-uuid="{{container.uuid}}" data-content-uuid="{{content.uuid}}" data-tooltip="{{localize 'CO.ui.remove'}}"><i class="fas fa-trash"></i></a>
+                                {{/if}}
+                            </div>
+                        </li>
+                    {{/each}}
+                </ol>
+            {{/each}}
+        </ol>
+    </ol>
 </section>
   

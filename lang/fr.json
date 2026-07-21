@@ -8,6 +8,7 @@
       "marker": "Marqueur"
     },
     "Item": {
+      "container": "Contenant",
       "equipment": "Équipement",
       "feature": "Trait",
       "profile": "Profil",
@@ -17,6 +18,46 @@
     }
   },
   "CO": {
+    "Container": {
+      "FIELDS": {
+        "description": {
+          "label": "Description"
+        },
+        "origin": {
+          "label": "Origine"
+        },
+        "slug": {
+          "label": "Clé"
+        },
+        "location": {
+          "label": "Localisation",
+          "hint": "Ex : à la maison, porté, sur la monture..."
+        },
+        "contents": {
+          "label": "Contenu"
+        },
+        "maxItems": {
+          "label": "Nombre d'objets max.",
+          "hint": "0 = illimité"
+        },
+        "weight": {
+          "value": {
+            "label": "Poids"
+          },
+          "unit": {
+            "label": "Unité"
+          }
+        },
+        "price": {
+          "value": {
+            "label": "Prix"
+          },
+          "unit": {
+            "label": "Unité"
+          }
+        }
+      }
+    },
     "Character": {
       "FIELDS": {
         "otherCapacitiesPointsSpent": {
@@ -348,7 +389,9 @@
       "feature": "Fiche de feature",
       "path": "Fiche de voie",
       "equipement": "Fiche d'équipement",
+      "container": "Fiche de contenant",
       "tabs": {
+        "container": { "description": "Description", "details": "Détails", "actions": "Actions/Effets" },
         "equipment": { "description": "Description", "details": "Détails", "actions": "Actions/Effets" },
         "capacity": { "description": "Description", "details": "Détails", "actions": "Actions/Effets" },
         "path": { "description": "Description", "details": "Détails" },
@@ -393,6 +436,7 @@
       "warningNeedLearnedCapacities": "Vous devez apprendre les capacités des rangs précédents avant d'apprendre celle-ci",
       "consume": "{actorName} a consommé un(e) {itemName}",
       "attackActionLimit": "Une attaque de créature ne peut avoir qu'une seule action",
+      "containerFull": "Le contenant « {name} » est plein ({max} objet(s) maximum).",
       "warningOnlyOneTarget": "Vous ne pouvez désigner qu'une cible pour l'action !",
       "warningNoTargetOrTooManyTargets": "Vous n'avez ciblé personne ou trop de cibles pour cette action !",
       "warningNoValidTarget": "Aucune cible valide pour cette action",
@@ -722,6 +766,9 @@
       "consumables": "Consommables",
       "miscs": "Divers",
       "shields": "Boucliers",
+      "containers": "Contenants",
+      "containerContents": "Contenu",
+      "containerEmpty": "Ce contenant est vide.",
       "miscBonuses": "Bonus divers",
       "totalBonus": "Bonus total",
       "total": "Total",
@@ -1030,7 +1077,8 @@
       "charge": "Il reste {charges} charge(s)/munition(s) sur {maxCharges}",
       "noCharge": "Plus de charges/munitions",
       "quantity": "Il reste {quantity} objet(s) sur {maxQuantity}",
-      "noQuantity": "Plus d'objets"
+      "noQuantity": "Plus d'objets",
+      "removeFromContainer": "Retirer du contenant"
     },
     "condition": {
       "objects": {
@@ -1169,7 +1217,7 @@
       "consumable": "Consommable/Munition",
       "loot": "Butin/Trésor",
       "currency": "Monnaie",
-      "container": "Conteneur",
+      "container": "Contenant",
       "action": "Action",
       "path": "Voie",
       "capacity": "Capacité",

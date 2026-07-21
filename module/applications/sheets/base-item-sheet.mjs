@@ -632,6 +632,8 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
 
     switch (item.type) {
       case SYSTEM.ITEM_TYPE.equipment.id:
+      case SYSTEM.ITEM_TYPE.container.id:
+        // Un conteneur peut être ajouté à l'équipement de départ d'un profil (comme un équipement)
         return this._onDropEquipmentItem(item)
       case SYSTEM.ITEM_TYPE.feature.id:
         return this._onDropFeatureItem(item)

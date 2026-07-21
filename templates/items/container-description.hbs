@@ -1,0 +1,49 @@
+{{!log "Chroniques Oubliées | container description" this}}
+<section class="tab standard-form description{{#if tabs.description.active}} active{{/if}}" data-group="primary" data-tab="description">
+    {{formGroup systemFields.origin value=system.origin disabled=locked}}
+
+    <fieldset class="description">
+        <legend>{{localize "CO.ui.description"}}</legend>
+        {{ formInput systemFields.description enriched=enrichedDescription value=system.description name="system.description" toggled=true }}
+    </fieldset>
+
+    <!-- LOCALISATION (texte libre : à la maison, porté, sur la monture, ...) -->
+    <fieldset class="container-location">
+        <legend>{{localize "CO.Container.FIELDS.location.label"}}</legend>
+        {{formInput systemFields.location value=systemSource.location placeholder=(localize "CO.Container.FIELDS.location.hint") localize=true disabled=locked}}
+    </fieldset>
+
+    <!-- OBJETS CONTENUS (masqués en vue limitée) -->
+    {{#unless isLimitedView}}
+    <fieldset class="container-contents">
+        <legend>{{localize "CO.ui.containerContents"}} ({{system.contentsCount}}{{#if (gt system.maxItems 0)}}/{{system.maxItems}}{{/if}})</legend>
+        {{#if contents.length}}
+            <ol class="item-list items-container">
+                {{#each contents as |content|}}
+                    <li class="item flexrow" data-item-uuid="{{content.uuid}}" data-uuid="{{content.uuid}}" data-item-id="{{content._id}}" data-item-type="{{content.type}}">
+                        <div class="item-name flexrow">
+                            <a class="item-img" data-action="editItem" style="background-image: url('{{content.img}}')" data-tooltip="{{content.enrichedTooltip}}"></a>
+                            <h4>{{content.name}}</h4>
+                        </div>
+                        <div class="item-detail">{{content.system.quantity.current}}</div>
+                        <div class="item-controls-2">
+                            {{#if @root.unlocked}}
+                                <a class="item-control" data-action="removeContent" data-tooltip="{{localize 'CO.action.removeFromContainer'}}"><i class="fas fa-trash"></i></a>
+                            {{/if}}
+                        </div>
+                    </li>
+                {{/each}}
+            </ol>
+        {{else}}
+            <p class="hint">{{localize "CO.ui.containerEmpty"}}</p>
+        {{/if}}
+    </fieldset>
+    {{/unless}}
+
+    {{#if isGM}}
+        <fieldset class="item-gm-notes">
+            <legend>{{localize "CO.ui.gmNotes"}}</legend>
+            {{formInput systemFields.gmNotes enriched=enrichedGmNotes value=system.gmNotes name="system.gmNotes" toggled=true}}
+        </fieldset>
+    {{/if}}
+</section>

@@ -124,6 +124,9 @@ export default class COEncounterSheet extends COBaseActorSheet {
       case "capacity":
         await this.actor.deleteCapacity(uuid)
         break
+      case "container":
+        await this.actor.deleteContainer(uuid)
+        break
       default:
         await this.actor.deleteEmbeddedDocuments("Item", [id])
     }
@@ -291,6 +294,22 @@ export default class COEncounterSheet extends COBaseActorSheet {
   /** @override */
   async _onDropItem(event, item) {
     if (!this.actor.isOwner) return null
+
+    // Dépôt sur la ligne d'un contenant : on range l'objet dedans (SHIFT = 1 unité)
+    const containerUuid = this._getContainerDropTarget(event)
+    if (containerUuid && item.type === SYSTEM.ITEM_TYPE.equipment.id) {
+      return await this._dropItemInContainer(containerUuid, item, event.shiftKey)
+    }
+
+    // Dépôt hors d'un contenant : si l'objet venait d'un contenant, on l'en sort (SHIFT = 1 unité)
+    if (item.type === SYSTEM.ITEM_TYPE.equipment.id && item.parent?.uuid === this.actor.uuid) {
+      const source = this.actor.containers.find((c) => c.system.contents.includes(item.uuid))
+      if (source) {
+        await this._transferItem(item, source, null, event.shiftKey)
+        return item
+      }
+    }
+
     if (this.actor.uuid === item.parent?.uuid) {
       const result = await this._onSortItem(event, item)
       return result?.length ? item : null
@@ -301,6 +320,9 @@ export default class COEncounterSheet extends COBaseActorSheet {
         return await this.actor.addPath(item)
       case SYSTEM.ITEM_TYPE.capacity.id:
         return await this.document.addCapacity(item, null)
+      case SYSTEM.ITEM_TYPE.container.id:
+        // Crée le contenant + copie ses objets sur la rencontre et re-cible les liens
+        return await this.actor.addContainer(item)
       case SYSTEM.ITEM_TYPE.equipment.id:
         // Gestion des équipements empilables : fusionner si l'item existe déjà
         if (item.system.properties?.stackable) {

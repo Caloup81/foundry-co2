@@ -299,3 +299,39 @@
     font-size: 0.9em;
   }
 }
+
+// Contenants : contenu affiché en léger décalé sous la ligne du contenant
+.container-item {
+  .container-toggle {
+    cursor: pointer;
+
+    h4 i.fa-caret-down {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+  }
+}
+
+// Liste inline du contenu sous la ligne d'un contenant (feuille d'acteur)
+.item-list.container-contents {
+  margin-left: 24px;
+  border-left: 2px solid var(--color-border-light-tertiary, rgba(0, 0, 0, 0.15));
+
+  .item .item-name {
+    font-style: italic;
+  }
+}
+
+// Retour visuel quand un objet est glissé sur un contenant
+.container-dropzone.dragover {
+  outline: 2px dashed var(--color-abilities, #4a6f8a);
+  outline-offset: -2px;
+}
+
+// Un peu d'espace entre les colonnes de l'inventaire/butin (notamment quantité <-> actions)
+.inventory .items-container .items-container-header,
+.inventory .items-container .item,
+.loot .items-container .items-container-header,
+.loot .items-container .item {
+  gap: 6px;
+}

@@ -1,0 +1,46 @@
+{{!log "Chroniques Oubliées | container details" this}}
+<section class="tab standard-form container{{#if tabs.details.active}} active{{/if}}" data-group="primary" data-tab="details">
+
+    <section class="half-panel">
+
+        <section class="panel-left">
+            <!-- Mode Debug Détails -->
+            {{#if debugMode}}
+                <fieldset class="debug">
+                    <legend>{{localize "CO.ui.debug"}}</legend>
+                    {{formGroup fields._id value=item.id disabled=true localize=true label="CO.ui.id"}}
+                    {{formGroup systemFields.slug value=system.slug disabled=true localize=true disabled=locked}}
+                </fieldset>
+            {{/if}}
+
+            <!-- POIDS / VALEUR -->
+            <fieldset class="PoidsValeur">
+                <legend>{{localize "CO.ui.PoidsValeur"}}</legend>
+                <div class="form-group">
+                    <label>{{localize "CO.ui.weight"}}</label>
+                    <div class="form-fields border-right">
+                        {{formInput systemFields.weight.fields.value value=systemSource.weight.value localize=true disabled=locked}}
+                        {{formInput systemFields.weight.fields.unit value=systemSource.weight.unit localize=true disabled=locked}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>{{localize "CO.ui.price"}}</label>
+                    <div class="form-fields border-right">
+                        {{formInput systemFields.price.fields.value value=systemSource.price.value localize=true disabled=locked}}
+                        {{formInput systemFields.price.fields.unit value=systemSource.price.unit localize=true disabled=locked}}
+                    </div>
+                </div>
+            </fieldset>
+        </section>
+
+        <section class="panel-right">
+            <!-- PROPRIETE : un contenant n'a aucune propriété d'équipement, seulement la limite d'objets -->
+            <fieldset class="properties">
+                <legend>{{localize "CO.label.long.properties"}}</legend>
+                {{formGroup systemFields.maxItems value=systemSource.maxItems localize=true disabled=locked hint=(localize "CO.Container.FIELDS.maxItems.hint")}}
+            </fieldset>
+        </section>
+
+    </section>
+
+</section>

@@ -3,6 +3,7 @@
 ## Améliorations
 
 - Profil : gestion de l'équipement de départ (par glisser-déposer) automatiquement copié sur le personnage lors de l'attribution du profil
+- Nouveau type d'objet : Conteneur
 
 # 2.2.0
 

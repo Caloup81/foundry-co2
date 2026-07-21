@@ -249,6 +249,9 @@ export default class COCharacterSheet extends COBaseActorSheet {
       case "profile":
         await this.document.deleteProfile(uuid)
         break
+      case "container":
+        await this.document.deleteContainer(uuid)
+        break
       default:
         await this.document.deleteEmbeddedDocuments("Item", [id])
     }
@@ -489,6 +492,22 @@ export default class COCharacterSheet extends COBaseActorSheet {
   /** @override */
   async _onDropItem(event, item) {
     if (!this.actor.isOwner) return null
+
+    // Dépôt sur la ligne d'un contenant : on range l'objet dedans (SHIFT = 1 unité)
+    const containerUuid = this._getContainerDropTarget(event)
+    if (containerUuid && item.type === SYSTEM.ITEM_TYPE.equipment.id) {
+      return await this._dropItemInContainer(containerUuid, item, event.shiftKey)
+    }
+
+    // Dépôt hors d'un contenant : si l'objet venait d'un contenant, on l'en sort (SHIFT = 1 unité)
+    if (item.type === SYSTEM.ITEM_TYPE.equipment.id && item.parent?.uuid === this.actor.uuid) {
+      const source = this.actor.containers.find((c) => c.system.contents.includes(item.uuid))
+      if (source) {
+        await this._transferItem(item, source, null, event.shiftKey)
+        return item
+      }
+    }
+
     if (this.actor.uuid === item.parent?.uuid) {
       const result = await this._onSortItem(event, item)
       return result?.length ? item : null
@@ -498,6 +517,9 @@ export default class COCharacterSheet extends COBaseActorSheet {
       case SYSTEM.ITEM_TYPE.equipment.id:
         await this.actor.addEquipment(item)
         return true
+      case SYSTEM.ITEM_TYPE.container.id:
+        // Crée le contenant + copie ses objets sur l'acteur et re-cible les liens
+        return await this.actor.addContainer(item)
       case SYSTEM.ITEM_TYPE.feature.id:
         return await this.actor.addFeature(item)
       case SYSTEM.ITEM_TYPE.profile.id:

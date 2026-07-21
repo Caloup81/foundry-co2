@@ -45,6 +45,7 @@ Hooks.once("init", async function () {
 
   CONFIG.Item.dataModels = {
     capacity: models.CapacityData,
+    container: models.ContainerData,
     equipment: models.EquipmentData,
     feature: models.FeatureData,
     profile: models.ProfileData,
@@ -55,6 +56,7 @@ Hooks.once("init", async function () {
   foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet)
   foundry.documents.collections.Items.registerSheet(SYSTEM.ID, applications.AttackSheet, { types: ["attack"], makeDefault: true, label: "CO.sheet.attack" })
   foundry.documents.collections.Items.registerSheet(SYSTEM.ID, applications.CapacitySheet, { types: ["capacity"], makeDefault: true, label: "CO.sheet.capacity" })
+  foundry.documents.collections.Items.registerSheet(SYSTEM.ID, applications.ContainerSheet, { types: ["container"], makeDefault: true, label: "CO.sheet.container" })
   foundry.documents.collections.Items.registerSheet(SYSTEM.ID, applications.EquipmentSheet, { types: ["equipment"], makeDefault: true, label: "CO.sheet.equipment" })
   foundry.documents.collections.Items.registerSheet(SYSTEM.ID, applications.FeatureSheet, { types: ["feature"], makeDefault: true, label: "CO.sheet.feature" })
   foundry.documents.collections.Items.registerSheet(SYSTEM.ID, applications.PathSheet, { types: ["path"], makeDefault: true, label: "CO.sheet.path" })

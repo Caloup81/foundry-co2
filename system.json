@@ -55,6 +55,7 @@
       "save": {}
     },
     "Item": {
+      "container": { "htmlFields": ["description"] },
       "equipment": { "htmlFields": ["description"] },
       "feature": { "htmlFields": ["description"] },
       "profile": { "htmlFields": ["description"] },

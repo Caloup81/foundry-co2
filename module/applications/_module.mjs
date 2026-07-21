@@ -1,3 +1,4 @@
+export { default as ContainerSheet } from "./sheets/container-sheet.mjs"
 export { default as EquipmentSheet } from "./sheets/equipment-sheet.mjs"
 export { default as PathSheet } from "./sheets/path-sheet.mjs"
 export { default as FeatureSheet } from "./sheets/feature-sheet.mjs"
