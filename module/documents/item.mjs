@@ -270,5 +270,18 @@ export default class COItem extends Item {
     return false
   }
 
+  /**
+   * Add a base equipment to an item of type Profile
+   * @param {*} uuid
+   */
+  addEquipment(uuid) {
+    if (this.type === SYSTEM.ITEM_TYPE.profile.id) {
+      let newEquipment = foundry.utils.duplicate(this.system.equipment)
+      newEquipment.push(uuid)
+      return this.update({ "system.equipment": newEquipment })
+    }
+    return false
+  }
+
   // #endregion
 }

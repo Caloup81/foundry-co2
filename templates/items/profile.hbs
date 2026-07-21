@@ -60,7 +60,29 @@
                         {{/if}}
                     </div>
                 {{/each}}
-            </div>    
+            </div>
+        </section>
+
+        <section class="panel-equipment">
+            <!-- BASE EQUIPMENT -->
+            <h4 class="form-header">
+                <a data-action="toggleSection">{{localize "CO.label.long.baseEquipment"}}</a>
+            </h4>
+            <div class="equipment-list list-3col foldable">
+                {{#each equipment as |eqp id|}}
+                    <div class="cell center item" data-action="editItem" data-uuid="{{eqp.uuid}}" data-item-type="equipment">
+                        <a class="item-control item-edit"><img class="inline-img" src="{{eqp.img}}" data-tooltip="{{localize 'CO.label.long.edit'}}" /></a>
+                    </div>
+                    <div class="cell left">
+                        <div class="field-label ellipse">{{eqp.name}}</div>
+                    </div>
+                    <div class="cell right item item-controls" data-uuid="{{eqp.uuid}}" data-item-type="equipment">
+                        {{#if (and @root.unlocked @root.isNotOwned)}}
+                            <button type="button" class="item-control" data-action="deleteItem" data-tooltip="{{localize 'CO.label.long.deleteItem'}}"><i class="fas fa-trash"></i></button>
+                        {{/if}}
+                    </div>
+                {{/each}}
+            </div>
         </section>
     </section>
 

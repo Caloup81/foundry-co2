@@ -13,6 +13,7 @@ export default class ProfileData extends ItemData {
       martialTrainingsArmors: new fields.ObjectField(),
       martialTrainingsShields: new fields.ObjectField(),
       paths: new fields.ArrayField(new fields.DocumentUUIDField({ type: "Item" })),
+      equipment: new fields.ArrayField(new fields.DocumentUUIDField({ type: "Item" })),
       proficiencies: new fields.ArrayField(new fields.StringField()),
       mainProfile: new fields.BooleanField(),
     })

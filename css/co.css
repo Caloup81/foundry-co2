@@ -2282,7 +2282,7 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.sheet.item.profile .window-content .half-panel {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.4fr 1fr 1fr;
   gap: 15px;
 }
 .co.application.sheet.item.profile .window-content .form-header {
@@ -2298,6 +2298,9 @@ co-toggle-switch[checked] thumb {
   color: #222;
 }
 .co.application.sheet.item.profile .window-content .panel-right .path-list {
+  margin-right: 7px;
+}
+.co.application.sheet.item.profile .window-content .panel-equipment .equipment-list {
   margin-right: 7px;
 }
 .co.application.sheet.item.profile .window-content .proficiencies-form {

@@ -202,6 +202,9 @@
         },
         "mainProfile": {
           "label": "Profil principal"
+        },
+        "equipment": {
+          "label": "Équipement de départ"
         }
       }
     },
@@ -435,6 +438,7 @@
         "damMagic": "Dommages magiques",
         "path": "Voie",
         "paths": "Voies",
+        "baseEquipment": "Équipement de départ",
         "critrange": "Critique",
         "rank": "Rang",
         "add": "Ajouter",

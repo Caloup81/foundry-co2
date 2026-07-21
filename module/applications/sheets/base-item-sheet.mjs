@@ -285,6 +285,9 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
       case SYSTEM.ITEM_TYPE.path.id:
         data.system.paths.splice(data.system.paths.indexOf(uuid), 1)
         break
+      case SYSTEM.ITEM_TYPE.equipment.id:
+        data.system.equipment.splice(data.system.equipment.indexOf(uuid), 1)
+        break
       case SYSTEM.ITEM_TYPE.capacity.id:
         data.system.capacities.splice(data.system.capacities.indexOf(uuid), 1)
         break
@@ -309,6 +312,7 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
 
     switch (itemType) {
       case SYSTEM.ITEM_TYPE.path.id:
+      case SYSTEM.ITEM_TYPE.equipment.id:
       case SYSTEM.ITEM_TYPE.capacity.id: {
         const uuid = li.dataset.uuid
         return fromUuid(uuid).then((document) => document.sheet.render(true))
@@ -643,6 +647,7 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
   }
 
   _onDropEquipmentItem(item) {
+    if (item.uuid) return this.item.addEquipment(item.uuid)
     return false
   }
 

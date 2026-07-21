@@ -1326,6 +1326,20 @@ export default class COActor extends Actor {
     // Update the paths of the profile with ids of created paths
     await newProfile[0].update({ "system.paths": updatedPathsUuids })
 
+    // Ajoute l'équipement de départ du profil à l'inventaire (non équipé)
+    // addEquipment recopie l'item et réécrit le source des actions/modifiers sur la nouvelle instance
+    let updatedEquipmentUuids = []
+    for (const uuid of profile.system.equipment) {
+      const originalEquipment = await fromUuid(uuid)
+      // Item is null if the item has been deleted in the compendium or in the world
+      if (originalEquipment !== null) {
+        const newEquipmentUuid = await this.addEquipment(originalEquipment)
+        if (newEquipmentUuid) updatedEquipmentUuids.push(newEquipmentUuid)
+      }
+    }
+    // Update the equipment of the profile with the uuids of the created inventory items (for cascade delete)
+    await newProfile[0].update({ "system.equipment": updatedEquipmentUuids })
+
     ui.notifications.warn(game.i18n.localize("CO.notif.warningProfileCreated"))
     return newProfile[0].uuid
   }
@@ -1492,8 +1506,8 @@ export default class COActor extends Actor {
 
         await newEquipment[0].update({ "system.actions": actions })
       }
-      return newEquipment[0].uuid
     }
+    return newEquipment[0].uuid
   }
 
   /**
@@ -1545,6 +1559,12 @@ export default class COActor extends Actor {
     const pathsUuids = profile.system.paths
     for (const pathUuid of pathsUuids) {
       await this.deletePath(pathUuid)
+    }
+    // Suppression de l'équipement de départ créé sur le personnage
+    for (const equipmentUuid of profile.system.equipment) {
+      const { id: equipmentId } = foundry.utils.parseUuid(equipmentUuid)
+      const equipment = this.items.get(equipmentId)
+      if (equipment) await this.deleteEmbeddedDocuments("Item", [equipment.id])
     }
     const idProfile = foundry.utils.parseUuid(profileUuid)?.id
     await this.deleteEmbeddedDocuments("Item", [idProfile])

@@ -37,9 +37,11 @@ export default class CoProfileSheet extends CoBaseItemSheet {
   async _prepareContext() {
     const context = await super._prepareContext()
 
-    context.martialTrainingsWeaponsList = game.system.CONST.martialTrainingsWeapons
-    context.martialTrainingsArmorsList = game.system.CONST.martialTrainingsArmors
-    context.martialTrainingsShieldsList = game.system.CONST.martialTrainingsShields
+    // Tri alphabétique par libellé traduit
+    const sortByLabel = (list) => [...list].sort((a, b) => game.i18n.localize(a.label).localeCompare(game.i18n.localize(b.label)))
+    context.martialTrainingsWeaponsList = sortByLabel(game.system.CONST.martialTrainingsWeapons)
+    context.martialTrainingsArmorsList = sortByLabel(game.system.CONST.martialTrainingsArmors)
+    context.martialTrainingsShieldsList = sortByLabel(game.system.CONST.martialTrainingsShields)
 
     context.martialTrainingsWeapons = context.martialTrainingsWeaponsList.filter((i) => this.item.system.martialTrainingsWeapons[i.key] === true)
     context.martialTrainingsArmors = context.martialTrainingsArmorsList.filter((i) => this.item.system.martialTrainingsArmors[i.key] === true)
@@ -54,6 +56,14 @@ export default class CoProfileSheet extends CoBaseItemSheet {
       }
     }
     context.paths = infosPaths
+
+    let infosEquipment = []
+    for (const uuid of this.item.system.equipment) {
+      let item = await fromUuid(uuid)
+      // Item could be null if the item has been deleted in the compendium
+      if (item) infosEquipment.push({ uuid: item.uuid, name: item.name, img: item.img })
+    }
+    context.equipment = infosEquipment
 
     // Select options
     context.choiceProfileFamily = Object.fromEntries(Object.entries(SYSTEM.FAMILIES).map(([key, value]) => [key, value.label]))
