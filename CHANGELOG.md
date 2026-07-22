@@ -4,11 +4,15 @@
 
 - Profil : gestion de l'équipement de départ (par glisser-déposer) automatiquement copié sur le personnage lors de l'attribution du profil
 - Nouveau type d'objet : Conteneur
+
+## Refactoring
+
 - Les postures défensives (défense partielle et défense totale) sont une manœuvre propre à Chroniques Oubliées Fantasy. **Le module cof2-base est désormais nécessaire pour en disposer.** Les effets restés sur les acteurs sont retirés automatiquement si plus aucun module ne déclare ces postures.
 - Les boutons de récupération rapide et de récupération complète sont eux aussi propres à Chroniques Oubliées Fantasy . **Le module cof2-base est désormais nécessaire pour en disposer.** La mécanique — dépense du dé de récupération, soin, recharge des capacités, hooks `co2.preUseRecovery` / `co2.postUseRecovery` — reste dans le système et est inchangée.
-- Les points de chance sont eux aussi propres à Chroniques Oubliées Fantasy et sont désormais conditionnés par le drapeau `game.system.CONST.hasLuckPoints`. **Le module cof2-base est désormais nécessaire pour en disposer.** Toute la mécanique — relance, mise à jour des cartes de chat, requête MJ — reste dans le système. Au passage, les cinq tests dupliqués de disponibilité d'un point de chance sont remplacés par le getter `COActor#hasLuckyPoints`.
+- Trois règles propres à Chroniques Oubliées Fantasy — les points de chance, les dés de récupération et les dommages temporaires sont propres à Chroniques Oubliées Fantasy. **Le module cof2-base est désormais nécessaire pour en disposer.** Toutes les mécaniques restent dans le système : relance et mise à jour des cartes de chat, récupération, application des dommages.
+- Les trois tags d'équipement — DM temporaires, DM temporaires possibles, arme légère — sont propres à Chroniques Oubliées Fantasy et ne sont portés que par les compendiums de cof2-base : leur déclaration y est déplacée. `game.system.CONST.EQUIPMENT_TAGS` est désormais vide par défaut et complété par un module de contenu. **Attention** : cet objet sert de `choices` au champ tags du modèle Équipement, un objet portant un tag non déclaré dans le monde courant échouera à la validation de ce champ.
 - La palette du système est consolidée dans `styles/palette.less` : toutes les couleurs de thème y sont déclarées en un seul endroit, sur `.theme-light` / `.theme-dark`. Un module peut désormais rhabiller entièrement le système en redéclarant ces deux sélecteurs dans sa propre feuille de style. **Rupture** : les variables sont renommées en `--co-<domaine>-<rôle>` (par exemple `--color-characterSheet` devient `--co-sheet-accent`), un thème tiers doit être mis à jour. Les couleurs des fenêtres de jet et des résultats de jet, jusqu'ici écrites en dur, sont également variabilisées.
-- Les fiches d'objets attaque, capacité, équipement et conteneur partageaient la même structure dupliquée : leur tronc commun est factorisé dans `styles/applications/sheets/items/full-sheet.less`. Le rendu est inchangé.
+- Les fiches d'objets attaque, capacité, équipement et conteneur partageaient la même structure css dupliquée : leur tronc commun est factorisé dans `styles/applications/sheets/items/full-sheet.less`. Le rendu est inchangé.
 
 # 2.2.0
 

@@ -83,24 +83,14 @@ export const EQUIPMENT_CURRENCIES = {
   },
 }
 
-export const EQUIPMENT_TAGS = {
-  dmtemporaires: {
-    id: "dmtemporaires",
-    label: "CO.equipment.tags.dmtemporaires",
-  },
-  dmtemporairespossibles: {
-    id: "dmtemporairespossibles",
-    label: "CO.equipment.tags.dmtemporairespossibles",
-  },
-  legere: {
-    id: "legere",
-    label: "CO.equipment.tags.legere",
-  },
-}
-
-// Pour permettre de les remplacer dans un autre module éventuellement
-// Il s'agit des items de base à donner à la création d'un joueur/encounter
-export const BASE_ITEM_UUID = {
-  hands: "Compendium.cof2-base.cof-2-base-items.Item.bwUmODTqsTqPbRr9",
-  support: "Compendium.cof2-base.cof-2-base-items.Item.0PawJrcH7daQ8RoJ",
-}
+/**
+ * Tags d'équipement, alimentés par un module de contenu (cf. cof2-base).
+ * Les tags existants — DM temporaires, DM temporaires possibles, arme légère — sont propres à COF2 et
+ * ne sont portés que par les compendiums de cof2-base, c'est donc lui qui les déclare.
+ *
+ * Attention : cet objet sert de `choices` au champ tags du modèle Equipment. Un équipement portant un
+ * tag non déclaré dans le monde courant échoue à la validation de ce champ.
+ *
+ * Non figé afin qu'un module puisse le compléter au hook init.
+ */
+export const EQUIPMENT_TAGS = {}

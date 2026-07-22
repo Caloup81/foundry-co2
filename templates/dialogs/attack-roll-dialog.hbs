@@ -108,12 +108,14 @@
                 {{ numberInput damageMalus max=0 step=1 name="damageMalus" class="field-value textCenter"}}
             </div>
         </div>
+        {{#if canBeTempDamage}}
         <div class="form-group">  
             <label class="textCenter">{{localize 'CO.ui.tempDamage'}}</label>
             <div class="form-fields">
                 <input class="temp-checkbox" type="checkbox" name="tempDamage" {{checked tempDamage}} data-canBeTempDamage="{{canBeTempDamage}}" />
             </div>  
         </div>
+        {{/if}}
     </fieldset>           
 {{/if}}     
 

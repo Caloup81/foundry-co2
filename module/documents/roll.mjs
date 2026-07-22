@@ -750,6 +750,8 @@ export class COAttackRoll extends CORoll {
       actorId: this.options.actorId,
       speaker: ChatMessage.getSpeaker({ actor: this.options.actorId, scene: canvas.scene }),
       tempDamage: this.options.tempDamage,
+      // Les dommages temporaires sont une règle propre à COF2 : la case n'est proposée que si un module l'active
+      showTempDamage: game.system.CONST.rules.tempDamage,
       formulaDamageTooltip: isPrivate ? "" : this.options.formulaDamageTooltip || "",
       targetResults: this.options.targetResults ?? [],
       hasTargetResults: (this.options.targetResults?.length ?? 0) > 0,

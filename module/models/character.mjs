@@ -179,10 +179,12 @@ export default class CharacterData extends ActorData {
         },
       })
 
-      if (game.modules.get("cof2-base")?.active) {
-        const items = await Promise.all(Object.values(game.system.CONST.BASE_ITEM_UUID).map((uuid) => fromUuid(uuid)))
+      // Objets de départ déclarés par un module de contenu (game.system.CONST.baseItems).
+      // Registre vide : aucun objet n'est ajouté, ce qui est le cas nominal d'un monde sans module.
+      if (game.system.CONST.baseItems.length > 0) {
+        const items = await Promise.all(game.system.CONST.baseItems.map((uuid) => fromUuid(uuid)))
         // The method updateSource will merge the arrays for embedded collections
-        updates.items = items.map((i) => game.items.fromCompendium(i, { keepId: true, clearFolder: true }))
+        updates.items = items.filter((i) => i).map((i) => game.items.fromCompendium(i, { keepId: true, clearFolder: true }))
       }
     }
 

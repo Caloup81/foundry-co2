@@ -122,12 +122,18 @@ Hooks.once("init", async function () {
     game.system.CONST.restActions = []
   }
 
-  // Points de chance : règle propre à COF2, activée par un module de contenu (cf. cof2-base).
-  // Toute la mécanique reste dans le système — relance, mise à jour des cartes de chat, requête MJ —
-  // seule sa disponibilité est conditionnée par ce drapeau.
-  if (game.system.CONST.hasLuckPoints === undefined) {
-    game.system.CONST.hasLuckPoints = false
+  // Objets de départ copiés sur tout nouveau personnage : ils dépendent de l'univers et sont donc
+  // déclarés par un module de contenu (cf. cof2-base, qui y met Mains nues et Support).
+  // Chaque entrée est l'UUID d'un objet de compendium.
+  if (!game.system.CONST.baseItems) {
+    game.system.CONST.baseItems = []
   }
+
+  // Règles propres à un univers, activées par un module de contenu (cf. cof2-base). Les mécaniques
+  // restent dans le système — relance des jets, application des dommages, récupération — seule leur
+  // disponibilité est conditionnée. L'ordre de l'Object.assign préserve les valeurs qu'un module
+  // chargé avant le système aurait déjà posées.
+  game.system.CONST.rules = Object.assign({ luckPoints: false, recoveryPoints: false, tempDamage: false }, game.system.CONST.rules)
 
   // Combat tracker
   if (game.settings.get("co2", "usevarInit")) {

@@ -258,8 +258,8 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
     // Actions de repos : boutons de la barre d'outils, apportés par un module de contenu
     context.restActions = game.system.CONST.restActions
 
-    // Points de chance : règle propre à COF2, activée par un module de contenu
-    context.hasLuckPoints = game.system.CONST.hasLuckPoints
+    // Règles propres à un univers, activées par un module de contenu
+    context.rules = game.system.CONST.rules
 
     // Status Effects
     // Un acteur peut porter un statut qui n'est plus déclaré dans CONFIG.statusEffects, par exemple si le module qui l'ajoutait a été désactivé

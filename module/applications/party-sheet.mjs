@@ -54,8 +54,8 @@ export default class COPartySheet extends HandlebarsApplicationMixin(foundry.app
         }
       })
 
-    // Points de chance : règle propre à COF2, activée par un module de contenu
-    context.hasLuckPoints = game.system.CONST.hasLuckPoints
+    // Règles propres à un univers, activées par un module de contenu
+    context.rules = game.system.CONST.rules
 
     return context
   }

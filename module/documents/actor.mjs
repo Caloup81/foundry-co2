@@ -1218,12 +1218,12 @@ export default class COActor extends Actor {
   /**
    * L'acteur dispose-t-il d'un point de chance utilisable ?
    * Faux si aucun module de contenu n'active la règle : les points de chance sont propres à COF2 et
-   * sont conditionnés par game.system.CONST.hasLuckPoints.
+   * sont conditionnés par game.system.CONST.rules.luckPoints.
    *
    * @returns {boolean}
    */
   get hasLuckyPoints() {
-    if (!game.system.CONST.hasLuckPoints) return false
+    if (!game.system.CONST.rules.luckPoints) return false
     return (this.system.resources?.fortune?.value ?? 0) > 0
   }
 
@@ -2109,18 +2109,22 @@ export default class COActor extends Actor {
       return ui.notifications.warn(game.i18n.localize("CO.notif.warningNoAmmo"))
     }
 
-    // Gestion des dommages temporaires
+    // Gestion des dommages temporaires : règle propre à COF2, pilotée par les tags de l'arme.
+    // Les tags sont déclarés par le module de contenu qui les porte (cf. cof2-base), le système ne
+    // connaît que leurs identifiants et n'y réagit que si la règle est activée.
     let tempDamage = false
     let canBeTempDamage = false
 
-    // Si c'est une arme, on vérifie si elle a le tag DM temporaire
-    if (item.type === "equipment" && item.tags.has(SYSTEM.EQUIPMENT_TAGS.dmtemporaires.id)) {
-      tempDamage = true
-      canBeTempDamage = true
-    }
-    // Si c'est une arme et qu'elle peut faire des dommages temporaires (Exemple : arme contondante)
-    if (item.type === "equipment" && item.tags.has(SYSTEM.EQUIPMENT_TAGS.dmtemporairespossibles.id)) {
-      canBeTempDamage = true
+    if (game.system.CONST.rules.tempDamage && item.type === "equipment") {
+      // Le tag DM temporaires impose les dommages temporaires
+      if (item.tags.has("dmtemporaires")) {
+        tempDamage = true
+        canBeTempDamage = true
+      }
+      // Le tag DM temporaires possibles les propose (exemple : arme contondante)
+      if (item.tags.has("dmtemporairespossibles")) {
+        canBeTempDamage = true
+      }
     }
 
     // Gestion de l'option tactique : contrôle des valeurs

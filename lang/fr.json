@@ -1230,11 +1230,6 @@
         "ranged": "Arme à distance",
         "thrown": "Arme de jet",
         "magical": "Arme magique"
-      },
-      "tags": {
-        "dmtemporaires": "Les DMs sont temporaires",
-        "dmtemporairespossibles": "DM temporaires possibles",
-        "legere": "Arme légère"
       }
     },
     "capacity": {

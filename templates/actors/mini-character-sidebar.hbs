@@ -13,6 +13,7 @@
     </div>
   </div>
 
+  {{#if rules.tempDamage}}
   <!-- Temp HP -->
   <div class="sidebar-section health-section">
     <div class="sidebar-section-header">
@@ -23,6 +24,7 @@
     </div>
   </div>
 
+  {{/if}}
   <!-- DEF -->
   <div class="sidebar-section armor-section">
     <div class="sidebar-section-header">
@@ -33,7 +35,7 @@
     </div>
   </div>
 
-  {{#if hasLuckPoints}}
+  {{#if rules.luckPoints}}
   <!-- FP -->
   <div class="sidebar-section resource-section mini-section">
     <div class="sidebar-section-header">
@@ -47,6 +49,7 @@
   </div>
   {{/if}}
 
+  {{#if rules.recoveryPoints}}
   <!-- RP -->
   <div class="sidebar-section resource-section mini-section">
     <div class="sidebar-section-header">
@@ -59,6 +62,7 @@
     </div>
   </div>
 
+  {{/if}}
   <!-- MP -->
   <div class="sidebar-section resource-section mini-section">
     <div class="sidebar-section-header">

@@ -32,12 +32,14 @@
         <div class="form-group total-result">
           <div>{{total}}</div><div class="dm-text"> DM</div>
         </div>
+        {{#if showTempDamage}}
         <div class="damage-options">
           <div class="temp-dm">
             <label for="tempDm" class="temp-dm-checkbox" data-tooltip="{{localize 'CO.ui.tempText'}}" data-tooltip-direction="UP">{{localize 'CO.ui.temp'}}</label>
             <input type="checkbox" id="tempDm" name="tempDm" class="temp-dm-checkbox" {{checked tempDamage}} />
           </div>
         </div>
+        {{/if}}
       </div>
     </section>
     <section class="targets">
