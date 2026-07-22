@@ -88,8 +88,9 @@ export const EQUIPMENT_CURRENCIES = {
  * Les tags existants — DM temporaires, DM temporaires possibles, arme légère — sont propres à COF2 et
  * ne sont portés que par les compendiums de cof2-base, c'est donc lui qui les déclare.
  *
- * Attention : cet objet sert de `choices` au champ tags du modèle Equipment. Un équipement portant un
- * tag non déclaré dans le monde courant échoue à la validation de ce champ.
+ * Cet objet alimente le picker de tags de la feuille d'équipement (via `context.equipmentTagChoices`).
+ * Le champ `tags` du modèle n'impose plus `choices` : un équipement portant un tag non déclaré dans le monde
+ * courant (module désactivé, compilation CLI des packs, timing d'init) est conservé sans échec de validation.
  *
  * Non figé afin qu'un module puisse le compléter au hook init.
  */

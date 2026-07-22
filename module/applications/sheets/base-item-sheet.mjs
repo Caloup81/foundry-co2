@@ -174,6 +174,9 @@ export default class COBaseItemSheet extends HandlebarsApplicationMixin(sheets.I
     context.modifiers = this.document.system.modifiers
     context.enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(this.document.system.description, { async: true })
     context.tags = this.document.tags
+    // Options du multi-select de tags. Le champ `tags` du modèle n'impose plus `choices` (cf. models/equipment.mjs) :
+    // on alimente donc le picker explicitement à partir des tags déclarés (le cas échéant par un module de contenu).
+    context.equipmentTagChoices = Object.values(SYSTEM.EQUIPMENT_TAGS).map((tag) => ({ value: tag.id, label: tag.label }))
 
     context.unlocked = this.isEditMode
     context.locked = this.isPlayMode

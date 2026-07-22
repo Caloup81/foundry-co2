@@ -24,7 +24,12 @@ export default class EquipmentData extends ItemData {
     const fields = foundry.data.fields
     return foundry.utils.mergeObject(super.defineSchema(), {
       subtype: new fields.StringField({ required: true }),
-      tags: new fields.SetField(new fields.StringField({ required: false, blank: true, choices: SYSTEM.EQUIPMENT_TAGS })),
+      // Pas de `choices` sur le champ : les tags propres à COF2 sont déclarés par un module de contenu (cf. cof2-base),
+      // et un tag non déclaré dans le monde courant (module désactivé, compilation CLI des packs, timing d'init) ne doit
+      // jamais faire échouer la validation — ce qui casserait l'acteur entier. Le picker curé est fourni par la feuille
+      // (options=SYSTEM.EQUIPMENT_TAGS). Un tag inconnu est conservé, inerte : le système ne réagit à un tag que si la
+      // règle correspondante est activée.
+      tags: new fields.SetField(new fields.StringField({ required: false, blank: true })),
       martialCategory: new fields.StringField({ required: true }),
       damagetype: new fields.StringField({ required: true }),
       defense: new fields.NumberField({ integer: true, positive: true }),

@@ -126,7 +126,7 @@
                         <div class="form-group">
                             <label>{{localize "CO.label.long.special"}}</label>
                             <div class="tags">
-                                {{formInput systemFields.tags value=system.tags localize=true disabled=locked}}
+                                {{formInput systemFields.tags value=system.tags options=equipmentTagChoices localize=true disabled=locked}}
                             </div>
                         </div>
                     {{/if}}
