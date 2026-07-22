@@ -252,7 +252,8 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
     context.stateModifiers = this.document.system.stateModifiers
 
     // Status Effects
-    const statusEffects = this.actor.statuses
+    // Un acteur peut porter un statut qui n'est plus déclaré dans CONFIG.statusEffects, par exemple si le module qui l'ajoutait a été désactivé
+    const statusEffects = this.actor.statuses.filter((effectid) => CONFIG.statusEffects.some((se) => se.id === effectid))
     context.statusEffects = statusEffects.map((effectid) => {
       const effectConfig = CONFIG.statusEffects.find((se) => se.id === effectid)
       return {
