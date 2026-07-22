@@ -30,12 +30,12 @@
                         <i class="fa-solid fa-shapes"></i>
                     </button>
                 </a>
-                <a class="item-control">
-                    <i class="fa-solid fa-mug-saucer" data-action="useRecovery" data-option="fastRest" data-tooltip="{{localize 'CO.ui.fastRest'}}" data-tooltip-direction="UP"></i>
-                </a>
-                <a class="item-control">
-                    <i class="fa-solid fa-bed" data-action="useRecovery" data-option="fullRest" data-tooltip="{{localize 'CO.ui.fullRest'}}" data-tooltip-direction="UP"></i>
-                </a>
+                {{!-- Actions de repos : apportées par un module de contenu, aucun bouton si le registre est vide --}}
+                {{#each restActions as |rest|}}
+                    <a class="item-control">
+                        <i class="{{rest.icon}}" data-action="useRest" data-rest="{{rest.id}}" data-tooltip="{{localize rest.label}}" data-tooltip-direction="UP"></i>
+                    </a>
+                {{/each}}
                 {{!-- Postures défensives : apportées par un module de contenu, aucun bouton si le registre est vide --}}
                 {{#each defenseStances as |stance|}}
                     <a class="item-control"

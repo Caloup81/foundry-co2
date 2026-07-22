@@ -26,7 +26,6 @@ export default class COCharacterSheet extends COBaseActorSheet {
       decreaseCharge: COCharacterSheet.#onDecrease,
       increaseItem: COCharacterSheet.#onIncrease,
       increaseCharge: COCharacterSheet.#onIncrease,
-      useRecovery: COCharacterSheet.#onUseRecovery,
       openMiniSheet: COCharacterSheet.#onOpenMiniSheet,
       rollFortune: COCharacterSheet.#onRollFortune,
     },
@@ -186,22 +185,6 @@ export default class COCharacterSheet extends COBaseActorSheet {
     } else if (action === "unactivate") {
       activation = await this.document.activateCOStatusEffect({ state: false, effectid })
     }
-  }
-
-  /**
-   * Gère l'utilisation des points de récupération ou du repos complet pour l'acteur.
-   *
-   * @param {PointerEvent} event The originating click event
-   * @param {HTMLElement} target The capturing HTML element which defined a [data-action]
-   */
-  static #onUseRecovery(event, target) {
-    // Vérification du droit Owner
-    if (!this.isEditable) return
-    event.preventDefault()
-    const dataset = target.dataset
-    let isFullRest = false
-    if (dataset.option && dataset.option === "fullRest") isFullRest = true
-    return this.document.system.useRecovery(isFullRest)
   }
 
   /**

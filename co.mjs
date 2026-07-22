@@ -114,6 +114,14 @@ Hooks.once("init", async function () {
     game.system.CONST.defenseStances = []
   }
 
+  // Actions de repos : les règles de récupération sont propres à chaque univers, les boutons sont donc
+  // apportés par un module de contenu (cf. cof2-base). Chaque entrée décrit le bouton de la barre
+  // d'outils des fiches et l'action à exécuter : { id, icon, label, handler(actor) }.
+  // La mécanique elle-même (CharacterData#useRecovery) reste dans le système.
+  if (!game.system.CONST.restActions) {
+    game.system.CONST.restActions = []
+  }
+
   // Combat tracker
   if (game.settings.get("co2", "usevarInit")) {
     CONFIG.Combat.initiative = {

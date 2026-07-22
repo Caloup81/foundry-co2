@@ -30,6 +30,7 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
       editImage: COBaseActorSheet.#onEditImage,
       activateDef: COBaseActorSheet.#onActivateDef,
       deactivateDef: COBaseActorSheet.#onDeactivateDef,
+      useRest: COBaseActorSheet.#onUseRest,
       toggleSection: COBaseActorSheet.#onSectionToggle,
       sendToChat: COBaseActorSheet.#onSendToChat,
       createItem: COBaseActorSheet.#onCreateItem,
@@ -253,6 +254,9 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
 
     // Postures défensives : boutons de la barre d'outils, apportés par un module de contenu
     context.defenseStances = game.system.CONST.defenseStances.map((stance) => ({ ...stance, active: this.actor.hasEffect(stance.id) }))
+
+    // Actions de repos : boutons de la barre d'outils, apportés par un module de contenu
+    context.restActions = game.system.CONST.restActions
 
     // Status Effects
     // Un acteur peut porter un statut qui n'est plus déclaré dans CONFIG.statusEffects, par exemple si le module qui l'ajoutait a été désactivé
@@ -788,6 +792,18 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
     if (!this.isEditable) return
     const effect = target.dataset.effect
     this._handleDef(effect, false)
+  }
+
+  /**
+   * Déclenche une action de repos déclarée par un module de contenu (game.system.CONST.restActions).
+   * Le système ne connaît pas les règles de récupération de chaque univers : il se contente d'exécuter
+   * le handler porté par l'entrée du registre.
+   */
+  static async #onUseRest(event, target) {
+    // Vérification du droit Owner
+    if (!this.isEditable) return
+    const rest = game.system.CONST.restActions.find((action) => action.id === target.dataset.rest)
+    if (rest) return rest.handler(this.document)
   }
 
   async _handleDef(effect, state) {

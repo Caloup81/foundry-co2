@@ -10,7 +10,6 @@ export class COMiniCharacterSheet extends COBaseActorSheet {
     },
     actions: {
       roll: COMiniCharacterSheet.#onRoll,
-      useRecovery: COMiniCharacterSheet.#onUseRecovery,
       rollFortune: COMiniCharacterSheet.#onRollFortune,
     },
   }
@@ -62,20 +61,6 @@ export class COMiniCharacterSheet extends COBaseActorSheet {
         // Handle other roll types
         break
     }
-  }
-
-  /**
-   * Gère l'utilisation des points de récupération ou du repos complet pour l'acteur.
-   *
-   * @param {PointerEvent} event The originating click event
-   * @param {HTMLElement} target The capturing HTML element which defined a [data-action]
-   */
-  static #onUseRecovery(event, target) {
-    event.preventDefault()
-    const dataset = target.dataset
-    let isFullRest = false
-    if (dataset.option && dataset.option === "fullRest") isFullRest = true
-    return this.document.system.useRecovery(isFullRest)
   }
 
   static async #onRollFortune(event, target) {
