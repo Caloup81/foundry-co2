@@ -38,10 +38,6 @@ export class COMiniCharacterSheet extends COBaseActorSheet {
     const context = await super._prepareContext()
     context.isMinimized = true
 
-    // Gestion des défenses
-    context.partialDef = this.document.hasEffect("partialDef")
-    context.fullDef = this.document.hasEffect("fullDef")
-
     return context
   }
 

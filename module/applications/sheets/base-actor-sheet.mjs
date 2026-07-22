@@ -251,6 +251,9 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
 
     context.stateModifiers = this.document.system.stateModifiers
 
+    // Postures défensives : boutons de la barre d'outils, apportés par un module de contenu
+    context.defenseStances = game.system.CONST.defenseStances.map((stance) => ({ ...stance, active: this.actor.hasEffect(stance.id) }))
+
     // Status Effects
     // Un acteur peut porter un statut qui n'est plus déclaré dans CONFIG.statusEffects, par exemple si le module qui l'ajoutait a été désactivé
     const statusEffects = this.actor.statuses.filter((effectid) => CONFIG.statusEffects.some((se) => se.id === effectid))
@@ -788,17 +791,8 @@ export default class COBaseActorSheet extends HandlebarsApplicationMixin(sheets.
   }
 
   async _handleDef(effect, state) {
-    // On ne peut pas activer à la fois la défense partielle et la défense totale
-    if (effect === "partialDef" && state) {
-      if (this.actor.hasEffect("fullDef")) {
-        return ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
-      }
-    }
-    if (effect === "fullDef" && state) {
-      if (this.actor.hasEffect("partialDef")) {
-        return ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
-      }
-    }
+    // On ne peut pas cumuler deux postures défensives
+    if (state && !this.actor.canActivateDefenseStance(effect)) return
 
     const hasEffect = this.actor.statuses.has(effect)
     if (hasEffect && state === false) return await this.actor.toggleStatusEffect(effect, state)

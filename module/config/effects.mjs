@@ -32,8 +32,6 @@ Autres états
   poison : Empoisonné
   invisible : Invisible
   unconscious : Inconscient
-  partialDef : En défense partielle (A)
-  fullDef : En défense totale (B)
   customEffect : Subit des effets additionnels
 
 */
@@ -266,32 +264,8 @@ export const CUSTOM_STATUS_EFFECT = [
     name: "CO.customStatus.unconscious",
     img: "icons/svg/unconscious.svg",
   },
-  {
-    id: "partialDef",
-    name: "CO.customStatus.partialDef",
-    img: "systems/co2/ui/effects/partialdef.webp",
-    changes: [
-      {
-        key: "system.combat.def.bonuses.effects",
-        mode: 2,
-        value: 3,
-      },
-    ],
-    description: "CO.customStatus.partialDefDescription",
-  },
-  {
-    id: "fullDef",
-    name: "CO.customStatus.fullDef",
-    img: "systems/co2/ui/effects/totaldef.webp",
-    changes: [
-      {
-        key: "system.combat.def.bonuses.effects",
-        mode: 2,
-        value: 5,
-      },
-    ],
-    description: "CO.customStatus.fullDefDescription",
-  },
+  // Les postures défensives (défense partielle et totale) sont une manœuvre propre à COF2 :
+  // elles sont fournies par un module de contenu via game.system.CONST.defenseStances
   {
     id: "customEffect",
     name: "CO.customStatus.customEffect",

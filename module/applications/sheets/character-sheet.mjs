@@ -86,10 +86,6 @@ export default class COCharacterSheet extends COBaseActorSheet {
     context.xpLeft = await this.document.system.getAvailableXP()
     context.overloadMalus = this.document.malusFromArmor
 
-    // Gestion des défenses
-    context.partialDef = this.document.hasEffect("partialDef")
-    context.fullDef = this.document.hasEffect("fullDef")
-
     // Biographie et Apparence
     context.enrichedBiographyPublic = await foundry.applications.ux.TextEditor.implementation.enrichHTML(this.document.system.details.biography.public, { async: true })
     context.enrichedBiographyPrivate = await foundry.applications.ux.TextEditor.implementation.enrichHTML(this.document.system.details.biography.private, { async: true })

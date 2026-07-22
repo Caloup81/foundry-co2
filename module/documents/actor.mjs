@@ -446,6 +446,25 @@ export default class COActor extends Actor {
     return this.statuses.has(effectid)
   }
 
+  /**
+   * Vérifie qu'aucune autre posture défensive n'est déjà active avant d'en activer une.
+   * Les postures sont apportées par un module de contenu via game.system.CONST.defenseStances :
+   * si l'effet n'en est pas une, il n'y a rien à contrôler.
+   *
+   * @param {string} effectid Identifiant du statut que l'on cherche à activer
+   * @returns {boolean} false si une autre posture est déjà active, avec un avertissement à l'utilisateur
+   */
+  canActivateDefenseStance(effectid) {
+    const stances = game.system.CONST.defenseStances
+    if (!stances.some((stance) => stance.id === effectid)) return true
+
+    const active = stances.find((stance) => stance.id !== effectid && this.hasEffect(stance.id))
+    if (!active) return true
+
+    ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
+    return false
+  }
+
   get isWeakened() {
     return this.hasEffect("weakened")
   }
@@ -684,7 +703,7 @@ export default class COActor extends Actor {
 
   /**
    * Active ou désactive un effet de statut spécifique CO
-   * Assure que les effets de défense partielle et totale ne peuvent pas être actifs simultanément.
+   * Assure que deux postures défensives ne peuvent pas être actives simultanément.
    *
    * @param {Object} [params={}] Les paramètres de la fonction.
    * @param {boolean} params.state L'état à définir pour l'effet (true pour activer, false pour désactiver).
@@ -696,19 +715,8 @@ export default class COActor extends Actor {
     // FIXME Trouver pourquoi ça vaut ""
     if (effectid === "") return false
 
-    // On ne peut pas activer à la fois la défense partielle et la défense totale
-    if (effectid === "partialDef" && state) {
-      if (this.hasEffect("fullDef")) {
-        ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
-        return false
-      }
-    }
-    if (effectid === "fullDef" && state) {
-      if (this.hasEffect("partialDef")) {
-        ui.notifications.warn(game.i18n.localize("CO.notif.cantUseAllDef"))
-        return false
-      }
-    }
+    // On ne peut pas cumuler deux postures défensives
+    if (state && !this.canActivateDefenseStance(effectid)) return false
 
     if (state) {
       // Si on doit activer un effet, on vérifie les immunités

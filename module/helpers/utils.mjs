@@ -630,4 +630,29 @@ export default class Utils {
       isFumble: !!attackResult.isFumble,
     }
   }
+
+  /**
+   * Retire les effets de posture défensive restés sur les acteurs lorsque plus aucun module ne les déclare.
+   * Les postures ont quitté le système pour un module de contenu : sans ce nettoyage, un acteur sauvegardé
+   * en défense partielle ou totale conserverait son bonus de DEF sans que rien ne l'affiche, le statut
+   * n'étant plus listé sur la fiche.
+   *
+   * Le balayage est volontairement limité à ces deux identifiants : supprimer tout effet dont le statut est
+   * inconnu effacerait les statuts de n'importe quel module temporairement désactivé.
+   * À appeler au hook ready, une fois que tous les modules ont déclaré leurs statuts.
+   */
+  static async removeOrphanDefenseStances() {
+    const orphans = ["partialDef", "fullDef"].filter((id) => !CONFIG.statusEffects.some((effect) => effect.id === id))
+    if (orphans.length === 0) return
+
+    let removed = 0
+    for (const actor of game.actors) {
+      const ids = actor.effects.filter((effect) => orphans.some((id) => effect.statuses.has(id))).map((effect) => effect.id)
+      if (ids.length === 0) continue
+      await actor.deleteEmbeddedDocuments("ActiveEffect", ids)
+      removed += ids.length
+    }
+
+    if (removed > 0) ui.notifications.info(game.i18n.format("CO.notif.orphanDefenseStancesRemoved", { count: removed }))
+  }
 }

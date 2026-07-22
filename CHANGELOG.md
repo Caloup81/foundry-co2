@@ -4,6 +4,7 @@
 
 - Profil : gestion de l'équipement de départ (par glisser-déposer) automatiquement copié sur le personnage lors de l'attribution du profil
 - Nouveau type d'objet : Conteneur
+- Les postures défensives (défense partielle et défense totale) sont une manœuvre propre à Chroniques Oubliées Fantasy. **Le module cof2-base est désormais nécessaire pour en disposer.** Les effets restés sur les acteurs sont retirés automatiquement si plus aucun module ne déclare ces postures.
 
 # 2.2.0
 

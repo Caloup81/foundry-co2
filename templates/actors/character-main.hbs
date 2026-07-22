@@ -36,20 +36,16 @@
                 <a class="item-control">
                     <i class="fa-solid fa-bed" data-action="useRecovery" data-option="fullRest" data-tooltip="{{localize 'CO.ui.fullRest'}}" data-tooltip-direction="UP"></i>
                 </a>
-                <a class="item-control"
-                    data-tooltip-direction="UP" 
-                    data-tooltip="{{#if partialDef}}{{localize 'CO.customStatus.partialDefDeactivate'}}{{else}}{{localize 'CO.customStatus.partialDefActivate'}}{{/if}}" 
-                    data-action="{{#if partialDef}}deactivateDef{{else}}activateDef{{/if}}" 
-                    data-effect="partialDef">
-                        <i class="fa-solid fa-shield-halved {{#if partialDef}}enabled{{else}}disabled{{/if}} toggle-effect"></i>
-                </a>
-                <a class="item-control"
-                    data-tooltip-direction="UP" 
-                    data-tooltip="{{#if fullDef}}{{localize 'CO.customStatus.fullDefDeactivate'}}{{else}}{{localize 'CO.customStatus.fullDefActivate'}}{{/if}}" 
-                    data-action="{{#if fullDef}}deactivateDef{{else}}activateDef{{/if}}"
-                    data-effect="fullDef">
-                        <i class="fa-solid fa-shield {{#if fullDef}}enabled{{else}}disabled{{/if}} toggle-effect"></i>
-                </a>
+                {{!-- Postures défensives : apportées par un module de contenu, aucun bouton si le registre est vide --}}
+                {{#each defenseStances as |stance|}}
+                    <a class="item-control"
+                        data-tooltip-direction="UP"
+                        data-tooltip="{{#if stance.active}}{{localize stance.deactivateLabel}}{{else}}{{localize stance.activateLabel}}{{/if}}"
+                        data-action="{{#if stance.active}}deactivateDef{{else}}activateDef{{/if}}"
+                        data-effect="{{stance.id}}">
+                            <i class="{{stance.icon}} {{#if stance.active}}enabled{{else}}disabled{{/if}} toggle-effect"></i>
+                    </a>
+                {{/each}}
             </div>
         </div>
         <!-- ACTIONS -->

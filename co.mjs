@@ -107,6 +107,13 @@ Hooks.once("init", async function () {
     game.system.CONST.martialTrainingsShields = []
   }
 
+  // Postures défensives : manœuvre propre à COF2, apportée par un module de contenu (cf. cof2-base).
+  // Chaque entrée décrit le bouton de la barre d'outils des fiches : { id, icon, activateLabel, deactivateLabel },
+  // le statut lui-même étant une entrée ordinaire de CONFIG.statusEffects.
+  if (!game.system.CONST.defenseStances) {
+    game.system.CONST.defenseStances = []
+  }
+
   // Combat tracker
   if (game.settings.get("co2", "usevarInit")) {
     CONFIG.Combat.initiative = {
@@ -215,6 +222,10 @@ Hooks.once("ready", async function () {
   if (game.user.isGM && game.settings.get("co2", "displayDifficulty") === "none") {
     await game.settings.set("co2", "displayDifficulty", "gm")
   }
+
+  // Migration : les postures défensives sont passées du système à un module de contenu.
+  // Si plus aucun module ne les déclare, on retire les effets restés sur les acteurs.
+  if (game.user.isGM) await helpers.Utils.removeOrphanDefenseStances()
 
   // Statistics
   registerWorldCount("co2")
