@@ -17,7 +17,7 @@
       <th class="col-combat">{{localize "CO.combat.short.init"}}</th>
       <th class="col-combat">{{localize "CO.combat.short.def"}}</th>
       <th class="col-resource">{{localize "CO.label.short.hp"}}</th>
-      <th class="col-resource">{{localize "CO.resources.short.fortune"}}</th>
+      {{#if hasLuckPoints}}<th class="col-resource">{{localize "CO.resources.short.fortune"}}</th>{{/if}}
       <th class="col-resource">{{localize "CO.resources.short.recovery"}}</th>
       <th class="col-resource">{{localize "CO.resources.short.mana"}}</th>
     </tr>
@@ -48,7 +48,7 @@
       <td class="col-combat">{{this.combat.init.value}}</td>
       <td class="col-combat">{{this.combat.def.value}}</td>
       <td class="col-resource">{{this.hp.value}} / {{this.hp.max}}</td>
-      <td class="col-resource">{{this.fortune.value}} / {{this.fortune.max}}</td>
+      {{#if @root.hasLuckPoints}}<td class="col-resource">{{this.fortune.value}} / {{this.fortune.max}}</td>{{/if}}
       <td class="col-resource">{{this.recovery.value}} / {{this.recovery.max}}</td>
       <td class="col-resource">{{this.mana.value}} / {{this.mana.max}}</td>
     </tr>

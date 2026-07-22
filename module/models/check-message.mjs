@@ -84,7 +84,7 @@ export default class CheckMessageData extends BaseMessageData {
         const analysis = rollResult.result
 
         // Check if consequences should be deferred (player has lucky points, roll is a failure, and +10 could change the outcome)
-        const hasLuckyPoints = actor.system.resources?.fortune && actor.system.resources.fortune.value > 0
+        const hasLuckyPoints = actor.hasLuckyPoints
         const couldSucceedWithLuck = !analysis.difficulty || analysis.total + 10 >= analysis.difficulty
         const shouldDefer = hasLuckyPoints && analysis.isFailure && couldSucceedWithLuck
 

@@ -1216,6 +1216,18 @@ export default class COActor extends Actor {
   }
 
   /**
+   * L'acteur dispose-t-il d'un point de chance utilisable ?
+   * Faux si aucun module de contenu n'active la règle : les points de chance sont propres à COF2 et
+   * sont conditionnés par game.system.CONST.hasLuckPoints.
+   *
+   * @returns {boolean}
+   */
+  get hasLuckyPoints() {
+    if (!game.system.CONST.hasLuckPoints) return false
+    return (this.system.resources?.fortune?.value ?? 0) > 0
+  }
+
+  /**
    * Spends a specified amount of lucky points from the actor's fortune resources.
    * Reduces the current lucky points by the given amount, ensuring the value doesn't go below zero.
    *
@@ -1911,8 +1923,7 @@ export default class COActor extends Actor {
     const hasSkillBonuses = skillBonuses.length > 0
 
     // Gestion des points de chance
-    let hasLuckyPoints = false
-    if (this.system.resources?.fortune && this.system.resources.fortune.value > 0) hasLuckyPoints = true
+    const hasLuckyPoints = this.hasLuckyPoints
 
     // Construction du titre avec le format "FORce", "AGIlité", etc.
     const shortAbility = game.i18n.localize(`CO.abilities.short.${skillId}`)
@@ -2265,8 +2276,7 @@ export default class COActor extends Actor {
     }
 
     // Gestion des points de chance
-    let hasLuckyPoints = false
-    if (this.system.resources?.fortune && this.system.resources.fortune.value > 0) hasLuckyPoints = true
+    const hasLuckyPoints = this.hasLuckyPoints
 
     // Construction du message de chat
     if (chatFlavor === "") chatFlavor = `${item.name} ${actionName}`

@@ -122,6 +122,13 @@ Hooks.once("init", async function () {
     game.system.CONST.restActions = []
   }
 
+  // Points de chance : règle propre à COF2, activée par un module de contenu (cf. cof2-base).
+  // Toute la mécanique reste dans le système — relance, mise à jour des cartes de chat, requête MJ —
+  // seule sa disponibilité est conditionnée par ce drapeau.
+  if (game.system.CONST.hasLuckPoints === undefined) {
+    game.system.CONST.hasLuckPoints = false
+  }
+
   // Combat tracker
   if (game.settings.get("co2", "usevarInit")) {
     CONFIG.Combat.initiative = {

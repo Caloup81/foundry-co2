@@ -66,7 +66,7 @@ export default class OpposedRollHandler {
       flavor,
       actorName: targetActor.name,
       actorId: targetActor.id,
-      hasLuckyPoints: targetActor.system.resources?.fortune?.value > 0,
+      hasLuckyPoints: targetActor.hasLuckyPoints,
     }
   }
 

@@ -16,8 +16,8 @@ export default class SaveRollHandler {
 
     const rollResult = CORoll.analyseRollResult(targetRollSkill.roll)
     const actorId = targetActor.id ?? targetRollSkill.roll.options?.actorId
-    const actorObj = actorId ? game.actors.get(actorId) : null
-    const hasLucky = actorObj?.type === "character" && (actorObj?.system?.resources?.fortune?.value ?? 0) > 0
+    const actor = actorId ? game.actors.get(actorId) : null
+    const hasLucky = actor?.type === "character" && actor.hasLuckyPoints
 
     return {
       roll: targetRollSkill.roll,
@@ -33,6 +33,7 @@ export default class SaveRollHandler {
    * @param {Actor} params.saverActor L'acteur qui dépense son point de chance
    * @param {ChatMessage} params.message Le message de chat
    * @param {string} params.targetUuid UUID de la cible dans targetResults
+   * @param {boolean} [params.deferEffects=false] Si true, les effets ne sont pas appliqués immédiatement (pour les sauvegardes avec le MJ)
    */
   static async spendSaverLuckyPoint({ saverActor, message, targetUuid, deferEffects = false }) {
     if (!saverActor) return
