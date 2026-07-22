@@ -5,6 +5,8 @@
 - Profil : gestion de l'équipement de départ (par glisser-déposer) automatiquement copié sur le personnage lors de l'attribution du profil
 - Nouveau type d'objet : Conteneur
 - Les postures défensives (défense partielle et défense totale) sont une manœuvre propre à Chroniques Oubliées Fantasy. **Le module cof2-base est désormais nécessaire pour en disposer.** Les effets restés sur les acteurs sont retirés automatiquement si plus aucun module ne déclare ces postures.
+- La palette du système est consolidée dans `styles/palette.less` : toutes les couleurs de thème y sont déclarées en un seul endroit, sur `.theme-light` / `.theme-dark`. Un module peut désormais rhabiller entièrement le système en redéclarant ces deux sélecteurs dans sa propre feuille de style. **Rupture** : les variables sont renommées en `--co-<domaine>-<rôle>` (par exemple `--color-characterSheet` devient `--co-sheet-accent`), un thème tiers doit être mis à jour. Les couleurs des fenêtres de jet et des résultats de jet, jusqu'ici écrites en dur, sont également variabilisées.
+- Les fiches d'objets attaque, capacité, équipement et conteneur partageaient la même structure dupliquée : leur tronc commun est factorisé dans `styles/applications/sheets/items/full-sheet.less`. Le rendu est inchangé.
 
 # 2.2.0
 

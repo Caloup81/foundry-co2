@@ -1,24 +1,24 @@
+@import "./palette.less";
+
 @import "./typo.less";
 
 @import "./elements/_index.less";
 
 .co {
   @import "./prose-mirror.less";
-  --color-green: #44a12b;
-  --color-grey: #c2b9b7;
 
   .enabled {
-    color: var(--color-green);
+    color: var(--co-green);
   }
 
   .inactivated {
     color: #999;
   }
   .green {
-    color: var(--color-green);
+    color: var(--co-green);
   }
   .blue {
-    color: var(--color-abilities);
+    color: var(--co-sheet-accent-alt);
   }
 
   .theme-dark & {
@@ -28,7 +28,7 @@
     h4,
     label,
     span {
-      color: var(--color-background-grey);
+      color: var(--co-surface);
     }
   }
   @import "./forms.less";

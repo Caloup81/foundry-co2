@@ -1,9 +1,9 @@
 .sheet-header {
   .theme-dark & {
-    background: linear-gradient(5deg, var(--color-path-dark) 60%, #000000);
+    background: linear-gradient(5deg, var(--co-item-dark) 60%, #000000);
   }
   .theme-light & {
-    background: linear-gradient(5deg, var(--color-path-light) 60%, var(--color-path-dark));
+    background: linear-gradient(5deg, var(--co-item-light) 60%, var(--co-item-dark));
   }
 }
 .window-content {
@@ -32,10 +32,10 @@
     margin-bottom: 5px;
     text-align: center;
     .theme-dark & {
-      color: var(--color-path-light);
+      color: var(--co-item-light);
     }
     .theme-light & {
-      color: var(--color-path-dark);
+      color: var(--co-item-dark);
     }
   }
 
@@ -48,12 +48,12 @@
     padding: 4px 10px 0px 15px;
     border-radius: 12px 12px 0px 0px;
     .theme-dark & {
-      background-color: var(--color-path-dark);
-      color: #e7d1b1;
+      background-color: var(--co-item-dark);
+      color: var(--co-text-light);
     }
     .theme-light & {
-      background-color: var(--color-path-light);
-      color: #222;
+      background-color: var(--co-item-light);
+      color: var(--co-text-dark);
     }
   }
 }

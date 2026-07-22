@@ -1,15 +1,15 @@
 &.skill-roll {
   .window-header {
     border-radius: 5px 5px 0 0;
-    background-color: var(--color-backgroundSkillDialog);
-    border-bottom: 2px solid #5d142b;
+    background-color: var(--co-dialog-skill-bg);
+    border-bottom: 2px solid var(--co-dialog-skill-accent);
     .window-title {
       text-align: center;
       font-size: 25px;
       font-weight: bold;
-      color: #5d142b;
+      color: var(--co-dialog-skill-accent);
       .theme-dark & {
-        color: #b3b4b5;
+        color: var(--co-dialog-muted);
       }
     }
     /*.theme-dark & {
@@ -24,41 +24,41 @@
     align-content: center;
   }
   #totalSkillBonuses {
-    color: #5d142b;
+    color: var(--co-dialog-skill-accent);
     font-weight: bolder;
     font-size: 30px;
     .theme-dark & {
-      color: #d33e6d;
+      color: var(--co-dialog-skill-highlight);
     }
   }
 
   .window-content {
-    background-color: var(--color-backgroundSkillDialog);
+    background-color: var(--co-dialog-skill-bg);
     padding: 10px;
     .skill-roll-1 {
       display: grid;
       grid-template-columns: 0.5fr 1.3fr 0.3fr 1.4fr 0.3fr 2.2fr;
       padding-bottom: 6px;
-      border-bottom: 2px solid #5d142b;
+      border-bottom: 2px solid var(--co-dialog-skill-accent);
     }
     .skill-roll-2 {
       display: grid;
       grid-template-columns: 0.6fr 3fr 0.8fr 0.8fr 1.2fr 1fr;
       padding-bottom: 6px;
-      border-bottom: 2px solid #5d142b;
+      border-bottom: 2px solid var(--co-dialog-skill-accent);
     }
     .skill-roll-3 {
       padding-bottom: 0px;
-      border-bottom: 2px solid #5d142b;
+      border-bottom: 2px solid var(--co-dialog-skill-accent);
       margin-bottom: 3px;
       .skill-roll-skills {
         text-align: center;
         font-size: 16px;
         font-style: italic;
-        color: #5d142b;
+        color: var(--co-dialog-skill-accent);
         padding: 4px 0;
         .theme-dark & {
-          color: #d33e6d;
+          color: var(--co-dialog-skill-highlight);
         }
       }
     }
@@ -144,10 +144,10 @@
     text-align: left;
     font-size: var(--font-size-16);
     font-weight: bolder;
-    background-color: #ffffff57;
+    background-color: var(--co-dialog-overlay);
 
     .theme-dark & {
-      color: #e7d1b1;
+      color: var(--co-text-light);
     }
   }
   .standard-form {
@@ -191,22 +191,22 @@
     border: 2px solid grey;
     padding: 5px;
     margin: 5px;
-    background-color: #ffffff57;
+    background-color: var(--co-dialog-overlay);
   }
   .bonus-item.flexrow.checked {
-    color: #b3b4b5;
+    color: var(--co-dialog-muted);
     padding: 5px;
     margin: 5px;
-    border: 2px solid #b3b4b5;
-    background-color: #5d142b;
+    border: 2px solid var(--co-dialog-muted);
+    background-color: var(--co-dialog-skill-accent);
   }
   .theme-dark & {
     // background: none;
     // background-color: rgba(0, 0, 0, 0.8);
-    color: #e7d1b1;
+    color: var(--co-text-light);
 
     input {
-      color: #b3b4b5;
+      color: var(--co-dialog-muted);
       text-align: left;
     }
   }

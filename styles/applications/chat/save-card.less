@@ -4,8 +4,8 @@
     color: inherit;
     padding: 2px 0 4px;
     label {
-      color: var(--color-chatSave);
-      text-shadow: 0 0px 2px var(--color-chatShadow);
+      color: var(--co-chat-save);
+      text-shadow: 0 0px 2px var(--co-chat-shadow);
     }
   }
   .card-content {
@@ -27,7 +27,7 @@
       padding: 4px 0;
       .difficulty-icon {
         font-size: var(--font-size-20);
-        color: var(--color-chatSave);
+        color: var(--co-chat-save);
         opacity: 0.8;
       }
       .difficulty-value {
@@ -40,11 +40,11 @@
       flex-direction: column;
       height: 40px;
       font-size: 18px;
-      color: var(--color-chatSave);
+      color: var(--co-chat-save);
       background: #5d142b3d;
-      border: 2px solid var(--color-chatSave);
+      border: 2px solid var(--co-chat-save);
       border-radius: 5px;
-      box-shadow: 1px 1px 0px 1px var(--color-chatSave);
+      box-shadow: 1px 1px 0px 1px var(--co-chat-save);
       padding: 0px 5px;
       margin: 0 0 5px 0;
       .save-title,
@@ -116,7 +116,7 @@
       }
 
       .save-dmg-details-content {
-        border-top: 1px solid color-mix(in srgb, var(--color-chatDamages) 60%, #8f7656);
+        border-top: 1px solid color-mix(in srgb, var(--co-chat-damages) 60%, #8f7656);
         margin-top: 4px;
         padding-top: 4px;
       }
@@ -158,7 +158,7 @@
         font-size: var(--font-size-20);
         min-width: 32px;
         text-align: right;
-        color: var(--color-chatDamages);
+        color: var(--co-chat-damages);
         font-variant-numeric: tabular-nums;
         flex-shrink: 0;
       }
@@ -184,14 +184,14 @@
 
         &:hover {
           opacity: 1;
-          background: color-mix(in srgb, var(--color-chatDamages) 12%, transparent);
+          background: color-mix(in srgb, var(--co-chat-damages) 12%, transparent);
         }
 
         &.active {
           opacity: 1;
           color: white;
-          background: var(--color-chatDamages);
-          border-color: var(--color-chatDamages);
+          background: var(--co-chat-damages);
+          border-color: var(--co-chat-damages);
         }
       }
 
@@ -203,12 +203,12 @@
         font-weight: bold;
         font-size: var(--font-size-20);
         text-align: right;
-        color: var(--color-chatDamages);
+        color: var(--co-chat-damages);
         font-variant-numeric: tabular-nums;
         flex-shrink: 0;
-        border: 1px solid var(--color-chatDamages);
+        border: 1px solid var(--co-chat-damages);
         border-radius: 3px;
-        background: color-mix(in srgb, var(--color-chatDamages) 8%, transparent);
+        background: color-mix(in srgb, var(--co-chat-damages) 8%, transparent);
       }
     }
 
@@ -262,16 +262,16 @@
           box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 
           &:hover {
-            background: color-mix(in srgb, var(--color-chatDamages) 12%, transparent);
-            border-color: var(--color-chatDamages);
+            background: color-mix(in srgb, var(--co-chat-damages) 12%, transparent);
+            border-color: var(--co-chat-damages);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
           }
 
           &.active {
-            background: var(--color-chatDamages);
-            border-color: var(--color-chatDamages);
+            background: var(--co-chat-damages);
+            border-color: var(--co-chat-damages);
             color: white;
-            box-shadow: 0 1px 3px color-mix(in srgb, var(--color-chatDamages) 40%, transparent);
+            box-shadow: 0 1px 3px color-mix(in srgb, var(--co-chat-damages) 40%, transparent);
           }
 
           // Inerte en mode manuel (valeur forcée par le MJ)
@@ -282,10 +282,10 @@
           }
         }
         .btn-heal.active {
-          background: var(--color-chatHeal);
-          border-color: var(--color-chatHeal);
+          background: var(--co-chat-heal);
+          border-color: var(--co-chat-heal);
           color: white;
-          box-shadow: 0 1px 3px color-mix(in srgb, var(--color-chatHeal) 40%, transparent);
+          box-shadow: 0 1px 3px color-mix(in srgb, var(--co-chat-heal) 40%, transparent);
         }
       }
     }
@@ -295,11 +295,11 @@
       padding: 4px 0;
 
       .save-apply-effects-btn {
-        color: var(--color-chatSave);
+        color: var(--co-chat-save);
       }
 
       .save-apply-btn {
-        color: var(--color-chatDamages);
+        color: var(--co-chat-damages);
       }
     }
   }

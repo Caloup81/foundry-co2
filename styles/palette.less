@@ -1,0 +1,158 @@
+/*
+ * PALETTE DU SYSTÈME — point de surcharge unique pour un module de thème
+ *
+ * Convention : toutes les variables du système sont préfixées --co-, en kebab-case, selon le schéma
+ * --co-<domaine>-<rôle>. Les variables --color-*, --input-*, --button-* et --toggle-switch-*
+ * appartiennent à Foundry ou à un composant local : elles ne relèvent pas de la palette.
+ *
+ * La palette est déclarée sur la racine de thème et non sous .co : les messages de chat sont rendus
+ * hors de l'arbre .co et doivent pouvoir hériter des propriétés personnalisées. Cibler la classe de
+ * thème seule couvre à la fois body (thème global) et une application (thème par fenêtre).
+ *
+ * Pour rhabiller le système, un module redéclare ces mêmes sélecteurs dans sa propre feuille : celle-ci
+ * étant chargée après celle du système, ses valeurs l'emportent à spécificité égale.
+ */
+
+// Chrome et feuilles
+@sheet-accent: #ba9442;
+@sheet-accent-alt: #0c4f7b;
+@surface: #ebebe8;
+@encounter-accent: #95262699;
+
+// Valeurs de combat de la sidebar
+@stat-attack: #e21e26;
+@stat-initiative: #48494f;
+@stat-defense: #0e507c;
+@stat-health: #128541;
+@stat-damages: #800080;
+@stat-resource: #2f4f4f;
+
+.theme-light {
+  // Chrome et feuilles
+  --co-sheet-accent: @sheet-accent;
+  --co-sheet-accent-alt: @sheet-accent-alt;
+  --co-surface: @surface;
+  --co-encounter-accent: @encounter-accent;
+  --co-window-content: #584a756b;
+  --co-text-light: #fffaf2;
+  --co-text-dark: #222;
+  --co-green: #44a12b;
+  --co-grey: #c2b9b7;
+
+  // Valeurs de combat de la sidebar
+  --co-stat-attack: @stat-attack;
+  --co-stat-initiative: @stat-initiative;
+  --co-stat-defense: @stat-defense;
+  --co-stat-health: @stat-health;
+  --co-stat-damages: @stat-damages;
+  --co-stat-resource: @stat-resource;
+
+  // Cartes de chat
+  --co-chat-skill: #084f7b;
+  --co-chat-attack: #702900;
+  --co-chat-damages: darkred;
+  --co-chat-heal: #2c532c;
+  --co-chat-rest: #597928;
+  --co-chat-save: #380052;
+  --co-chat-item: #4b3a0c;
+  --co-chat-shadow: #7ce6ef;
+
+  // Fenêtres de jet
+  --co-dialog-attack-bg: #754a548c;
+  --co-dialog-skill-bg: #2a3c876b;
+  --co-dialog-attack-accent: #ad0606;
+  --co-dialog-attack-surface: #5d142b;
+  --co-dialog-skill-accent: #5d142b;
+  --co-dialog-skill-highlight: #d33e6d;
+  --co-dialog-muted: #b3b4b5;
+  --co-dialog-overlay: #ffffff57;
+
+  // Types d'objets, reportés sur la paire générique --co-item-* par items/_index.less
+  --co-item-capacity-dark: #5d142b;
+  --co-item-capacity-light: #bf325e;
+  --co-item-equipment-dark: #7a581d;
+  --co-item-equipment-light: #ba872c;
+  --co-item-container-dark: #7a581d;
+  --co-item-container-light: #ba872c;
+  --co-item-feature-dark: #1a5d71;
+  --co-item-feature-light: #1eb0db;
+  --co-item-path-dark: #54145d;
+  --co-item-path-light: #b234f5;
+  --co-item-profile-dark: #14195d;
+  --co-item-profile-light: #325fbf;
+  --co-item-attack-dark: #6b0202;
+  --co-item-attack-light: #d33434;
+
+  // Résultats de jet : couleurs porteuses d'information, à conserver lisibles par tout thème
+  --co-result-success: #2e7d32;
+  --co-result-failure: #c62828;
+  --co-result-critical: #1b5e20;
+  --co-result-fumble: #7f0000;
+  --co-result-critical-glow: #66bb6a;
+  --co-result-fumble-glow: #ef5350;
+}
+
+.theme-dark {
+  // Chrome et feuilles
+  --co-sheet-accent: darken(@sheet-accent, 25%);
+  --co-sheet-accent-alt: darken(@sheet-accent-alt, 10%);
+  --co-surface: darken(@surface, 20%);
+  --co-encounter-accent: darken(@encounter-accent, 10%);
+  --co-window-content: #00000094;
+  --co-text-light: #e7d1b1;
+  --co-text-dark: #222;
+  --co-green: #44a12b;
+  --co-grey: #c2b9b7;
+
+  // Valeurs de combat de la sidebar
+  --co-stat-attack: darken(@stat-attack, 25%);
+  --co-stat-initiative: darken(@stat-initiative, 10%);
+  --co-stat-defense: darken(@stat-defense, 10%);
+  --co-stat-health: darken(@stat-health, 10%);
+  --co-stat-damages: darken(@stat-damages, 10%);
+  --co-stat-resource: darken(@stat-resource, 10%);
+
+  // Cartes de chat
+  --co-chat-skill: #2a83b9;
+  --co-chat-attack: #db5305;
+  --co-chat-damages: #cb0909;
+  --co-chat-heal: #3fa13f;
+  --co-chat-rest: #93a13f;
+  --co-chat-save: #8a43ab;
+  --co-chat-item: #bb9d68;
+  --co-chat-shadow: #7ce6ef;
+
+  // Fenêtres de jet
+  --co-dialog-attack-bg: #33161d8c;
+  --co-dialog-skill-bg: #313a5f6b;
+  --co-dialog-attack-accent: #ad0606;
+  --co-dialog-attack-surface: #5d142b;
+  --co-dialog-skill-accent: #5d142b;
+  --co-dialog-skill-highlight: #d33e6d;
+  --co-dialog-muted: #b3b4b5;
+  --co-dialog-overlay: #ffffff57;
+
+  // Types d'objets, reportés sur la paire générique --co-item-* par items/_index.less
+  --co-item-capacity-dark: #5d142b;
+  --co-item-capacity-light: #bf325e;
+  --co-item-equipment-dark: #7a581d;
+  --co-item-equipment-light: #ba872c;
+  --co-item-container-dark: #7a581d;
+  --co-item-container-light: #ba872c;
+  --co-item-feature-dark: #1a5d71;
+  --co-item-feature-light: #1eb0db;
+  --co-item-path-dark: #54145d;
+  --co-item-path-light: #b234f5;
+  --co-item-profile-dark: #14195d;
+  --co-item-profile-light: #325fbf;
+  --co-item-attack-dark: #6b0202;
+  --co-item-attack-light: #d33434;
+
+  // Résultats de jet : couleurs porteuses d'information, à conserver lisibles par tout thème
+  --co-result-success: #2e7d32;
+  --co-result-failure: #c62828;
+  --co-result-critical: #1b5e20;
+  --co-result-fumble: #7f0000;
+  --co-result-critical-glow: #66bb6a;
+  --co-result-fumble-glow: #ef5350;
+}

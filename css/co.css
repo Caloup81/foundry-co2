@@ -1,3 +1,123 @@
+/*
+ * PALETTE DU SYSTÈME — point de surcharge unique pour un module de thème
+ *
+ * Convention : toutes les variables du système sont préfixées --co-, en kebab-case, selon le schéma
+ * --co-<domaine>-<rôle>. Les variables --color-*, --input-*, --button-* et --toggle-switch-*
+ * appartiennent à Foundry ou à un composant local : elles ne relèvent pas de la palette.
+ *
+ * La palette est déclarée sur la racine de thème et non sous .co : les messages de chat sont rendus
+ * hors de l'arbre .co et doivent pouvoir hériter des propriétés personnalisées. Cibler la classe de
+ * thème seule couvre à la fois body (thème global) et une application (thème par fenêtre).
+ *
+ * Pour rhabiller le système, un module redéclare ces mêmes sélecteurs dans sa propre feuille : celle-ci
+ * étant chargée après celle du système, ses valeurs l'emportent à spécificité égale.
+ */
+.theme-light {
+  --co-sheet-accent: #ba9442;
+  --co-sheet-accent-alt: #0c4f7b;
+  --co-surface: #ebebe8;
+  --co-encounter-accent: #95262699;
+  --co-window-content: #584a756b;
+  --co-text-light: #fffaf2;
+  --co-text-dark: #222;
+  --co-green: #44a12b;
+  --co-grey: #c2b9b7;
+  --co-stat-attack: #e21e26;
+  --co-stat-initiative: #48494f;
+  --co-stat-defense: #0e507c;
+  --co-stat-health: #128541;
+  --co-stat-damages: #800080;
+  --co-stat-resource: #2f4f4f;
+  --co-chat-skill: #084f7b;
+  --co-chat-attack: #702900;
+  --co-chat-damages: darkred;
+  --co-chat-heal: #2c532c;
+  --co-chat-rest: #597928;
+  --co-chat-save: #380052;
+  --co-chat-item: #4b3a0c;
+  --co-chat-shadow: #7ce6ef;
+  --co-dialog-attack-bg: #754a548c;
+  --co-dialog-skill-bg: #2a3c876b;
+  --co-dialog-attack-accent: #ad0606;
+  --co-dialog-attack-surface: #5d142b;
+  --co-dialog-skill-accent: #5d142b;
+  --co-dialog-skill-highlight: #d33e6d;
+  --co-dialog-muted: #b3b4b5;
+  --co-dialog-overlay: #ffffff57;
+  --co-item-capacity-dark: #5d142b;
+  --co-item-capacity-light: #bf325e;
+  --co-item-equipment-dark: #7a581d;
+  --co-item-equipment-light: #ba872c;
+  --co-item-container-dark: #7a581d;
+  --co-item-container-light: #ba872c;
+  --co-item-feature-dark: #1a5d71;
+  --co-item-feature-light: #1eb0db;
+  --co-item-path-dark: #54145d;
+  --co-item-path-light: #b234f5;
+  --co-item-profile-dark: #14195d;
+  --co-item-profile-light: #325fbf;
+  --co-item-attack-dark: #6b0202;
+  --co-item-attack-light: #d33434;
+  --co-result-success: #2e7d32;
+  --co-result-failure: #c62828;
+  --co-result-critical: #1b5e20;
+  --co-result-fumble: #7f0000;
+  --co-result-critical-glow: #66bb6a;
+  --co-result-fumble-glow: #ef5350;
+}
+.theme-dark {
+  --co-sheet-accent: #5c4921;
+  --co-sheet-accent-alt: #07314d;
+  --co-surface: #bcbcb1;
+  --co-encounter-accent: rgba(108, 28, 28, 0.6);
+  --co-window-content: #00000094;
+  --co-text-light: #e7d1b1;
+  --co-text-dark: #222;
+  --co-green: #44a12b;
+  --co-grey: #c2b9b7;
+  --co-stat-attack: #720f13;
+  --co-stat-initiative: #303034;
+  --co-stat-defense: #09324e;
+  --co-stat-health: #0c582b;
+  --co-stat-damages: #4d004d;
+  --co-stat-resource: #1c2f2f;
+  --co-chat-skill: #2a83b9;
+  --co-chat-attack: #db5305;
+  --co-chat-damages: #cb0909;
+  --co-chat-heal: #3fa13f;
+  --co-chat-rest: #93a13f;
+  --co-chat-save: #8a43ab;
+  --co-chat-item: #bb9d68;
+  --co-chat-shadow: #7ce6ef;
+  --co-dialog-attack-bg: #33161d8c;
+  --co-dialog-skill-bg: #313a5f6b;
+  --co-dialog-attack-accent: #ad0606;
+  --co-dialog-attack-surface: #5d142b;
+  --co-dialog-skill-accent: #5d142b;
+  --co-dialog-skill-highlight: #d33e6d;
+  --co-dialog-muted: #b3b4b5;
+  --co-dialog-overlay: #ffffff57;
+  --co-item-capacity-dark: #5d142b;
+  --co-item-capacity-light: #bf325e;
+  --co-item-equipment-dark: #7a581d;
+  --co-item-equipment-light: #ba872c;
+  --co-item-container-dark: #7a581d;
+  --co-item-container-light: #ba872c;
+  --co-item-feature-dark: #1a5d71;
+  --co-item-feature-light: #1eb0db;
+  --co-item-path-dark: #54145d;
+  --co-item-path-light: #b234f5;
+  --co-item-profile-dark: #14195d;
+  --co-item-profile-light: #325fbf;
+  --co-item-attack-dark: #6b0202;
+  --co-item-attack-light: #d33434;
+  --co-result-success: #2e7d32;
+  --co-result-failure: #c62828;
+  --co-result-critical: #1b5e20;
+  --co-result-fumble: #7f0000;
+  --co-result-critical-glow: #66bb6a;
+  --co-result-fumble-glow: #ef5350;
+}
 .empty {
   color: var(--sub);
   font-style: italic;
@@ -57,7 +177,7 @@ multi-select .tags.input-element-tags .tag a.remove {
   margin-top: -2px;
 }
 .theme-dark select option {
-  background: var(--color-WindowContent);
+  background: var(--co-window-content);
 }
 .theme-light select option {
   background: inherit;
@@ -111,10 +231,6 @@ co-toggle-switch[checked] track {
 co-toggle-switch[checked] thumb {
   margin-left: calc(100% - var(--toggle-switch-thumb-width));
 }
-.co {
-  --color-green: #44a12b;
-  --color-grey: #c2b9b7;
-}
 .co prose-mirror,
 .co .prosemirror {
   flex: 1;
@@ -145,16 +261,16 @@ co-toggle-switch[checked] thumb {
   overflow: hidden auto;
 }
 .co .enabled {
-  color: var(--color-green);
+  color: var(--co-green);
 }
 .co .inactivated {
   color: #999;
 }
 .co .green {
-  color: var(--color-green);
+  color: var(--co-green);
 }
 .co .blue {
-  color: var(--color-abilities);
+  color: var(--co-sheet-accent-alt);
 }
 .theme-dark .co .blue {
   color: #266995;
@@ -162,7 +278,7 @@ co-toggle-switch[checked] thumb {
 .theme-dark .co h4,
 .theme-dark .co label,
 .theme-dark .co span {
-  color: var(--color-background-grey);
+  color: var(--co-surface);
 }
 .co fieldset {
   border: 0;
@@ -341,26 +457,6 @@ co-toggle-switch[checked] thumb {
 .co .theme-dark input[type="checkbox"]:checked:disabled::after {
   color: var(--color-warm-1);
 }
-.theme-light .co.application {
-  --color-characterSheet: #ba9442;
-  --color-abilities: #0c4f7b;
-  --color-background-grey: #ebebe8;
-  --color-encounterSheet: #95262699;
-  --color-WindowContent: #584a756b;
-  --color-textLight: #fffaf2;
-  --color-backgroundAttackDialog: #754a548c;
-  --color-backgroundSkillDialog: #2a3c876b;
-}
-.theme-dark .co.application {
-  --color-characterSheet: #5c4921;
-  --color-abilities: #07314d;
-  --color-background-grey: #bcbcb1;
-  --color-encounterSheet: rgba(108, 28, 28, 0.6);
-  --color-WindowContent: #00000094;
-  --color-textLight: #e7d1b1;
-  --color-backgroundAttackDialog: #33161d8c;
-  --color-backgroundSkillDialog: #313a5f6b;
-}
 .co.application ul,
 .co.application ol,
 .co.application li {
@@ -389,7 +485,7 @@ co-toggle-switch[checked] thumb {
 .co.application .sheet-tabs {
   align-items: stretch;
   border-top: 0;
-  border-bottom-color: var(--color-abilities);
+  border-bottom-color: var(--co-sheet-accent-alt);
   display: flex;
   flex-flow: row nowrap;
   padding: 0 8px;
@@ -409,19 +505,19 @@ co-toggle-switch[checked] thumb {
   white-space: nowrap;
 }
 .co.application .sheet-tabs [data-tab].active {
-  background-color: var(--color-abilities);
-  border: 1px solid var(--color-abilities);
-  color: var(--color-background-grey);
+  background-color: var(--co-sheet-accent-alt);
+  border: 1px solid var(--co-sheet-accent-alt);
+  color: var(--co-surface);
   font-weight: bold;
 }
 .co.application .sheet-tabs [data-tab]:hover {
-  border: 2px dotted var(--color-abilities);
+  border: 2px dotted var(--co-sheet-accent-alt);
   border-bottom: 0;
 }
 .co.application .tab[data-tab] {
   padding: 10px 0 10px 10px;
   overflow: hidden auto;
-  scrollbar-color: var(--color-abilities) var(--color-scrollbar-track);
+  scrollbar-color: var(--co-sheet-accent-alt) var(--color-scrollbar-track);
   scrollbar-gutter: stable;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -519,11 +615,11 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.dialog.edit-abilities-dialog .window-header {
   border-radius: 5px 5px 0 0;
-  background: var(--color-abilities);
+  background: var(--co-sheet-accent-alt);
   border: none;
 }
 .co.application.dialog.edit-abilities-dialog .window-header .window-title {
-  color: var(--color-abilities);
+  color: var(--co-sheet-accent-alt);
 }
 .co.application.dialog.edit-abilities-dialog .window-content {
   padding: 0;
@@ -533,7 +629,7 @@ co-toggle-switch[checked] thumb {
   flex-wrap: nowrap;
   align-items: center;
   padding: 5px;
-  border: 10px solid var(--color-abilities);
+  border: 10px solid var(--co-sheet-accent-alt);
 }
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-type .select-abilities-type {
   display: flex;
@@ -559,13 +655,13 @@ co-toggle-switch[checked] thumb {
   justify-content: space-evenly;
 }
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-type .value-pool .draggable-value {
-  border: 3px solid var(--color-abilities);
+  border: 3px solid var(--co-sheet-accent-alt);
   background-color: lightgrey;
   padding: 5px 15px;
   border-radius: 15px;
   font-size: var(--font-size-24);
   font-weight: bold;
-  color: var(--color-abilities);
+  color: var(--co-sheet-accent-alt);
   cursor: grab;
 }
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-type .value-pool .used {
@@ -609,8 +705,8 @@ co-toggle-switch[checked] thumb {
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(14n + 5),
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(14n + 6),
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(14n + 14) {
-  background-color: var(--color-abilities);
-  color: var(--color-background-grey);
+  background-color: var(--co-sheet-accent-alt);
+  color: var(--co-surface);
 }
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(14n + 1) input[type="number"],
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(14n + 2) input[type="number"],
@@ -619,7 +715,7 @@ co-toggle-switch[checked] thumb {
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(14n + 5) input[type="number"],
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(14n + 6) input[type="number"],
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(14n + 14) input[type="number"] {
-  color: var(--color-background-grey);
+  color: var(--co-surface);
 }
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(2),
 .co.application.dialog.edit-abilities-dialog .window-content .abilities-table > :nth-child(3),
@@ -715,8 +811,8 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.dialog.skill-roll .window-header {
   border-radius: 5px 5px 0 0;
-  background-color: var(--color-backgroundSkillDialog);
-  border-bottom: 2px solid #5d142b;
+  background-color: var(--co-dialog-skill-bg);
+  border-bottom: 2px solid var(--co-dialog-skill-accent);
   /*.theme-dark & {
       background: none;
       background-color: rgba(0, 0, 0, 0.8);
@@ -726,10 +822,10 @@ co-toggle-switch[checked] thumb {
   text-align: center;
   font-size: 25px;
   font-weight: bold;
-  color: #5d142b;
+  color: var(--co-dialog-skill-accent);
 }
 .theme-dark .co.application.dialog.skill-roll .window-header .window-title {
-  color: #b3b4b5;
+  color: var(--co-dialog-muted);
 }
 .co.application.dialog.skill-roll .icone {
   text-align: center;
@@ -737,43 +833,43 @@ co-toggle-switch[checked] thumb {
   align-content: center;
 }
 .co.application.dialog.skill-roll #totalSkillBonuses {
-  color: #5d142b;
+  color: var(--co-dialog-skill-accent);
   font-weight: bolder;
   font-size: 30px;
 }
 .theme-dark .co.application.dialog.skill-roll #totalSkillBonuses {
-  color: #d33e6d;
+  color: var(--co-dialog-skill-highlight);
 }
 .co.application.dialog.skill-roll .window-content {
-  background-color: var(--color-backgroundSkillDialog);
+  background-color: var(--co-dialog-skill-bg);
   padding: 10px;
 }
 .co.application.dialog.skill-roll .window-content .skill-roll-1 {
   display: grid;
   grid-template-columns: 0.5fr 1.3fr 0.3fr 1.4fr 0.3fr 2.2fr;
   padding-bottom: 6px;
-  border-bottom: 2px solid #5d142b;
+  border-bottom: 2px solid var(--co-dialog-skill-accent);
 }
 .co.application.dialog.skill-roll .window-content .skill-roll-2 {
   display: grid;
   grid-template-columns: 0.6fr 3fr 0.8fr 0.8fr 1.2fr 1fr;
   padding-bottom: 6px;
-  border-bottom: 2px solid #5d142b;
+  border-bottom: 2px solid var(--co-dialog-skill-accent);
 }
 .co.application.dialog.skill-roll .window-content .skill-roll-3 {
   padding-bottom: 0px;
-  border-bottom: 2px solid #5d142b;
+  border-bottom: 2px solid var(--co-dialog-skill-accent);
   margin-bottom: 3px;
 }
 .co.application.dialog.skill-roll .window-content .skill-roll-3 .skill-roll-skills {
   text-align: center;
   font-size: 16px;
   font-style: italic;
-  color: #5d142b;
+  color: var(--co-dialog-skill-accent);
   padding: 4px 0;
 }
 .theme-dark .co.application.dialog.skill-roll .window-content .skill-roll-3 .skill-roll-skills {
-  color: #d33e6d;
+  color: var(--co-dialog-skill-highlight);
 }
 .co.application.dialog.skill-roll .window-content .form-group {
   display: flex;
@@ -850,11 +946,11 @@ co-toggle-switch[checked] thumb {
   text-align: left;
   font-size: var(--font-size-16);
   font-weight: bolder;
-  background-color: #ffffff57;
+  background-color: var(--co-dialog-overlay);
 }
 .theme-dark .co.application.dialog.skill-roll .field-value,
 .theme-dark .co.application.dialog.skill-roll select {
-  color: #e7d1b1;
+  color: var(--co-text-light);
 }
 .co.application.dialog.skill-roll .standard-form {
   gap: 0;
@@ -897,26 +993,26 @@ co-toggle-switch[checked] thumb {
   border: 2px solid grey;
   padding: 5px;
   margin: 5px;
-  background-color: #ffffff57;
+  background-color: var(--co-dialog-overlay);
 }
 .co.application.dialog.skill-roll .bonus-item.flexrow.checked {
-  color: #b3b4b5;
+  color: var(--co-dialog-muted);
   padding: 5px;
   margin: 5px;
-  border: 2px solid #b3b4b5;
-  background-color: #5d142b;
+  border: 2px solid var(--co-dialog-muted);
+  background-color: var(--co-dialog-skill-accent);
 }
 .theme-dark .co.application.dialog.skill-roll {
-  color: #e7d1b1;
+  color: var(--co-text-light);
 }
 .theme-dark .co.application.dialog.skill-roll input {
-  color: #b3b4b5;
+  color: var(--co-dialog-muted);
   text-align: left;
 }
 .co.application.dialog.attack-roll .window-header {
   border-radius: 5px 5px 0 0;
-  background-color: var(--color-backgroundAttackDialog);
-  border-bottom: 2px solid #ad0606;
+  background-color: var(--co-dialog-attack-bg);
+  border-bottom: 2px solid var(--co-dialog-attack-accent);
   /*.theme-dark & {
       background: none;
       background-color: rgba(0, 0, 0, 0.8);
@@ -926,10 +1022,10 @@ co-toggle-switch[checked] thumb {
   text-align: center;
   font-size: 25px;
   font-weight: bold;
-  color: #5d142b;
+  color: var(--co-dialog-attack-surface);
 }
 .theme-dark .co.application.dialog.attack-roll .window-header .window-title {
-  color: #b3b4b5;
+  color: var(--co-dialog-muted);
 }
 .co.application.dialog.attack-roll .icone {
   text-align: center;
@@ -937,21 +1033,21 @@ co-toggle-switch[checked] thumb {
   align-content: center;
 }
 .co.application.dialog.attack-roll .window-content {
-  background-color: var(--color-backgroundAttackDialog);
+  background-color: var(--co-dialog-attack-bg);
   padding: 10px;
 }
 .co.application.dialog.attack-roll .window-content .attack-roll-1 {
   display: grid;
   grid-template-columns: 0.5fr 1.3fr 0.3fr 2.5fr;
   padding-bottom: 6px;
-  border-bottom: 2px solid #ad0606;
+  border-bottom: 2px solid var(--co-dialog-attack-accent);
   gap: 0;
 }
 .co.application.dialog.attack-roll .window-content .attack-roll-2 {
   display: grid;
   grid-template-columns: 0.5fr 3fr 0.8fr 0.8fr 1.2fr;
   padding-bottom: 6px;
-  border-bottom: 2px solid #ad0606;
+  border-bottom: 2px solid var(--co-dialog-attack-accent);
   gap: 0;
 }
 .co.application.dialog.attack-roll .window-content .attack-roll-2.has-skill-bonuses {
@@ -990,28 +1086,28 @@ co-toggle-switch[checked] thumb {
   border: 2px solid grey;
   padding: 5px;
   margin: 5px;
-  background-color: #ffffff57;
+  background-color: var(--co-dialog-overlay);
   cursor: pointer;
 }
 .co.application.dialog.attack-roll .window-content .bonus-item.flexrow.checked {
-  color: #b3b4b5;
+  color: var(--co-dialog-muted);
   padding: 5px;
   margin: 5px;
-  border: 2px solid #b3b4b5;
-  background-color: #5d142b;
+  border: 2px solid var(--co-dialog-muted);
+  background-color: var(--co-dialog-attack-surface);
 }
 .co.application.dialog.attack-roll .window-content .rollDommages {
   display: grid;
   grid-template-columns: 2.4fr 0.3fr 2fr 2.4fr;
   padding-bottom: 6px;
-  border-bottom: 2px solid #ad0606;
+  border-bottom: 2px solid var(--co-dialog-attack-accent);
 }
 .co.application.dialog.attack-roll .window-content .dommageDialog {
   display: grid;
   grid-template-columns: 0.5fr 3fr 0.8fr 0.8fr 1.2fr;
   padding-bottom: 6px;
   margin-bottom: 6px;
-  border-bottom: 2px solid #ad0606;
+  border-bottom: 2px solid var(--co-dialog-attack-accent);
   gap: 0;
 }
 .co.application.dialog.attack-roll .window-content .tacticalTargets {
@@ -1019,7 +1115,7 @@ co-toggle-switch[checked] thumb {
   grid-template-columns: 0.6fr 1fr;
   padding-bottom: 6px;
   margin-bottom: 8px;
-  border-bottom: 2px solid #ad0606;
+  border-bottom: 2px solid var(--co-dialog-attack-accent);
 }
 .co.application.dialog.attack-roll .window-content .tacticalOptions {
   display: grid;
@@ -1079,11 +1175,11 @@ co-toggle-switch[checked] thumb {
   text-align: left;
   font-size: var(--font-size-16);
   font-weight: bolder;
-  background-color: #ffffff57;
+  background-color: var(--co-dialog-overlay);
 }
 .theme-dark .co.application.dialog.attack-roll .window-content .field-value,
 .theme-dark .co.application.dialog.attack-roll .window-content select {
-  color: #e7d1b1;
+  color: var(--co-text-light);
 }
 .co.application.dialog.attack-roll .window-content .standard-form {
   gap: 0;
@@ -1134,7 +1230,7 @@ co-toggle-switch[checked] thumb {
   border: 2px solid #4a4a4a;
   border-radius: 999px;
   background: #ffffffd9;
-  color: #222;
+  color: var(--co-text-dark);
   font-size: var(--font-size-15);
   font-weight: bold;
   line-height: 1.1;
@@ -1144,7 +1240,7 @@ co-toggle-switch[checked] thumb {
 .co.application.dialog.attack-roll .window-content .additionalEffect {
   padding-bottom: 6px;
   margin-bottom: 8px;
-  border-bottom: 2px solid #ad0606;
+  border-bottom: 2px solid var(--co-dialog-attack-accent);
   display: grid;
   grid-template-columns: 0.1fr 1fr;
 }
@@ -1184,14 +1280,14 @@ co-toggle-switch[checked] thumb {
   border: 2px solid grey;
   padding: 5px 10px;
   margin: 3px;
-  background-color: #ffffff57;
+  background-color: var(--co-dialog-overlay);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 .co.application.dialog.attack-roll .window-content .additionalEffect .additionalEffectStatuses .statusesBox .statuses-list .status-item:has(input:checked) {
-  background-color: #5d142b;
-  border-color: #b3b4b5;
-  color: #b3b4b5;
+  background-color: var(--co-dialog-attack-surface);
+  border-color: var(--co-dialog-muted);
+  color: var(--co-dialog-muted);
 }
 .co.application.dialog.attack-roll .window-content .additionalEffect .additionalEffectStatuses .statusesBox .statuses-list .status-item input[type="checkbox"] {
   appearance: none;
@@ -1209,10 +1305,10 @@ co-toggle-switch[checked] thumb {
   cursor: pointer;
 }
 .theme-dark .co.application.dialog.attack-roll .window-content {
-  color: #e7d1b1;
+  color: var(--co-text-light);
 }
 .theme-dark .co.application.dialog.attack-roll .window-content input {
-  color: #b3b4b5;
+  color: var(--co-dialog-muted);
   text-align: left;
 }
 .co.application.dialog.feature-modifier-choice-dialog .window-content {
@@ -1252,6 +1348,10 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.sheet {
   --color-primary: var(--color-text-selection-bg);
+  /*
+ * Chaque type d'objet reporte sa couleur propre sur la paire générique --co-item-dark / --co-item-light,
+ * que common.less et les feuilles de type consomment. Les valeurs par type sont dans styles/palette.less.
+ */
 }
 .co.application.sheet .list-3col,
 .co.application.sheet .list-4col {
@@ -1277,7 +1377,7 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.sheet .section-container {
   display: flex;
-  border: 1px solid var(--color-abilities);
+  border: 1px solid var(--co-sheet-accent-alt);
   border-radius: 0 0 3px 3px;
   flex-direction: column;
   margin-bottom: 8px;
@@ -1292,8 +1392,8 @@ co-toggle-switch[checked] thumb {
   /*background-color: var(--color-primary);
     color: #fff;*/
   flex-direction: row;
-  color: var(--color-background-grey);
-  background-color: var(--color-abilities);
+  color: var(--co-surface);
+  background-color: var(--co-sheet-accent-alt);
 }
 .co.application.sheet .section-container .section-header h4 {
   flex: 1;
@@ -1302,7 +1402,7 @@ co-toggle-switch[checked] thumb {
   margin: 0;
   padding: 2px 8px;
   text-transform: uppercase;
-  color: var(--color-background-grey);
+  color: var(--co-surface);
 }
 .co.application.sheet .section-container .section-header .controls {
   display: flex;
@@ -1446,8 +1546,8 @@ co-toggle-switch[checked] thumb {
   font-weight: bold;
   /*padding: 0;
     padding-left: 4px;*/
-  color: var(--color-background-grey);
-  background-color: var(--color-abilities);
+  color: var(--co-surface);
+  background-color: var(--co-sheet-accent-alt);
   padding: 0 10px;
   border-radius: 10px 10px 0 0;
 }
@@ -1465,7 +1565,7 @@ co-toggle-switch[checked] thumb {
   margin: 0;
   padding: 2px 8px;
   text-transform: uppercase;
-  color: var(--color-background-grey);
+  color: var(--co-surface);
 }
 .co.application.sheet .items-container .items-container-header .item-name {
   flex: 1;
@@ -1604,7 +1704,7 @@ co-toggle-switch[checked] thumb {
   font-style: italic;
 }
 .co.application.sheet .container-dropzone.dragover {
-  outline: 2px dashed var(--color-abilities, #4a6f8a);
+  outline: 2px dashed var(--co-sheet-accent-alt, #4a6f8a);
   outline-offset: -2px;
 }
 .co.application.sheet .inventory .items-container .items-container-header,
@@ -1755,17 +1855,22 @@ co-toggle-switch[checked] thumb {
   max-height: calc(100% - 42px);
 }
 .co.application.sheet.item.capacity {
-  --color-capacity-dark: #5d142b;
-  --color-capacity-light: #bf325e;
+  --co-item-dark: var(--co-item-capacity-dark);
+  --co-item-light: var(--co-item-capacity-light);
+  /*
+ * Tronc commun des fiches d'objets « complètes » : attaque, capacité, équipement et conteneur.
+ * Ces quatre fiches partagent la même structure ; chacune n'ajoute ensuite que ses propres blocs.
+ * Les fiches trait, voie et profil sont plus légères et ne passent pas par ici.
+ */
 }
 .theme-dark .co.application.sheet.item.capacity .sheet-header {
-  background: linear-gradient(5deg, var(--color-capacity-dark) 60%, #000000);
+  background: linear-gradient(5deg, var(--co-item-dark) 60%, #000000);
 }
 .theme-light .co.application.sheet.item.capacity .sheet-header {
-  background: linear-gradient(5deg, var(--color-capacity-light) 60%, var(--color-capacity-dark));
+  background: linear-gradient(5deg, var(--co-item-light) 60%, var(--co-item-dark));
 }
 .co.application.sheet.item.capacity .window-content {
-  background-color: var(--color-WindowContent);
+  background-color: var(--co-window-content);
 }
 .co.application.sheet.item.capacity .window-content .fa-add {
   font-size: 22px;
@@ -1789,10 +1894,10 @@ co-toggle-switch[checked] thumb {
   text-align: center;
 }
 .theme-dark .co.application.sheet.item.capacity .window-content legend {
-  color: var(--color-capacity-light);
+  color: var(--co-item-light);
 }
 .theme-light .co.application.sheet.item.capacity .window-content legend {
-  color: var(--color-capacity-dark);
+  color: var(--co-item-dark);
 }
 .co.application.sheet.item.capacity .window-content .action.item.active {
   gap: 0;
@@ -1810,24 +1915,12 @@ co-toggle-switch[checked] thumb {
   border-radius: 12px 12px 0px 0px;
 }
 .theme-dark .co.application.sheet.item.capacity .window-content .form-header {
-  background-color: var(--color-capacity-dark);
-  color: #e7d1b1;
+  background-color: var(--co-item-dark);
+  color: var(--co-text-light);
 }
 .theme-light .co.application.sheet.item.capacity .window-content .form-header {
-  background-color: var(--color-capacity-light);
-  color: #222;
-}
-.co.application.sheet.item.capacity .window-content .miniField > input {
-  flex-grow: 0.5;
-}
-.co.application.sheet.item.capacity .window-content .labelModifier {
-  display: grid;
-  grid-template-columns: 0.3fr 0.4fr 0.4fr;
-  column-gap: 10px;
-}
-.co.application.sheet.item.capacity .window-content .labelModifier label {
-  font-weight: bold;
-  padding-left: 15px;
+  background-color: var(--co-item-light);
+  color: var(--co-text-dark);
 }
 .co.application.sheet.item.capacity .window-content .modifiers-container .modifier {
   display: grid;
@@ -1839,10 +1932,10 @@ co-toggle-switch[checked] thumb {
   padding: 0 8px;
 }
 .theme-dark .co.application.sheet.item.capacity .window-content .modifiers-container .modifier {
-  border: 1px solid var(--color-capacity-dark);
+  border: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.capacity .window-content .modifiers-container .modifier {
-  border: 1px solid var(--color-capacity-light);
+  border: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.capacity .window-content .modifiers-container .modifier :nth-child(5) {
   grid-column: auto / span 2;
@@ -1899,16 +1992,10 @@ co-toggle-switch[checked] thumb {
   padding-bottom: 5px;
 }
 .theme-dark .co.application.sheet.item.capacity .window-content .resolvers-container .resolver .form-group-stacked.like-grid.target {
-  border-bottom: 1px solid var(--color-capacity-dark);
+  border-bottom: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.capacity .window-content .resolvers-container .resolver .form-group-stacked.like-grid.target {
-  border-bottom: 1px solid var(--color-capacity-light);
-}
-.co.application.sheet.item.capacity .window-content .resolvers-container .resolver .tags .form-group {
-  display: grid;
-  grid-template-columns: 0px auto;
-  margin: 0;
-  gap: 0;
+  border-bottom: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.capacity .window-content .resolvers-container .resolver .center-input {
   text-align: center;
@@ -1923,21 +2010,41 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.item.capacity .window-content .resolvers-container .resolver .form-group-stacked.like-grid.formula input[type="text"] {
   text-align: center;
 }
+.co.application.sheet.item.capacity .window-content .miniField > input {
+  flex-grow: 0.5;
+}
+.co.application.sheet.item.capacity .window-content .labelModifier {
+  display: grid;
+  grid-template-columns: 0.3fr 0.4fr 0.4fr;
+  column-gap: 10px;
+}
+.co.application.sheet.item.capacity .window-content .labelModifier label {
+  font-weight: bold;
+  padding-left: 15px;
+}
+.co.application.sheet.item.capacity .window-content .resolvers-container .resolver .tags .form-group {
+  display: grid;
+  grid-template-columns: 0px auto;
+  margin: 0;
+  gap: 0;
+}
 .co.application.sheet.item.equipment {
-  --color-equipment-dark: #7a581d;
-  --color-equipment-light: #ba872c;
+  --co-item-dark: var(--co-item-equipment-dark);
+  --co-item-light: var(--co-item-equipment-light);
+  /*
+ * Tronc commun des fiches d'objets « complètes » : attaque, capacité, équipement et conteneur.
+ * Ces quatre fiches partagent la même structure ; chacune n'ajoute ensuite que ses propres blocs.
+ * Les fiches trait, voie et profil sont plus légères et ne passent pas par ici.
+ */
 }
 .theme-dark .co.application.sheet.item.equipment .sheet-header {
-  background: linear-gradient(5deg, var(--color-equipment-dark) 60%, #000000);
+  background: linear-gradient(5deg, var(--co-item-dark) 60%, #000000);
 }
 .theme-light .co.application.sheet.item.equipment .sheet-header {
-  background: linear-gradient(5deg, var(--color-equipment-light) 60%, var(--color-equipment-dark));
+  background: linear-gradient(5deg, var(--co-item-light) 60%, var(--co-item-dark));
 }
-.theme-dark .co.application.sheet.item.equipment .window-content {
-  background-color: #00000094;
-}
-.theme-light .co.application.sheet.item.equipment .window-content {
-  background-color: #584a756b;
+.co.application.sheet.item.equipment .window-content {
+  background-color: var(--co-window-content);
 }
 .co.application.sheet.item.equipment .window-content .fa-add {
   font-size: 22px;
@@ -1948,22 +2055,6 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.sheet.item.equipment .window-content fieldset {
   gap: 4px;
-}
-.co.application.sheet.item.equipment .window-content .rechargeable {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-}
-.co.application.sheet.item.equipment .window-content .empilage {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-}
-.co.application.sheet.item.equipment .window-content .panel-left {
-  order: 1;
-}
-.co.application.sheet.item.equipment .window-content .panel-right {
-  order: 2;
 }
 .co.application.sheet.item.equipment .window-content .form-group {
   gap: 10px;
@@ -1977,10 +2068,10 @@ co-toggle-switch[checked] thumb {
   text-align: center;
 }
 .theme-dark .co.application.sheet.item.equipment .window-content legend {
-  color: var(--color-equipment-light);
+  color: var(--co-item-light);
 }
 .theme-light .co.application.sheet.item.equipment .window-content legend {
-  color: var(--color-equipment-dark);
+  color: var(--co-item-dark);
 }
 .co.application.sheet.item.equipment .window-content .action.item.active {
   gap: 0;
@@ -1998,24 +2089,12 @@ co-toggle-switch[checked] thumb {
   border-radius: 12px 12px 0px 0px;
 }
 .theme-dark .co.application.sheet.item.equipment .window-content .form-header {
-  background-color: var(--color-equipment-dark);
-  color: #e7d1b1;
+  background-color: var(--co-item-dark);
+  color: var(--co-text-light);
 }
 .theme-light .co.application.sheet.item.equipment .window-content .form-header {
-  background-color: var(--color-equipment-light);
-  color: #222;
-}
-.co.application.sheet.item.equipment .window-content .miniField > input {
-  flex-grow: 0.5;
-}
-.co.application.sheet.item.equipment .window-content .labelModifier {
-  display: grid;
-  grid-template-columns: 0.3fr 0.4fr 0.4fr;
-  column-gap: 10px;
-}
-.co.application.sheet.item.equipment .window-content .labelModifier label {
-  font-weight: bold;
-  padding-left: 15px;
+  background-color: var(--co-item-light);
+  color: var(--co-text-dark);
 }
 .co.application.sheet.item.equipment .window-content .modifiers-container .modifier {
   display: grid;
@@ -2027,10 +2106,10 @@ co-toggle-switch[checked] thumb {
   padding: 0 8px;
 }
 .theme-dark .co.application.sheet.item.equipment .window-content .modifiers-container .modifier {
-  border: 1px solid var(--color-equipment-dark);
+  border: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.equipment .window-content .modifiers-container .modifier {
-  border: 1px solid var(--color-equipment-light);
+  border: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.equipment .window-content .modifiers-container .modifier :nth-child(5) {
   grid-column: auto / span 2;
@@ -2087,10 +2166,10 @@ co-toggle-switch[checked] thumb {
   padding-bottom: 5px;
 }
 .theme-dark .co.application.sheet.item.equipment .window-content .resolvers-container .resolver .form-group-stacked.like-grid.target {
-  border-bottom: 1px solid var(--color-equipment-dark);
+  border-bottom: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.equipment .window-content .resolvers-container .resolver .form-group-stacked.like-grid.target {
-  border-bottom: 1px solid var(--color-equipment-light);
+  border-bottom: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.equipment .window-content .resolvers-container .resolver .center-input {
   text-align: center;
@@ -2105,21 +2184,51 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.item.equipment .window-content .resolvers-container .resolver .form-group-stacked.like-grid.formula input[type="text"] {
   text-align: center;
 }
+.co.application.sheet.item.equipment .window-content .rechargeable {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+.co.application.sheet.item.equipment .window-content .empilage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+}
+.co.application.sheet.item.equipment .window-content .panel-left {
+  order: 1;
+}
+.co.application.sheet.item.equipment .window-content .panel-right {
+  order: 2;
+}
+.co.application.sheet.item.equipment .window-content .miniField > input {
+  flex-grow: 0.5;
+}
+.co.application.sheet.item.equipment .window-content .labelModifier {
+  display: grid;
+  grid-template-columns: 0.3fr 0.4fr 0.4fr;
+  column-gap: 10px;
+}
+.co.application.sheet.item.equipment .window-content .labelModifier label {
+  font-weight: bold;
+  padding-left: 15px;
+}
 .co.application.sheet.item.container {
-  --color-container-dark: #7a581d;
-  --color-container-light: #ba872c;
+  --co-item-dark: var(--co-item-container-dark);
+  --co-item-light: var(--co-item-container-light);
+  /*
+ * Tronc commun des fiches d'objets « complètes » : attaque, capacité, équipement et conteneur.
+ * Ces quatre fiches partagent la même structure ; chacune n'ajoute ensuite que ses propres blocs.
+ * Les fiches trait, voie et profil sont plus légères et ne passent pas par ici.
+ */
 }
 .theme-dark .co.application.sheet.item.container .sheet-header {
-  background: linear-gradient(5deg, var(--color-container-dark) 60%, #000000);
+  background: linear-gradient(5deg, var(--co-item-dark) 60%, #000000);
 }
 .theme-light .co.application.sheet.item.container .sheet-header {
-  background: linear-gradient(5deg, var(--color-container-light) 60%, var(--color-container-dark));
+  background: linear-gradient(5deg, var(--co-item-light) 60%, var(--co-item-dark));
 }
-.theme-dark .co.application.sheet.item.container .window-content {
-  background-color: #00000094;
-}
-.theme-light .co.application.sheet.item.container .window-content {
-  background-color: #584a756b;
+.co.application.sheet.item.container .window-content {
+  background-color: var(--co-window-content);
 }
 .co.application.sheet.item.container .window-content .fa-add {
   font-size: 22px;
@@ -2130,12 +2239,6 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.sheet.item.container .window-content fieldset {
   gap: 4px;
-}
-.co.application.sheet.item.container .window-content .panel-left {
-  order: 1;
-}
-.co.application.sheet.item.container .window-content .panel-right {
-  order: 2;
 }
 .co.application.sheet.item.container .window-content .form-group {
   gap: 10px;
@@ -2149,10 +2252,10 @@ co-toggle-switch[checked] thumb {
   text-align: center;
 }
 .theme-dark .co.application.sheet.item.container .window-content legend {
-  color: var(--color-container-light);
+  color: var(--co-item-light);
 }
 .theme-light .co.application.sheet.item.container .window-content legend {
-  color: var(--color-container-dark);
+  color: var(--co-item-dark);
 }
 .co.application.sheet.item.container .window-content .action.item.active {
   gap: 0;
@@ -2170,24 +2273,12 @@ co-toggle-switch[checked] thumb {
   border-radius: 12px 12px 0px 0px;
 }
 .theme-dark .co.application.sheet.item.container .window-content .form-header {
-  background-color: var(--color-container-dark);
-  color: #e7d1b1;
+  background-color: var(--co-item-dark);
+  color: var(--co-text-light);
 }
 .theme-light .co.application.sheet.item.container .window-content .form-header {
-  background-color: var(--color-container-light);
-  color: #222;
-}
-.co.application.sheet.item.container .window-content .miniField > input {
-  flex-grow: 0.5;
-}
-.co.application.sheet.item.container .window-content .labelModifier {
-  display: grid;
-  grid-template-columns: 0.3fr 0.4fr 0.4fr;
-  column-gap: 10px;
-}
-.co.application.sheet.item.container .window-content .labelModifier label {
-  font-weight: bold;
-  padding-left: 15px;
+  background-color: var(--co-item-light);
+  color: var(--co-text-dark);
 }
 .co.application.sheet.item.container .window-content .modifiers-container .modifier {
   display: grid;
@@ -2199,10 +2290,10 @@ co-toggle-switch[checked] thumb {
   padding: 0 8px;
 }
 .theme-dark .co.application.sheet.item.container .window-content .modifiers-container .modifier {
-  border: 1px solid var(--color-container-dark);
+  border: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.container .window-content .modifiers-container .modifier {
-  border: 1px solid var(--color-container-light);
+  border: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.container .window-content .modifiers-container .modifier :nth-child(5) {
   grid-column: auto / span 2;
@@ -2259,10 +2350,10 @@ co-toggle-switch[checked] thumb {
   padding-bottom: 5px;
 }
 .theme-dark .co.application.sheet.item.container .window-content .resolvers-container .resolver .form-group-stacked.like-grid.target {
-  border-bottom: 1px solid var(--color-container-dark);
+  border-bottom: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.container .window-content .resolvers-container .resolver .form-group-stacked.like-grid.target {
-  border-bottom: 1px solid var(--color-container-light);
+  border-bottom: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.container .window-content .resolvers-container .resolver .center-input {
   text-align: center;
@@ -2277,15 +2368,33 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.item.container .window-content .resolvers-container .resolver .form-group-stacked.like-grid.formula input[type="text"] {
   text-align: center;
 }
+.co.application.sheet.item.container .window-content .panel-left {
+  order: 1;
+}
+.co.application.sheet.item.container .window-content .panel-right {
+  order: 2;
+}
+.co.application.sheet.item.container .window-content .miniField > input {
+  flex-grow: 0.5;
+}
+.co.application.sheet.item.container .window-content .labelModifier {
+  display: grid;
+  grid-template-columns: 0.3fr 0.4fr 0.4fr;
+  column-gap: 10px;
+}
+.co.application.sheet.item.container .window-content .labelModifier label {
+  font-weight: bold;
+  padding-left: 15px;
+}
 .co.application.sheet.item.feature {
-  --color-feature-dark: #1a5d71;
-  --color-feature-light: #1eb0db;
+  --co-item-dark: var(--co-item-feature-dark);
+  --co-item-light: var(--co-item-feature-light);
 }
 .theme-dark .co.application.sheet.item.feature .sheet-header {
-  background: linear-gradient(5deg, var(--color-feature-dark) 60%, #000000);
+  background: linear-gradient(5deg, var(--co-item-dark) 60%, #000000);
 }
 .theme-light .co.application.sheet.item.feature .sheet-header {
-  background: linear-gradient(5deg, var(--color-feature-light) 60%, var(--color-feature-dark));
+  background: linear-gradient(5deg, var(--co-item-light) 60%, var(--co-item-dark));
 }
 .co.application.sheet.item.feature .window-content {
   gap: 0;
@@ -2312,10 +2421,10 @@ co-toggle-switch[checked] thumb {
   text-align: center;
 }
 .theme-dark .co.application.sheet.item.feature .window-content legend {
-  color: var(--color-feature-light);
+  color: var(--co-item-light);
 }
 .theme-light .co.application.sheet.item.feature .window-content legend {
-  color: var(--color-feature-dark);
+  color: var(--co-item-dark);
 }
 .co.application.sheet.item.feature .window-content .half-panel {
   display: grid;
@@ -2327,12 +2436,12 @@ co-toggle-switch[checked] thumb {
   border-radius: 12px 12px 0px 0px;
 }
 .theme-dark .co.application.sheet.item.feature .window-content .form-header {
-  background-color: var(--color-feature-dark);
-  color: #e7d1b1;
+  background-color: var(--co-item-dark);
+  color: var(--co-text-light);
 }
 .theme-light .co.application.sheet.item.feature .window-content .form-header {
-  background-color: var(--color-feature-light);
-  color: #222;
+  background-color: var(--co-item-light);
+  color: var(--co-text-dark);
 }
 .co.application.sheet.item.feature .modifiers-container .modifier {
   display: grid;
@@ -2344,10 +2453,10 @@ co-toggle-switch[checked] thumb {
   padding: 0 8px;
 }
 .theme-dark .co.application.sheet.item.feature .modifiers-container .modifier {
-  border: 1px solid var(--color-feature-dark);
+  border: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.feature .modifiers-container .modifier {
-  border: 1px solid var(--color-feature-light);
+  border: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.feature .modifiers-container .modifier .form-group:nth-last-child(2),
 .co.application.sheet.item.feature .modifiers-container .modifier .form-group:nth-last-child(3) {
@@ -2371,14 +2480,14 @@ co-toggle-switch[checked] thumb {
   grid-row: 1 / 3;
 }
 .co.application.sheet.item.path {
-  --color-path-dark: #54145d;
-  --color-path-light: #b234f5;
+  --co-item-dark: var(--co-item-path-dark);
+  --co-item-light: var(--co-item-path-light);
 }
 .theme-dark .co.application.sheet.item.path .sheet-header {
-  background: linear-gradient(5deg, var(--color-path-dark) 60%, #000000);
+  background: linear-gradient(5deg, var(--co-item-dark) 60%, #000000);
 }
 .theme-light .co.application.sheet.item.path .sheet-header {
-  background: linear-gradient(5deg, var(--color-path-light) 60%, var(--color-path-dark));
+  background: linear-gradient(5deg, var(--co-item-light) 60%, var(--co-item-dark));
 }
 .co.application.sheet.item.path .window-content {
   gap: 0;
@@ -2405,10 +2514,10 @@ co-toggle-switch[checked] thumb {
   text-align: center;
 }
 .theme-dark .co.application.sheet.item.path .window-content legend {
-  color: var(--color-path-light);
+  color: var(--co-item-light);
 }
 .theme-light .co.application.sheet.item.path .window-content legend {
-  color: var(--color-path-dark);
+  color: var(--co-item-dark);
 }
 .co.application.sheet.item.path .window-content .half-panel {
   display: grid;
@@ -2420,12 +2529,12 @@ co-toggle-switch[checked] thumb {
   border-radius: 12px 12px 0px 0px;
 }
 .theme-dark .co.application.sheet.item.path .window-content .form-header {
-  background-color: var(--color-path-dark);
-  color: #e7d1b1;
+  background-color: var(--co-item-dark);
+  color: var(--co-text-light);
 }
 .theme-light .co.application.sheet.item.path .window-content .form-header {
-  background-color: var(--color-path-light);
-  color: #222;
+  background-color: var(--co-item-light);
+  color: var(--co-text-dark);
 }
 .co.application.sheet.item.path .panel-right .capacity-list {
   margin-right: 7px;
@@ -2437,14 +2546,14 @@ co-toggle-switch[checked] thumb {
   grid-template-columns: repeat(3, 10fr) 30px;
 }
 .co.application.sheet.item.profile {
-  --color-profile-dark: #14195d;
-  --color-profile-light: #325fbf;
+  --co-item-dark: var(--co-item-profile-dark);
+  --co-item-light: var(--co-item-profile-light);
 }
 .theme-dark .co.application.sheet.item.profile .sheet-header {
-  background: linear-gradient(5deg, var(--color-profile-dark) 60%, #000000);
+  background: linear-gradient(5deg, var(--co-item-dark) 60%, #000000);
 }
 .theme-light .co.application.sheet.item.profile .sheet-header {
-  background: linear-gradient(5deg, var(--color-profile-light) 60%, var(--color-profile-dark));
+  background: linear-gradient(5deg, var(--co-item-light) 60%, var(--co-item-dark));
 }
 .co.application.sheet.item.profile .window-content {
   gap: 0;
@@ -2471,10 +2580,10 @@ co-toggle-switch[checked] thumb {
   text-align: center;
 }
 .theme-dark .co.application.sheet.item.profile .window-content legend {
-  color: var(--color-profile-light);
+  color: var(--co-item-light);
 }
 .theme-light .co.application.sheet.item.profile .window-content legend {
-  color: var(--color-profile-dark);
+  color: var(--co-item-dark);
 }
 .co.application.sheet.item.profile .window-content .half-panel {
   display: grid;
@@ -2486,12 +2595,12 @@ co-toggle-switch[checked] thumb {
   border-radius: 12px 12px 0px 0px;
 }
 .theme-dark .co.application.sheet.item.profile .window-content .form-header {
-  background-color: var(--color-profile-dark);
-  color: #e7d1b1;
+  background-color: var(--co-item-dark);
+  color: var(--co-text-light);
 }
 .theme-light .co.application.sheet.item.profile .window-content .form-header {
-  background-color: var(--color-profile-light);
-  color: #222;
+  background-color: var(--co-item-light);
+  color: var(--co-text-dark);
 }
 .co.application.sheet.item.profile .window-content .panel-right .path-list {
   margin-right: 7px;
@@ -2532,10 +2641,10 @@ co-toggle-switch[checked] thumb {
   padding: 0 8px;
 }
 .theme-dark .co.application.sheet.item.profile .modifiers-container .modifier {
-  border: 1px solid var(--color-profile-dark);
+  border: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.profile .modifiers-container .modifier {
-  border: 1px solid var(--color-profile-light);
+  border: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.profile .modifiers-container .modifier .form-group:nth-last-child(2),
 .co.application.sheet.item.profile .modifiers-container .modifier .form-group:nth-last-child(3) {
@@ -2559,17 +2668,22 @@ co-toggle-switch[checked] thumb {
   grid-row: 1 / 3;
 }
 .co.application.sheet.item.attack {
-  --color-attack-dark: #6b0202;
-  --color-attack-light: #d33434;
+  --co-item-dark: var(--co-item-attack-dark);
+  --co-item-light: var(--co-item-attack-light);
+  /*
+ * Tronc commun des fiches d'objets « complètes » : attaque, capacité, équipement et conteneur.
+ * Ces quatre fiches partagent la même structure ; chacune n'ajoute ensuite que ses propres blocs.
+ * Les fiches trait, voie et profil sont plus légères et ne passent pas par ici.
+ */
 }
 .theme-dark .co.application.sheet.item.attack .sheet-header {
-  background: linear-gradient(5deg, var(--color-attack-dark) 60%, #000000);
+  background: linear-gradient(5deg, var(--co-item-dark) 60%, #000000);
 }
 .theme-light .co.application.sheet.item.attack .sheet-header {
-  background: linear-gradient(5deg, var(--color-attack-light) 60%, var(--color-attack-dark));
+  background: linear-gradient(5deg, var(--co-item-light) 60%, var(--co-item-dark));
 }
 .co.application.sheet.item.attack .window-content {
-  background-color: var(--color-WindowContent);
+  background-color: var(--co-window-content);
 }
 .co.application.sheet.item.attack .window-content .fa-add {
   font-size: 22px;
@@ -2593,10 +2707,10 @@ co-toggle-switch[checked] thumb {
   text-align: center;
 }
 .theme-dark .co.application.sheet.item.attack .window-content legend {
-  color: var(--color-attack-light);
+  color: var(--co-item-light);
 }
 .theme-light .co.application.sheet.item.attack .window-content legend {
-  color: var(--color-attack-dark);
+  color: var(--co-item-dark);
 }
 .co.application.sheet.item.attack .window-content .action.item.active {
   gap: 0;
@@ -2614,12 +2728,12 @@ co-toggle-switch[checked] thumb {
   border-radius: 12px 12px 0px 0px;
 }
 .theme-dark .co.application.sheet.item.attack .window-content .form-header {
-  background-color: var(--color-attack-dark);
-  color: #e7d1b1;
+  background-color: var(--co-item-dark);
+  color: var(--co-text-light);
 }
 .theme-light .co.application.sheet.item.attack .window-content .form-header {
-  background-color: var(--color-attack-light);
-  color: #222;
+  background-color: var(--co-item-light);
+  color: var(--co-text-dark);
 }
 .co.application.sheet.item.attack .window-content .modifiers-container .modifier {
   display: grid;
@@ -2631,10 +2745,10 @@ co-toggle-switch[checked] thumb {
   padding: 0 8px;
 }
 .theme-dark .co.application.sheet.item.attack .window-content .modifiers-container .modifier {
-  border: 1px solid var(--color-attack-dark);
+  border: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.attack .window-content .modifiers-container .modifier {
-  border: 1px solid var(--color-attack-light);
+  border: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.attack .window-content .modifiers-container .modifier :nth-child(5) {
   grid-column: auto / span 2;
@@ -2691,10 +2805,10 @@ co-toggle-switch[checked] thumb {
   padding-bottom: 5px;
 }
 .theme-dark .co.application.sheet.item.attack .window-content .resolvers-container .resolver .form-group-stacked.like-grid.target {
-  border-bottom: 1px solid var(--color-attack-dark);
+  border-bottom: 1px solid var(--co-item-dark);
 }
 .theme-light .co.application.sheet.item.attack .window-content .resolvers-container .resolver .form-group-stacked.like-grid.target {
-  border-bottom: 1px solid var(--color-attack-light);
+  border-bottom: 1px solid var(--co-item-light);
 }
 .co.application.sheet.item.attack .window-content .resolvers-container .resolver .center-input {
   text-align: center;
@@ -2807,22 +2921,6 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.actor .window-content .sheet-sidebar {
   overflow: hidden;
 }
-.theme-light .co.application.sheet.actor .window-content .sheet-sidebar {
-  --color-attack: #e21e26;
-  --color-initiative: #48494f;
-  --color-defense: #0e507c;
-  --color-health: #128541;
-  --color-damages: #800080;
-  --color-resource: #2f4f4f;
-}
-.theme-dark .co.application.sheet.actor .window-content .sheet-sidebar {
-  --color-attack: #720f13;
-  --color-initiative: #303034;
-  --color-defense: #09324e;
-  --color-health: #0c582b;
-  --color-damages: #4d004d;
-  --color-resource: #1c2f2f;
-}
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -2835,7 +2933,7 @@ co-toggle-switch[checked] thumb {
   padding: 8px 4px;
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .labelled-field {
-  background-color: var(--color-background-grey);
+  background-color: var(--co-surface);
   border-radius: 12px 0 0 12px;
   height: 32px;
   padding: 4px;
@@ -2868,11 +2966,11 @@ co-toggle-switch[checked] thumb {
   margin: 0;
 }
 .theme-light .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .sidebar-section-header .sidebar-label h4 {
-  color: var(--color-textLight);
+  color: var(--co-text-light);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .field,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .labelled-field {
-  color: var(--color-background-grey);
+  color: var(--co-surface);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2887,7 +2985,7 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .labelled-field select,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .field input,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .labelled-field input {
-  background-color: var(--color-background-grey);
+  background-color: var(--co-surface);
   border: 0;
   color: var(--color-primary);
   flex: 1;
@@ -2912,7 +3010,7 @@ co-toggle-switch[checked] thumb {
 }
 .theme-dark .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .field select option,
 .theme-dark .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .labelled-field select option {
-  background: var(--color-background-grey);
+  background: var(--co-surface);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .field .slash,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .labelled-field .slash,
@@ -2924,7 +3022,7 @@ co-toggle-switch[checked] thumb {
   transform: scaleX(80%);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .field {
-  background-color: var(--color-background-grey);
+  background-color: var(--co-surface);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .labelled-field i {
   justify-self: flex-start;
@@ -2937,31 +3035,31 @@ co-toggle-switch[checked] thumb {
   font-weight: normal;
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.init-section {
-  background-color: var(--color-initiative);
+  background-color: var(--co-stat-initiative);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.init-section .field,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.init-section .labelled-field {
-  color: var(--color-initiative);
+  color: var(--co-stat-initiative);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.armor-section,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.dr-section {
-  background-color: var(--color-defense);
+  background-color: var(--co-stat-defense);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.armor-section .field,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.dr-section .field,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.armor-section .labelled-field,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.dr-section .labelled-field {
-  color: var(--color-defense);
+  color: var(--co-stat-defense);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.health-section {
-  background-color: var(--color-health);
+  background-color: var(--co-stat-health);
   grid-column: auto / span 3;
   margin-top: 8px;
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.health-section .field,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.health-section .labelled-field,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.health-section .labelled-field input {
-  color: var(--color-health);
+  color: var(--co-stat-health);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.speed-section {
   grid-column: auto / span 6;
@@ -2976,7 +3074,7 @@ co-toggle-switch[checked] thumb {
   flex: 1;
 }
 .theme-light .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.speed-section .sidebar-section-header .sidebar-label {
-  color: var(--color-textLight);
+  color: var(--co-text-light);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.speed-section .sidebar-section-header .field,
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.speed-section .sidebar-section-header .labelled-field {
@@ -2986,10 +3084,10 @@ co-toggle-switch[checked] thumb {
 }
 .theme-light .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.speed-section .sidebar-section-header .field,
 .theme-light .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section.speed-section .sidebar-section-header .labelled-field {
-  color: var(--color-textLight);
+  color: var(--co-text-light);
 }
 .co.application.sheet.actor .window-content .sheet-sidebar .scrollable .sidebar-section .state-modifier {
-  color: var(--color-textLight);
+  color: var(--co-text-light);
 }
 @-moz-document url-prefix('') {
   .co.application.sheet.actor .window-content .sheet-sidebar .scrollable {
@@ -2998,7 +3096,7 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.sheet.actor .window-content .abilities {
   box-sizing: border-box;
-  border: 2px solid var(--color-abilities);
+  border: 2px solid var(--co-sheet-accent-alt);
   display: grid;
   font-size: 20px;
   grid-template-columns: repeat(7, minmax(80px, 1fr)) auto;
@@ -3007,9 +3105,9 @@ co-toggle-switch[checked] thumb {
   text-align: center;
 }
 .co.application.sheet.actor .window-content .abilities .ability .ability-id {
-  background-color: var(--color-abilities);
+  background-color: var(--co-sheet-accent-alt);
   line-height: 1.8;
-  color: var(--color-background-grey);
+  color: var(--co-surface);
   font-weight: bold;
 }
 .co.application.sheet.actor .window-content .abilities .ability .ability-id i.fas.fa-asterisk {
@@ -3027,24 +3125,24 @@ co-toggle-switch[checked] thumb {
   color: var(--checkbox-checkmark-color);
 }
 .co.application.sheet.actor .window-content .abilities .ability .ability-mod {
-  border: 2px solid var(--color-abilities);
+  border: 2px solid var(--co-sheet-accent-alt);
   border-radius: 0;
   display: block;
   line-height: 1.3;
   text-align: center;
   font-size: 26px;
   font-weight: bold;
-  color: var(--color-abilities);
-  background-color: var(--color-background-grey);
+  color: var(--co-sheet-accent-alt);
+  background-color: var(--co-surface);
 }
 .co.application.sheet.actor .window-content .abilities .abilities-controls {
-  background-color: var(--color-abilities);
+  background-color: var(--co-sheet-accent-alt);
   line-height: 2.8;
 }
 .co.application.sheet.actor .window-content .abilities .abilities-edit {
   font-size: 23px;
   padding: 0px 6px;
-  color: var(--color-background-grey);
+  color: var(--co-surface);
 }
 .co.application.sheet.actor .notes .notes-section .details-label {
   font-weight: bold;
@@ -3060,7 +3158,7 @@ co-toggle-switch[checked] thumb {
   /*.profiles {
     margin-left: 16px;
   }*/
-  background-color: var(--color-characterSheet);
+  background-color: var(--co-sheet-accent);
 }
 .co.application.sheet.actor.character .window-content .sheet-header .species,
 .co.application.sheet.actor.character .window-content .sheet-header .profiles {
@@ -3075,12 +3173,12 @@ co-toggle-switch[checked] thumb {
   margin-right: 4px;
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar {
-  background-color: var(--color-characterSheet);
+  background-color: var(--co-sheet-accent);
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.melee-section,
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.ranged-section,
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.magic-section {
-  background-color: var(--color-attack);
+  background-color: var(--co-stat-attack);
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.melee-section .field,
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.ranged-section .field,
@@ -3088,19 +3186,19 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.melee-section .labelled-field,
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.ranged-section .labelled-field,
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.magic-section .labelled-field {
-  color: var(--color-attack);
+  color: var(--co-stat-attack);
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section:nth-child(8) .labelled-field i {
-  color: var(--color-damages);
+  color: var(--co-stat-damages);
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.resource-section {
-  background-color: var(--color-resource);
+  background-color: var(--co-stat-resource);
   margin-top: 8px;
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.resource-section .field,
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.resource-section .labelled-field,
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.resource-section .labelled-field input {
-  color: var(--color-resource);
+  color: var(--co-stat-resource);
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar .scrollable .sidebar-section.resource-section .current {
   width: 25px;
@@ -3113,12 +3211,12 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar span.max,
 .co.application.sheet.actor.character .window-content .sheet-sidebar span.slash {
-  color: var(--color-abilities);
+  color: var(--co-sheet-accent-alt);
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar .state-name {
   list-style: "\1F782";
   margin-left: 5px;
-  color: var(--color-background-grey);
+  color: var(--co-surface);
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar .state-name img {
   width: 1em;
@@ -3138,7 +3236,7 @@ co-toggle-switch[checked] thumb {
   margin-right: 5px;
 }
 .co.application.sheet.actor.character .window-content .sheet-sidebar input.vision-slider:not(:checked)::before {
-  color: var(--color-background-grey);
+  color: var(--co-surface);
 }
 .co.application.sheet.actor.character .window-content .dropzone {
   margin-left: 53px;
@@ -3155,7 +3253,7 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.actor.character .window-content .btn-mini-sheet {
   border: none;
   background: none;
-  color: var(--color-characterSheet);
+  color: var(--co-sheet-accent);
   margin-right: 30px;
   font-size: var(--font-size-20);
 }
@@ -3190,7 +3288,7 @@ co-toggle-switch[checked] thumb {
   font-size: 15px;
   background-color: transparent;
   border: none;
-  box-shadow: 2px 2px var(--color-abilities);
+  box-shadow: 2px 2px var(--co-sheet-accent-alt);
   height: 25px;
 }
 .co.application.sheet.actor.character section.standard-form.biography .biography-details {
@@ -3225,7 +3323,7 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.actor.character .btn-sort-items-rank.active,
 .co.application.sheet.actor.character .btn-sort-items-type.active,
 .co.application.sheet.actor.character .btn-sort-items-action-type.active {
-  color: var(--color-characterSheet);
+  color: var(--co-sheet-accent);
   outline: none;
   box-shadow: none;
 }
@@ -3241,18 +3339,18 @@ co-toggle-switch[checked] thumb {
       margin-left: 16px;
     }
   }*/
-  background-color: var(--color-encounterSheet);
+  background-color: var(--co-encounter-accent);
 }
 .co.application.sheet.actor.encounter .window-content .sheet-sidebar {
-  background-color: var(--color-encounterSheet);
+  background-color: var(--co-encounter-accent);
 }
 .co.application.sheet.actor.encounter .window-content .sheet-sidebar .scrollable .sidebar-section:nth-child(5) .labelled-field i {
-  color: var(--color-damages);
+  color: var(--co-stat-damages);
 }
 .co.application.sheet.actor.encounter .window-content .sheet-sidebar .state-name {
   list-style: "\1F782";
   margin-left: 5px;
-  color: var(--color-background-grey);
+  color: var(--co-surface);
 }
 .co.application.sheet.actor.encounter .window-content .sheet-sidebar .state-name img {
   width: 1em;
@@ -3279,7 +3377,7 @@ co-toggle-switch[checked] thumb {
   max-height: calc(100% - 20px);
   text-wrap: auto;
   overflow-y: scroll;
-  scrollbar-color: var(--color-abilities) var(--color-scrollbar-track);
+  scrollbar-color: var(--co-sheet-accent-alt) var(--color-scrollbar-track);
   scrollbar-width: thin;
 }
 .co.application.sheet.actor.encounter .window-content .properties .notes .editor {
@@ -3303,7 +3401,7 @@ co-toggle-switch[checked] thumb {
   margin-bottom: 5px;
 }
 .co.application.sheet.actor.encounter li.item.attack {
-  border-bottom: 2px solid var(--color-encounterSheet);
+  border-bottom: 2px solid var(--co-encounter-accent);
 }
 .co.application.sheet.actor.encounter li.item.attack:last-child {
   border-bottom: none;
@@ -3322,7 +3420,7 @@ co-toggle-switch[checked] thumb {
   font-size: 15px;
   background-color: transparent;
   border: none;
-  box-shadow: 2px 2px var(--color-abilities);
+  box-shadow: 2px 2px var(--co-sheet-accent-alt);
   height: 25px;
 }
 .co.application.sheet.actor.character-mini:not(.minimized) {
@@ -3418,7 +3516,7 @@ co-toggle-switch[checked] thumb {
   mask: none;
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .labelled-field {
-  background-color: var(--color-background-grey);
+  background-color: var(--co-surface);
   border-radius: 12px 0 0 12px;
   height: 23px;
   padding: 4px;
@@ -3436,11 +3534,11 @@ co-toggle-switch[checked] thumb {
   margin: 0;
 }
 .theme-light .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .sidebar-label h4 {
-  color: var(--color-textLight);
+  color: var(--co-text-light);
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .field,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .labelled-field {
-  color: var(--color-background-grey);
+  color: var(--co-surface);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3455,7 +3553,7 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .labelled-field select,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .field input,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .labelled-field input {
-  background-color: var(--color-background-grey);
+  background-color: var(--co-surface);
   border: 0;
   color: var(--color-primary);
   flex: 1;
@@ -3480,7 +3578,7 @@ co-toggle-switch[checked] thumb {
 }
 .theme-dark .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .field select option,
 .theme-dark .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .labelled-field select option {
-  background: var(--color-background-grey);
+  background: var(--co-surface);
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .field .slash,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .labelled-field .slash,
@@ -3492,7 +3590,7 @@ co-toggle-switch[checked] thumb {
   transform: scaleX(80%);
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .field {
-  background-color: var(--color-background-grey);
+  background-color: var(--co-surface);
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .sidebar-section .labelled-field i {
   justify-self: flex-start;
@@ -3506,25 +3604,25 @@ co-toggle-switch[checked] thumb {
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .armor-section,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .dr-section {
-  background-color: var(--color-defense);
+  background-color: var(--co-stat-defense);
   padding: 5px;
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .armor-section .field,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .dr-section .field,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .armor-section .labelled-field,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .dr-section .labelled-field {
-  color: var(--color-defense);
+  color: var(--co-stat-defense);
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .health-section {
   grid-column: auto;
   margin-top: 0;
-  background-color: var(--color-health);
+  background-color: var(--co-stat-health);
   padding: 5px;
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .health-section .field,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .health-section .labelled-field,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .health-section .labelled-field input {
-  color: var(--color-health);
+  color: var(--co-stat-health);
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .hp-section {
   grid-column: 1 / 3;
@@ -3532,13 +3630,13 @@ co-toggle-switch[checked] thumb {
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .resource-section.mini-section {
   grid-column: auto;
   margin-top: 0;
-  background-color: var(--color-resource);
+  background-color: var(--co-stat-resource);
   padding: 5px;
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .resource-section.mini-section .field,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .resource-section.mini-section .labelled-field,
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .resource-section.mini-section .labelled-field input {
-  color: var(--color-resource);
+  color: var(--co-stat-resource);
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .resource-section.mini-section .fa-clover {
   cursor: pointer;
@@ -3547,7 +3645,7 @@ co-toggle-switch[checked] thumb {
   text-shadow: 0px 0px 4px darkred;
 }
 .co.application.sheet.actor.character-mini .window-content .mini-sidebar .fa-heart-broken {
-  color: var(--color-damages);
+  color: var(--co-stat-damages);
 }
 .co.party-sheet .window-content {
   padding: 8px;
@@ -3563,7 +3661,7 @@ co-toggle-switch[checked] thumb {
   border: 1px solid var(--color-border-light-tertiary);
 }
 .co.party-sheet .party-table thead th {
-  background-color: var(--color-backgroundSkillDialog);
+  background-color: var(--co-dialog-skill-bg);
   color: #5d142b;
   font-weight: bold;
   text-align: center;
@@ -3703,42 +3801,24 @@ co-toggle-switch[checked] thumb {
 .theme-dark #interface #sidebar .chat-message,
 .theme-dark #interface #ui-right-column-1 .chat-message {
   background: #0b0a13e6;
-  color: var(--color-textLight);
-  --color-abilities: #2a83b9;
-  --color-chatSkill: #2a83b9;
-  --color-chatAttack: #db5305;
-  --color-chatDamages: #cb0909;
-  --color-chatHeal: #3fa13f;
-  --color-chatRest: #93a13f;
-  --color-chatSave: #8a43ab;
-  --color-chatItem: #bb9d68;
-  --color-chatShadow: #7ce6ef;
+  color: var(--co-text-light);
 }
 .theme-dark #interface #sidebar .chat-message span,
 .theme-dark #interface #ui-right-column-1 .chat-message span,
 .theme-dark #interface #sidebar .chat-message label,
 .theme-dark #interface #ui-right-column-1 .chat-message label {
-  color: var(--color-textLight);
+  color: var(--co-text-light);
 }
 .theme-light #interface #sidebar .chat-message,
 .theme-light #interface #ui-right-column-1 .chat-message {
   background-color: var(--color-light-3);
-  color: #222;
-  --color-abilities: #084f7b;
-  --color-chatSkill: #084f7b;
-  --color-chatAttack: #702900;
-  --color-chatDamages: darkred;
-  --color-chatHeal: #2c532c;
-  --color-chatRest: #597928;
-  --color-chatSave: #380052;
-  --color-chatItem: #4b3a0c;
-  --color-chatShadow: #7ce6ef;
+  color: var(--co-text-dark);
 }
 .theme-light #interface #sidebar .chat-message span,
 .theme-light #interface #ui-right-column-1 .chat-message span,
 .theme-light #interface #sidebar .chat-message label,
 .theme-light #interface #ui-right-column-1 .chat-message label {
-  color: #222;
+  color: var(--co-text-dark);
 }
 .theme-dark #interface #sidebar .chat-message.whisper,
 .theme-dark #interface #ui-right-column-1 .chat-message.whisper {
@@ -3767,11 +3847,11 @@ co-toggle-switch[checked] thumb {
 }
 .theme-dark #interface #sidebar .chat-message .message-header,
 .theme-dark #interface #ui-right-column-1 .chat-message .message-header {
-  color: var(--color-textLight);
+  color: var(--co-text-light);
 }
 .theme-light #interface #sidebar .chat-message .message-header,
 .theme-light #interface #ui-right-column-1 .chat-message .message-header {
-  color: #222;
+  color: var(--co-text-dark);
 }
 #interface #sidebar .chat-message .message-header .message-metadata,
 #interface #ui-right-column-1 .chat-message .message-header .message-metadata {
@@ -3801,7 +3881,7 @@ co-toggle-switch[checked] thumb {
   font-size: 1rem;
   /*p {
         margin-bottom: -15px;
-        border: 2px solid var(--color-chatSkill);
+        border: 2px solid var(--co-chat-skill);
         border-radius: 15px;
         background-color: #084f7b66;
         font-weight: bold;
@@ -3885,8 +3965,8 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .chat-message .message-content .card-content section.targets .target-list .target-row.is-interactive:hover,
 #interface #ui-right-column-1 .chat-message .message-content .card-content section.targets .target-list .target-row.is-interactive:hover {
-  background: color-mix(in srgb, var(--color-chatAttack) 8%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-chatAttack) 18%, transparent);
+  background: color-mix(in srgb, var(--co-chat-attack) 8%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--co-chat-attack) 18%, transparent);
 }
 #interface #sidebar .chat-message .message-content .card-content section.targets .target-list .target-row .target-portrait,
 #interface #ui-right-column-1 .chat-message .message-content .card-content section.targets .target-list .target-row .target-portrait {
@@ -3927,21 +4007,21 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.success,
 #interface #ui-right-column-1 .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.success {
-  color: #2e7d32;
+  color: var(--co-result-success);
 }
 #interface #sidebar .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.failure,
 #interface #ui-right-column-1 .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.failure {
-  color: #c62828;
+  color: var(--co-result-failure);
 }
 #interface #sidebar .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.critical,
 #interface #ui-right-column-1 .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.critical {
-  color: #1b5e20;
-  text-shadow: 0 0 4px #66bb6a;
+  color: var(--co-result-critical);
+  text-shadow: 0 0 4px var(--co-result-critical-glow);
 }
 #interface #sidebar .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.fumble,
 #interface #ui-right-column-1 .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.fumble {
-  color: #7f0000;
-  text-shadow: 0 0 4px #ef5350;
+  color: var(--co-result-fumble);
+  text-shadow: 0 0 4px var(--co-result-fumble-glow);
 }
 #interface #sidebar .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.pending,
 #interface #ui-right-column-1 .chat-message .message-content .card-content section.targets .target-list .target-row .target-outcome.pending {
@@ -4046,7 +4126,7 @@ co-toggle-switch[checked] thumb {
 }
 .theme-light #interface #sidebar .chat-message .message-content button,
 .theme-light #interface #ui-right-column-1 .chat-message .message-content button {
-  color: #222;
+  color: var(--co-text-dark);
 }
 #interface #sidebar .chat-message .message-content .type-card label,
 #interface #ui-right-column-1 .chat-message .message-content .type-card label {
@@ -4328,18 +4408,18 @@ co-toggle-switch[checked] thumb {
 #interface #ui-right-column-1 .co.chat-card.roll-card.attack-card .card-content button.opposite-roll {
   height: 40px;
   font-size: 18px;
-  color: var(--color-chatAttack);
+  color: var(--co-chat-attack);
   background: #5d142b3d;
-  border: 2px solid var(--color-chatAttack);
+  border: 2px solid var(--co-chat-attack);
   border-radius: 5px;
-  box-shadow: 1px 1px 0px 1px var(--color-chatAttack);
+  box-shadow: 1px 1px 0px 1px var(--co-chat-attack);
   padding: 0px 5px;
   margin: 0;
 }
 #interface #sidebar .co.chat-card.roll-card.attack-card .apply-effects-btn,
 #interface #ui-right-column-1 .co.chat-card.roll-card.attack-card .apply-effects-btn {
   margin-top: 6px;
-  color: var(--color-chatAttack);
+  color: var(--co-chat-attack);
 }
 #interface #sidebar .co.chat-card.roll-card.check-card .card-header,
 #interface #ui-right-column-1 .co.chat-card.roll-card.check-card .card-header {
@@ -4347,9 +4427,9 @@ co-toggle-switch[checked] thumb {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-top: 1px solid var(--color-chatSkill);
-  color: var(--color-chatSkill);
-  border-bottom: 1px dashed var(--color-chatSkill);
+  border-top: 1px solid var(--co-chat-skill);
+  color: var(--co-chat-skill);
+  border-bottom: 1px dashed var(--co-chat-skill);
 }
 #interface #sidebar .co.chat-card.roll-card.check-card .card-header .action-name,
 #interface #ui-right-column-1 .co.chat-card.roll-card.check-card .card-header .action-name {
@@ -4384,7 +4464,7 @@ co-toggle-switch[checked] thumb {
 #interface #ui-right-column-1 .co.chat-card.roll-card.check-card .card-content .consequences {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px dashed var(--color-chatSkill);
+  border-top: 1px dashed var(--co-chat-skill);
   font-size: var(--font-size-14);
 }
 #interface #sidebar .co.chat-card.roll-card.check-card .card-content .consequences .consequence,
@@ -4415,11 +4495,11 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .card-header .damage-item-card,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .card-header .damage-item-card {
-  border-color: color-mix(in srgb, var(--color-chatDamages) 60%, #8f7656);
+  border-color: color-mix(in srgb, var(--co-chat-damages) 60%, #8f7656);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .card-header .damage-details .card-details-content,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .card-header .damage-details .card-details-content {
-  border-color: color-mix(in srgb, var(--color-chatDamages) 60%, #8f7656);
+  border-color: color-mix(in srgb, var(--co-chat-damages) 60%, #8f7656);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .card-content .result,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .card-content .result {
@@ -4467,7 +4547,7 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card section.targets .targets-header,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card section.targets .targets-header {
-  color: var(--color-chatDamages);
+  color: var(--co-chat-damages);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card section.targets .apply-content,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card section.targets .apply-content {
@@ -4502,11 +4582,11 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card section.targets .apply-source-control .apply-mode-btn:hover,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card section.targets .apply-source-control .apply-mode-btn:hover {
-  color: var(--color-chatDamages);
+  color: var(--co-chat-damages);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card section.targets .apply-source-control .apply-mode-btn.active,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card section.targets .apply-source-control .apply-mode-btn.active {
-  color: var(--color-chatDamages);
+  color: var(--co-chat-damages);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-list,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-list {
@@ -4582,7 +4662,7 @@ co-toggle-switch[checked] thumb {
   font-size: var(--font-size-20);
   min-width: 32px;
   text-align: right;
-  color: var(--color-chatDamages);
+  color: var(--co-chat-damages);
   font-variant-numeric: tabular-nums;
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn,
@@ -4607,14 +4687,14 @@ co-toggle-switch[checked] thumb {
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn:hover,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn:hover {
   opacity: 1;
-  background: color-mix(in srgb, var(--color-chatDamages) 12%, transparent);
+  background: color-mix(in srgb, var(--co-chat-damages) 12%, transparent);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn.active,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row .force-damage-btn.active {
   opacity: 1;
   color: white;
-  background: var(--color-chatDamages);
-  border-color: var(--color-chatDamages);
+  background: var(--co-chat-damages);
+  border-color: var(--co-chat-damages);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row .target-damage-input,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row .target-damage-input {
@@ -4625,11 +4705,11 @@ co-toggle-switch[checked] thumb {
   font-weight: bold;
   font-size: var(--font-size-20);
   text-align: right;
-  color: var(--color-chatDamages);
+  color: var(--co-chat-damages);
   font-variant-numeric: tabular-nums;
-  border: 1px solid var(--color-chatDamages);
+  border: 1px solid var(--co-chat-damages);
   border-radius: 3px;
-  background: color-mix(in srgb, var(--color-chatDamages) 8%, transparent);
+  background: color-mix(in srgb, var(--co-chat-damages) 8%, transparent);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-target-row.manual .target-damage,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-target-row.manual .target-damage {
@@ -4673,16 +4753,16 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .damage-multipliers .multiplier-btn:hover,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .damage-multipliers .multiplier-btn:hover {
-  background: color-mix(in srgb, var(--color-chatDamages) 12%, transparent);
-  border-color: var(--color-chatDamages);
+  background: color-mix(in srgb, var(--co-chat-damages) 12%, transparent);
+  border-color: var(--co-chat-damages);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .damage-multipliers .multiplier-btn.active,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .damage-multipliers .multiplier-btn.active {
-  background: var(--color-chatDamages);
-  border-color: var(--color-chatDamages);
+  background: var(--co-chat-damages);
+  border-color: var(--co-chat-damages);
   color: white;
-  box-shadow: 0 1px 3px color-mix(in srgb, var(--color-chatDamages) 40%, transparent);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--co-chat-damages) 40%, transparent);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .damage-multipliers .multiplier-btn.disabled,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .damage-multipliers .multiplier-btn.disabled {
@@ -4692,10 +4772,10 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .damage-multipliers .btn-heal.active,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .damage-multipliers .btn-heal.active {
-  background: var(--color-chatHeal);
-  border-color: var(--color-chatHeal);
+  background: var(--co-chat-heal);
+  border-color: var(--co-chat-heal);
   color: white;
-  box-shadow: 0 1px 3px color-mix(in srgb, var(--color-chatHeal) 40%, transparent);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--co-chat-heal) 40%, transparent);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-damage-btn,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-damage-btn {
@@ -4710,16 +4790,16 @@ co-toggle-switch[checked] thumb {
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  border: 1px solid var(--color-chatDamages);
+  border: 1px solid var(--co-chat-damages);
   border-radius: 3px;
-  background: color-mix(in srgb, var(--color-chatDamages) 12%, transparent);
-  color: var(--color-chatDamages);
+  background: color-mix(in srgb, var(--co-chat-damages) 12%, transparent);
+  color: var(--co-chat-damages);
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-damage-btn:hover,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-damage-btn:hover {
-  background: color-mix(in srgb, var(--color-chatDamages) 25%, transparent);
+  background: color-mix(in srgb, var(--co-chat-damages) 25%, transparent);
 }
 #interface #sidebar .co.chat-card.roll-card.damage-card .apply-damage-btn i,
 #interface #ui-right-column-1 .co.chat-card.roll-card.damage-card .apply-damage-btn i {
@@ -4768,10 +4848,10 @@ co-toggle-switch[checked] thumb {
     }
     strong {
       .theme-dark & {
-        color: #e7d1b1;
+        color: var(--co-text-light);
       }
       .theme-light & {
-        color: #222;
+        color: var(--co-text-dark);
       }
     }
   }*/
@@ -4782,14 +4862,14 @@ co-toggle-switch[checked] thumb {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  border-top: 1px solid var(--color-chatHeal);
-  color: var(--color-chatHeal);
-  border-bottom: 1px dashed var(--color-chatHeal);
+  border-top: 1px solid var(--co-chat-heal);
+  color: var(--co-chat-heal);
+  border-bottom: 1px dashed var(--co-chat-heal);
 }
 #interface #sidebar .co.chat-card.roll-card.heal-card .card-header label,
 #interface #ui-right-column-1 .co.chat-card.roll-card.heal-card .card-header label {
-  color: var(--color-chatHeal);
-  text-shadow: 0 0px 2px var(--color-chatShadow);
+  color: var(--co-chat-heal);
+  text-shadow: 0 0px 2px var(--co-chat-shadow);
 }
 #interface #sidebar .co.chat-card.roll-card.heal-card .card-content .bloc-result,
 #interface #ui-right-column-1 .co.chat-card.roll-card.heal-card .card-content .bloc-result {
@@ -4802,17 +4882,17 @@ co-toggle-switch[checked] thumb {
   display: flex;
   align-items: center;
   margin-top: 3px;
-  border-top: 1px solid var(--color-chatItem);
-  border-bottom: 1px dashed var(--color-chatItem);
+  border-top: 1px solid var(--co-chat-item);
+  border-bottom: 1px dashed var(--co-chat-item);
 }
 #interface #sidebar .co.chat-card.roll-card.item-card .itemTitle label,
 #interface #ui-right-column-1 .co.chat-card.roll-card.item-card .itemTitle label {
-  color: var(--color-chatItem);
-  text-shadow: 0 0px 2px var(--color-chatShadow);
+  color: var(--co-chat-item);
+  text-shadow: 0 0px 2px var(--co-chat-shadow);
 }
 #interface #sidebar .co.chat-card.roll-card.item-card .itemTitle span,
 #interface #ui-right-column-1 .co.chat-card.roll-card.item-card .itemTitle span {
-  color: var(--color-chatItem);
+  color: var(--co-chat-item);
   text-transform: uppercase;
   font-weight: bold;
   text-wrap: nowrap;
@@ -4845,11 +4925,11 @@ co-toggle-switch[checked] thumb {
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: var(--font-size-14);
-  color: var(--color-chatItem);
+  color: var(--co-chat-item);
   background: #5d142b3d;
-  border: 2px solid var(--color-chatItem);
+  border: 2px solid var(--co-chat-item);
   border-radius: 5px;
-  box-shadow: 1px 1px 0px 1px var(--color-chatItem);
+  box-shadow: 1px 1px 0px 1px var(--co-chat-item);
   padding: 0px 5px;
   margin: 0;
 }
@@ -4861,8 +4941,8 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-header label,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-header label {
-  color: var(--color-chatSave);
-  text-shadow: 0 0px 2px var(--color-chatShadow);
+  color: var(--co-chat-save);
+  text-shadow: 0 0px 2px var(--co-chat-shadow);
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .bloc-result.has-target-results,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .bloc-result.has-target-results {
@@ -4887,7 +4967,7 @@ co-toggle-switch[checked] thumb {
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .difficulty-group .difficulty-icon,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .difficulty-group .difficulty-icon {
   font-size: var(--font-size-20);
-  color: var(--color-chatSave);
+  color: var(--co-chat-save);
   opacity: 0.8;
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .difficulty-group .difficulty-value,
@@ -4901,11 +4981,11 @@ co-toggle-switch[checked] thumb {
   flex-direction: column;
   height: 40px;
   font-size: 18px;
-  color: var(--color-chatSave);
+  color: var(--co-chat-save);
   background: #5d142b3d;
-  border: 2px solid var(--color-chatSave);
+  border: 2px solid var(--co-chat-save);
   border-radius: 5px;
-  box-shadow: 1px 1px 0px 1px var(--color-chatSave);
+  box-shadow: 1px 1px 0px 1px var(--co-chat-save);
   padding: 0px 5px;
   margin: 0 0 5px 0;
 }
@@ -4983,7 +5063,7 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .save-dmg-section .save-dmg-details-content,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .save-dmg-section .save-dmg-details-content {
-  border-top: 1px solid color-mix(in srgb, var(--color-chatDamages) 60%, #8f7656);
+  border-top: 1px solid color-mix(in srgb, var(--co-chat-damages) 60%, #8f7656);
   margin-top: 4px;
   padding-top: 4px;
 }
@@ -5022,7 +5102,7 @@ co-toggle-switch[checked] thumb {
   font-size: var(--font-size-20);
   min-width: 32px;
   text-align: right;
-  color: var(--color-chatDamages);
+  color: var(--co-chat-damages);
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
 }
@@ -5048,14 +5128,14 @@ co-toggle-switch[checked] thumb {
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .target-row-info .force-damage-btn:hover,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .target-row-info .force-damage-btn:hover {
   opacity: 1;
-  background: color-mix(in srgb, var(--color-chatDamages) 12%, transparent);
+  background: color-mix(in srgb, var(--co-chat-damages) 12%, transparent);
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .target-row-info .force-damage-btn.active,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .target-row-info .force-damage-btn.active {
   opacity: 1;
   color: white;
-  background: var(--color-chatDamages);
-  border-color: var(--color-chatDamages);
+  background: var(--co-chat-damages);
+  border-color: var(--co-chat-damages);
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .target-row-info .target-damage-input,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .target-row-info .target-damage-input {
@@ -5066,12 +5146,12 @@ co-toggle-switch[checked] thumb {
   font-weight: bold;
   font-size: var(--font-size-20);
   text-align: right;
-  color: var(--color-chatDamages);
+  color: var(--co-chat-damages);
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
-  border: 1px solid var(--color-chatDamages);
+  border: 1px solid var(--co-chat-damages);
   border-radius: 3px;
-  background: color-mix(in srgb, var(--color-chatDamages) 8%, transparent);
+  background: color-mix(in srgb, var(--co-chat-damages) 8%, transparent);
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .target-row.manual .target-damage,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .target-row.manual .target-damage {
@@ -5125,16 +5205,16 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .save-target-dmg-row .damage-multipliers .multiplier-btn:hover,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .save-target-dmg-row .damage-multipliers .multiplier-btn:hover {
-  background: color-mix(in srgb, var(--color-chatDamages) 12%, transparent);
-  border-color: var(--color-chatDamages);
+  background: color-mix(in srgb, var(--co-chat-damages) 12%, transparent);
+  border-color: var(--co-chat-damages);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .save-target-dmg-row .damage-multipliers .multiplier-btn.active,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .save-target-dmg-row .damage-multipliers .multiplier-btn.active {
-  background: var(--color-chatDamages);
-  border-color: var(--color-chatDamages);
+  background: var(--co-chat-damages);
+  border-color: var(--co-chat-damages);
   color: white;
-  box-shadow: 0 1px 3px color-mix(in srgb, var(--color-chatDamages) 40%, transparent);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--co-chat-damages) 40%, transparent);
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .save-target-dmg-row .damage-multipliers .multiplier-btn.disabled,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .save-target-dmg-row .damage-multipliers .multiplier-btn.disabled {
@@ -5144,10 +5224,10 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .save-target-dmg-row .damage-multipliers .btn-heal.active,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .save-target-dmg-row .damage-multipliers .btn-heal.active {
-  background: var(--color-chatHeal);
-  border-color: var(--color-chatHeal);
+  background: var(--co-chat-heal);
+  border-color: var(--co-chat-heal);
   color: white;
-  box-shadow: 0 1px 3px color-mix(in srgb, var(--color-chatHeal) 40%, transparent);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--co-chat-heal) 40%, transparent);
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .save-apply-section,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .save-apply-section {
@@ -5155,11 +5235,11 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .save-apply-section .save-apply-effects-btn,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .save-apply-section .save-apply-effects-btn {
-  color: var(--color-chatSave);
+  color: var(--co-chat-save);
 }
 #interface #sidebar .co.chat-card.roll-card.save-card .card-content .save-apply-section .save-apply-btn,
 #interface #ui-right-column-1 .co.chat-card.roll-card.save-card .card-content .save-apply-section .save-apply-btn {
-  color: var(--color-chatDamages);
+  color: var(--co-chat-damages);
 }
 #interface #sidebar .co.chat-card.roll-card.skill-card .card-header,
 #interface #ui-right-column-1 .co.chat-card.roll-card.skill-card .card-header {
@@ -5168,14 +5248,14 @@ co-toggle-switch[checked] thumb {
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
-  border-top: 1px solid var(--color-chatSkill);
-  color: var(--color-chatSkill);
-  border-bottom: 1px dashed var(--color-chatSkill);
+  border-top: 1px solid var(--co-chat-skill);
+  color: var(--co-chat-skill);
+  border-bottom: 1px dashed var(--co-chat-skill);
 }
 #interface #sidebar .co.chat-card.roll-card.skill-card .card-header label,
 #interface #ui-right-column-1 .co.chat-card.roll-card.skill-card .card-header label {
-  color: var(--color-chatSkill);
-  text-shadow: 0 0px 2px var(--color-chatShadow);
+  color: var(--co-chat-skill);
+  text-shadow: 0 0px 2px var(--co-chat-shadow);
 }
 #interface #sidebar .co.chat-card.roll-card.skill-card .card-header .action-skills,
 #interface #ui-right-column-1 .co.chat-card.roll-card.skill-card .card-header .action-skills {
@@ -5212,7 +5292,7 @@ co-toggle-switch[checked] thumb {
 #interface #ui-right-column-1 .co.chat-card.roll-card.skill-card .card-content .skill-used {
   font-size: var(--font-size-16);
   margin-top: 5px;
-  border-top: 1px dashed var(--color-chatSkill);
+  border-top: 1px dashed var(--co-chat-skill);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -5228,7 +5308,7 @@ co-toggle-switch[checked] thumb {
 #interface #sidebar .co.chat-card.roll-card.skill-card .card-content .skill-used .skill-used-player,
 #interface #ui-right-column-1 .co.chat-card.roll-card.skill-card .card-content .skill-used .skill-used-player {
   font-weight: bold;
-  color: var(--color-chatSkill);
+  color: var(--co-chat-skill);
   margin-bottom: 4px;
 }
 #interface #sidebar .co.chat-card.roll-card.skill-card .card-content .skill-used .skill-used-bonus,
@@ -5236,7 +5316,7 @@ co-toggle-switch[checked] thumb {
   font-size: var(--font-size-18);
   padding-left: 10px;
   font-weight: bold;
-  color: var(--color-chatSkill);
+  color: var(--co-chat-skill);
 }
 #interface #sidebar .co.chat-card.roll-card.skill-card .card-content button.opposite-roll,
 #interface #ui-right-column-1 .co.chat-card.roll-card.skill-card .card-content button.opposite-roll {
@@ -5246,11 +5326,11 @@ co-toggle-switch[checked] thumb {
   align-items: center;
   height: auto;
   font-size: 18px;
-  color: var(--color-chatSkill);
+  color: var(--co-chat-skill);
   background: #5d142b3d;
-  border: 2px solid var(--color-chatSkill);
+  border: 2px solid var(--co-chat-skill);
   border-radius: 5px;
-  box-shadow: 1px 1px 0px 1px var(--color-chatSkill);
+  box-shadow: 1px 1px 0px 1px var(--co-chat-skill);
   padding: 4px 8px;
   margin: 0;
   line-height: 1.3;
@@ -5262,13 +5342,13 @@ co-toggle-switch[checked] thumb {
 }
 #interface #sidebar .co.chat-card.roll-card.skill-card .card-content .player-block,
 #interface #ui-right-column-1 .co.chat-card.roll-card.skill-card .card-content .player-block {
-  border-top: 1px dashed var(--color-chatSkill);
+  border-top: 1px dashed var(--co-chat-skill);
   padding: 4px 0;
 }
 #interface #sidebar .co.chat-card.roll-card.skill-card .card-content .player-block .player-block-name,
 #interface #ui-right-column-1 .co.chat-card.roll-card.skill-card .card-content .player-block .player-block-name {
   font-weight: bold;
-  color: var(--color-chatSkill);
+  color: var(--co-chat-skill);
 }
 #interface #sidebar .co.chat-card.roll-card.skill-card .card-content .player-block .player-block-ability,
 #interface #ui-right-column-1 .co.chat-card.roll-card.skill-card .card-content .player-block .player-block-ability {

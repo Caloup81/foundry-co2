@@ -1,32 +1,32 @@
 .sheet-sidebar {
-  background-color: var(--color-characterSheet);
+  background-color: var(--co-sheet-accent);
   .scrollable {
     .sidebar-section {
       &.melee-section,
       &.ranged-section,
       &.magic-section {
-        background-color: var(--color-attack);
+        background-color: var(--co-stat-attack);
 
         .field,
         .labelled-field {
-          color: var(--color-attack);
+          color: var(--co-stat-attack);
         }
       }
 
       &:nth-child(8) {
         .labelled-field i {
-          color: var(--color-damages);
+          color: var(--co-stat-damages);
         }
       }
 
       &.resource-section {
-        background-color: var(--color-resource);
+        background-color: var(--co-stat-resource);
         margin-top: 8px;
 
         .field,
         .labelled-field,
         .labelled-field input {
-          color: var(--color-resource);
+          color: var(--co-stat-resource);
         }
         .current {
           width: 25px;
@@ -42,12 +42,12 @@
   }
   span.max,
   span.slash {
-    color: var(--color-abilities);
+    color: var(--co-sheet-accent-alt);
   }
   .state-name {
     list-style: "\1F782";
     margin-left: 5px;
-    color: var(--color-background-grey);
+    color: var(--co-surface);
     img {
       width: 1em;
       height: 1em;
@@ -68,6 +68,6 @@
   }
 
   input.vision-slider:not(:checked)::before {
-    color: var(--color-background-grey);
+    color: var(--co-surface);
   }
 }

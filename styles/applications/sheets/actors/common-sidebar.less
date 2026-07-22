@@ -1,28 +1,5 @@
 .sheet-sidebar {
-  @color-attack: #e21e26;
-  @color-initiative: #48494f;
-  @color-defense: #0e507c;
-  @color-health: #128541;
-  @color-damages: #800080;
-  @color-resource: #2f4f4f;
-
-  .theme-light & {
-    --color-attack: @color-attack;
-    --color-initiative: @color-initiative;
-    --color-defense: @color-defense;
-    --color-health: @color-health;
-    --color-damages: @color-damages;
-    --color-resource: @color-resource;
-  }
-
-  .theme-dark & {
-    --color-attack: darken(@color-attack, 25%);
-    --color-initiative: darken(@color-initiative, 10%);
-    --color-defense: darken(@color-defense, 10%);
-    --color-health: darken(@color-health, 10%);
-    --color-damages: darken(@color-damages, 10%);
-    --color-resource: darken(@color-resource, 10%);
-  }
+  // Les couleurs des valeurs de combat sont déclarées dans styles/palette.less
 
   overflow: hidden; // hide scrollbar in child
 
@@ -41,7 +18,7 @@
     padding: 8px 4px;
 
     .labelled-field {
-      background-color: var(--color-background-grey);
+      background-color: var(--co-surface);
       border-radius: 12px 0 0 12px;
       height: 32px;
       padding: 4px;
@@ -76,7 +53,7 @@
             margin: 0;
 
             .theme-light & {
-              color: var(--color-textLight);
+              color: var(--co-text-light);
             }
           }
         }
@@ -84,7 +61,7 @@
 
       .field,
       .labelled-field {
-        color: var(--color-background-grey);
+        color: var(--co-surface);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -97,7 +74,7 @@
 
         select,
         input {
-          background-color: var(--color-background-grey);
+          background-color: var(--co-surface);
           border: 0;
           color: var(--color-primary);
           flex: 1;
@@ -119,7 +96,7 @@
           font-size: 12px;
           option {
             .theme-dark & {
-              background: var(--color-background-grey);
+              background: var(--co-surface);
             }
           }
         }
@@ -134,7 +111,7 @@
       }
 
       .field {
-        background-color: var(--color-background-grey);
+        background-color: var(--co-surface);
       }
 
       .labelled-field {
@@ -153,33 +130,33 @@
       }
 
       &.init-section {
-        background-color: var(--color-initiative);
+        background-color: var(--co-stat-initiative);
 
         .field,
         .labelled-field {
-          color: var(--color-initiative);
+          color: var(--co-stat-initiative);
         }
       }
 
       &.armor-section,
       &.dr-section {
-        background-color: var(--color-defense);
+        background-color: var(--co-stat-defense);
 
         .field,
         .labelled-field {
-          color: var(--color-defense);
+          color: var(--co-stat-defense);
         }
       }
 
       &.health-section {
-        background-color: var(--color-health);
+        background-color: var(--co-stat-health);
         grid-column: auto / span 3;
         margin-top: 8px;
 
         .field,
         .labelled-field,
         .labelled-field input {
-          color: var(--color-health);
+          color: var(--co-stat-health);
         }
       }
 
@@ -196,7 +173,7 @@
             flex: 1;
 
             .theme-light & {
-              color: var(--color-textLight);
+              color: var(--co-text-light);
             }
           }
 
@@ -207,13 +184,13 @@
             font-size: inherit;
 
             .theme-light & {
-              color: var(--color-textLight);
+              color: var(--co-text-light);
             }
           }
         }
       }
       .state-modifier {
-        color: var(--color-textLight);
+        color: var(--co-text-light);
       }
     }
   }

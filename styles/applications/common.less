@@ -1,30 +1,4 @@
-@color-characterSheet: #ba9442;
-@color-abilities: #0c4f7b;
-@color-backgroundGrey: #ebebe8;
-@color-encounterSheet: #95262699;
-@color-WindowContentDark: #00000094;
-@color-WindowContentLight: #584a756b;
-
-.theme-light & {
-  --color-characterSheet: @color-characterSheet;
-  --color-abilities: @color-abilities;
-  --color-background-grey: @color-backgroundGrey;
-  --color-encounterSheet: @color-encounterSheet;
-  --color-WindowContent: @color-WindowContentLight;
-  --color-textLight: #fffaf2;
-  --color-backgroundAttackDialog: #754a548c;
-  --color-backgroundSkillDialog: #2a3c876b;
-}
-.theme-dark & {
-  --color-characterSheet: darken(@color-characterSheet, 25%);
-  --color-abilities: darken(@color-abilities, 10%);
-  --color-background-grey: darken(@color-backgroundGrey, 20%);
-  --color-encounterSheet: darken(@color-encounterSheet, 10%);
-  --color-WindowContent: @color-WindowContentDark;
-  --color-textLight: #e7d1b1;
-  --color-backgroundAttackDialog: #33161d8c;
-  --color-backgroundSkillDialog: #313a5f6b;
-}
+// Les couleurs de thème sont déclarées dans styles/palette.less
 
 ul,
 ol,
@@ -59,7 +33,7 @@ li {
 .sheet-tabs {
   align-items: stretch;
   border-top: 0;
-  border-bottom-color: var(--color-abilities);
+  border-bottom-color: var(--co-sheet-accent-alt);
   display: flex;
   flex-flow: row nowrap;
   padding: 0 8px;
@@ -79,14 +53,14 @@ li {
     white-space: nowrap;
 
     &.active {
-      background-color: var(--color-abilities);
-      border: 1px solid var(--color-abilities);
-      color: var(--color-background-grey);
+      background-color: var(--co-sheet-accent-alt);
+      border: 1px solid var(--co-sheet-accent-alt);
+      color: var(--co-surface);
       font-weight: bold;
     }
 
     &:hover {
-      border: 2px dotted var(--color-abilities);
+      border: 2px dotted var(--co-sheet-accent-alt);
       border-bottom: 0;
     }
   }
@@ -95,7 +69,7 @@ li {
 .tab[data-tab] {
   padding: 10px 0 10px 10px;
   overflow: hidden auto;
-  scrollbar-color: var(--color-abilities) var(--color-scrollbar-track);
+  scrollbar-color: var(--co-sheet-accent-alt) var(--color-scrollbar-track);
   scrollbar-gutter: stable;
   text-overflow: ellipsis;
   white-space: nowrap;

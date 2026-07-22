@@ -97,7 +97,7 @@
       mask: none;
 
       .labelled-field {
-        background-color: var(--color-background-grey);
+        background-color: var(--co-surface);
         border-radius: 12px 0 0 12px;
         height: 23px;
         padding: 4px;
@@ -116,13 +116,13 @@
             margin: 0;
 
             .theme-light & {
-              color: var(--color-textLight);
+              color: var(--co-text-light);
             }
           }
         }
         .field,
         .labelled-field {
-          color: var(--color-background-grey);
+          color: var(--co-surface);
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -135,7 +135,7 @@
 
           select,
           input {
-            background-color: var(--color-background-grey);
+            background-color: var(--co-surface);
             border: 0;
             color: var(--color-primary);
             flex: 1;
@@ -157,7 +157,7 @@
             font-size: 12px;
             option {
               .theme-dark & {
-                background: var(--color-background-grey);
+                background: var(--co-surface);
               }
             }
           }
@@ -171,7 +171,7 @@
         }
 
         .field {
-          background-color: var(--color-background-grey);
+          background-color: var(--co-surface);
         }
 
         .labelled-field {
@@ -191,24 +191,24 @@
       }
       .armor-section,
       .dr-section {
-        background-color: var(--color-defense);
+        background-color: var(--co-stat-defense);
         padding: 5px;
 
         .field,
         .labelled-field {
-          color: var(--color-defense);
+          color: var(--co-stat-defense);
         }
       }
       .health-section {
         grid-column: auto;
         margin-top: 0;
-        background-color: var(--color-health);
+        background-color: var(--co-stat-health);
         padding: 5px;
 
         .field,
         .labelled-field,
         .labelled-field input {
-          color: var(--color-health);
+          color: var(--co-stat-health);
         }
       }
       .hp-section {
@@ -217,12 +217,12 @@
       .resource-section.mini-section {
         grid-column: auto;
         margin-top: 0;
-        background-color: var(--color-resource);
+        background-color: var(--co-stat-resource);
         padding: 5px;
         .field,
         .labelled-field,
         .labelled-field input {
-          color: var(--color-resource);
+          color: var(--co-stat-resource);
         }
         .fa-clover {
           cursor: pointer;
@@ -232,7 +232,7 @@
         }
       }
       .fa-heart-broken {
-        color: var(--color-damages);
+        color: var(--co-stat-damages);
       }
     }
   }

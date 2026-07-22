@@ -1,15 +1,15 @@
 &.attack-roll {
   .window-header {
     border-radius: 5px 5px 0 0;
-    background-color: var(--color-backgroundAttackDialog);
-    border-bottom: 2px solid #ad0606;
+    background-color: var(--co-dialog-attack-bg);
+    border-bottom: 2px solid var(--co-dialog-attack-accent);
     .window-title {
       text-align: center;
       font-size: 25px;
       font-weight: bold;
-      color: #5d142b;
+      color: var(--co-dialog-attack-surface);
       .theme-dark & {
-        color: #b3b4b5;
+        color: var(--co-dialog-muted);
       }
     }
     /*.theme-dark & {
@@ -23,20 +23,20 @@
     align-content: center;
   }
   .window-content {
-    background-color: var(--color-backgroundAttackDialog);
+    background-color: var(--co-dialog-attack-bg);
     padding: 10px;
     .attack-roll-1 {
       display: grid;
       grid-template-columns: 0.5fr 1.3fr 0.3fr 2.5fr;
       padding-bottom: 6px;
-      border-bottom: 2px solid #ad0606;
+      border-bottom: 2px solid var(--co-dialog-attack-accent);
       gap: 0;
     }
     .attack-roll-2 {
       display: grid;
       grid-template-columns: 0.5fr 3fr 0.8fr 0.8fr 1.2fr;
       padding-bottom: 6px;
-      border-bottom: 2px solid #ad0606;
+      border-bottom: 2px solid var(--co-dialog-attack-accent);
       gap: 0;
       &.has-skill-bonuses {
         grid-template-columns: 0.5fr 3fr 0.8fr 0.8fr 0.8fr 1.2fr;
@@ -75,28 +75,28 @@
       border: 2px solid grey;
       padding: 5px;
       margin: 5px;
-      background-color: #ffffff57;
+      background-color: var(--co-dialog-overlay);
       cursor: pointer;
     }
     .bonus-item.flexrow.checked {
-      color: #b3b4b5;
+      color: var(--co-dialog-muted);
       padding: 5px;
       margin: 5px;
-      border: 2px solid #b3b4b5;
-      background-color: #5d142b;
+      border: 2px solid var(--co-dialog-muted);
+      background-color: var(--co-dialog-attack-surface);
     }
     .rollDommages {
       display: grid;
       grid-template-columns: 2.4fr 0.3fr 2fr 2.4fr;
       padding-bottom: 6px;
-      border-bottom: 2px solid #ad0606;
+      border-bottom: 2px solid var(--co-dialog-attack-accent);
     }
     .dommageDialog {
       display: grid;
       grid-template-columns: 0.5fr 3fr 0.8fr 0.8fr 1.2fr;
       padding-bottom: 6px;
       margin-bottom: 6px;
-      border-bottom: 2px solid #ad0606;
+      border-bottom: 2px solid var(--co-dialog-attack-accent);
       gap: 0;
     }
     .tacticalTargets {
@@ -104,7 +104,7 @@
       grid-template-columns: 0.6fr 1fr;
       padding-bottom: 6px;
       margin-bottom: 8px;
-      border-bottom: 2px solid #ad0606;
+      border-bottom: 2px solid var(--co-dialog-attack-accent);
     }
     .tacticalOptions {
       display: grid;
@@ -164,9 +164,9 @@
       text-align: left;
       font-size: var(--font-size-16);
       font-weight: bolder;
-      background-color: #ffffff57;
+      background-color: var(--co-dialog-overlay);
       .theme-dark & {
-        color: #e7d1b1;
+        color: var(--co-text-light);
       }
     }
     .standard-form {
@@ -222,7 +222,7 @@
       border: 2px solid #4a4a4a;
       border-radius: 999px;
       background: #ffffffd9;
-      color: #222;
+      color: var(--co-text-dark);
       font-size: var(--font-size-15);
       font-weight: bold;
       line-height: 1.1;
@@ -233,7 +233,7 @@
     .additionalEffect {
       padding-bottom: 6px;
       margin-bottom: 8px;
-      border-bottom: 2px solid #ad0606;
+      border-bottom: 2px solid var(--co-dialog-attack-accent);
       display: grid;
       grid-template-columns: 0.1fr 1fr;
       .icone {
@@ -251,7 +251,7 @@
       .additionalEffectStatuses {
         //padding-bottom: 6px;
         //margin-bottom: 8px;
-        //border-bottom: 2px solid #ad0606;
+        //border-bottom: 2px solid var(--co-dialog-attack-accent);
 
         .statusesBox {
           border: none;
@@ -280,14 +280,14 @@
               border: 2px solid grey;
               padding: 5px 10px;
               margin: 3px;
-              background-color: #ffffff57;
+              background-color: var(--co-dialog-overlay);
               cursor: pointer;
               transition: all 0.15s ease;
 
               &:has(input:checked) {
-                background-color: #5d142b;
-                border-color: #b3b4b5;
-                color: #b3b4b5;
+                background-color: var(--co-dialog-attack-surface);
+                border-color: var(--co-dialog-muted);
+                color: var(--co-dialog-muted);
               }
 
               input[type="checkbox"] {
@@ -315,9 +315,9 @@
     .theme-dark & {
       // background: none;
       // background-color: rgba(0, 0, 0, 0.8);
-      color: #e7d1b1;
+      color: var(--co-text-light);
       input {
-        color: #b3b4b5;
+        color: var(--co-dialog-muted);
         text-align: left;
       }
     }

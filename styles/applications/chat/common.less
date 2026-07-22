@@ -1,36 +1,19 @@
 & .chat-message {
+  // Les couleurs de chat sont déclarées dans styles/palette.less
   .theme-dark & {
     background: #0b0a13e6;
-    color: var(--color-textLight);
-    --color-abilities: #2a83b9;
-    --color-chatSkill: #2a83b9;
-    --color-chatAttack: #db5305;
-    --color-chatDamages: #cb0909;
-    --color-chatHeal: #3fa13f;
-    --color-chatRest: #93a13f;
-    --color-chatSave: #8a43ab;
-    --color-chatItem: #bb9d68;
-    --color-chatShadow: #7ce6ef;
+    color: var(--co-text-light);
     span,
     label {
-      color: var(--color-textLight);
+      color: var(--co-text-light);
     }
   }
   .theme-light & {
     background-color: var(--color-light-3);
-    color: #222;
-    --color-abilities: #084f7b;
-    --color-chatSkill: #084f7b;
-    --color-chatAttack: #702900;
-    --color-chatDamages: darkred;
-    --color-chatHeal: #2c532c;
-    --color-chatRest: #597928;
-    --color-chatSave: #380052;
-    --color-chatItem: #4b3a0c;
-    --color-chatShadow: #7ce6ef;
+    color: var(--co-text-dark);
     span,
     label {
-      color: #222;
+      color: var(--co-text-dark);
     }
   }
   &.whisper {
@@ -56,10 +39,10 @@
   .message-header {
     display: grid;
     .theme-dark & {
-      color: var(--color-textLight);
+      color: var(--co-text-light);
     }
     .theme-light & {
-      color: #222;
+      color: var(--co-text-dark);
     }
 
     .message-metadata {
@@ -88,7 +71,7 @@
       font-size: 1rem;
       /*p {
         margin-bottom: -15px;
-        border: 2px solid var(--color-chatSkill);
+        border: 2px solid var(--co-chat-skill);
         border-radius: 15px;
         background-color: #084f7b66;
         font-weight: bold;
@@ -162,8 +145,8 @@
               cursor: pointer;
 
               &:hover {
-                background: color-mix(in srgb, var(--color-chatAttack) 8%, transparent);
-                box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-chatAttack) 18%, transparent);
+                background: color-mix(in srgb, var(--co-chat-attack) 8%, transparent);
+                box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--co-chat-attack) 18%, transparent);
               }
             }
             .target-portrait {
@@ -199,18 +182,18 @@
               align-items: center;
               justify-content: center;
               &.success {
-                color: #2e7d32;
+                color: var(--co-result-success);
               }
               &.failure {
-                color: #c62828;
+                color: var(--co-result-failure);
               }
               &.critical {
-                color: #1b5e20;
-                text-shadow: 0 0 4px #66bb6a;
+                color: var(--co-result-critical);
+                text-shadow: 0 0 4px var(--co-result-critical-glow);
               }
               &.fumble {
-                color: #7f0000;
-                text-shadow: 0 0 4px #ef5350;
+                color: var(--co-result-fumble);
+                text-shadow: 0 0 4px var(--co-result-fumble-glow);
               }
               &.pending {
                 color: #9e9e9e;
@@ -297,7 +280,7 @@
         color: var(--color-light-3);
       }
       .theme-light & {
-        color: #222;
+        color: var(--co-text-dark);
       }
     }
     .type-card {

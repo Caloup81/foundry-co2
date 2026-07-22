@@ -1,9 +1,9 @@
 .sheet-header {
   .theme-dark & {
-    background: linear-gradient(5deg, var(--color-profile-dark) 60%, #000000);
+    background: linear-gradient(5deg, var(--co-item-dark) 60%, #000000);
   }
   .theme-light & {
-    background: linear-gradient(5deg, var(--color-profile-light) 60%, var(--color-profile-dark));
+    background: linear-gradient(5deg, var(--co-item-light) 60%, var(--co-item-dark));
   }
 }
 .window-content {
@@ -30,10 +30,10 @@
     margin-bottom: 5px;
     text-align: center;
     .theme-dark & {
-      color: var(--color-profile-light);
+      color: var(--co-item-light);
     }
     .theme-light & {
-      color: var(--color-profile-dark);
+      color: var(--co-item-dark);
     }
   }
 
@@ -46,12 +46,12 @@
     padding: 4px 10px 0px 15px;
     border-radius: 12px 12px 0px 0px;
     .theme-dark & {
-      background-color: var(--color-profile-dark);
-      color: #e7d1b1;
+      background-color: var(--co-item-dark);
+      color: var(--co-text-light);
     }
     .theme-light & {
-      background-color: var(--color-profile-light);
-      color: #222;
+      background-color: var(--co-item-light);
+      color: var(--co-text-dark);
     }
   }
   .panel-right {
@@ -102,10 +102,10 @@
     padding: 0 8px;
 
     .theme-dark & {
-      border: 1px solid var(--color-profile-dark);
+      border: 1px solid var(--co-item-dark);
     }
     .theme-light & {
-      border: 1px solid var(--color-profile-light);
+      border: 1px solid var(--co-item-light);
     }
 
     .form-group:nth-last-child(2),
