@@ -4,6 +4,7 @@ import { CORoll, COSkillRoll, COAttackRoll, COHealRoll } from "./roll.mjs"
 import { CoFeatureModifierChoiceDialog } from "../dialogs/feature-modifier-choice-dialog.mjs"
 import CoChat from "../chat.mjs"
 import Utils from "../helpers/utils.mjs"
+import { resolveStatusId } from "../helpers/status-rules.mjs"
 
 /**
  * @class COActor
@@ -460,6 +461,20 @@ export default class COActor extends Actor {
   }
 
   /**
+   * Applique les remplacements de statuts déclarés par le module de règles actif.
+   * Cette interception couvre aussi les appels directs à l'API Foundry et les anciennes capacités.
+   *
+   * @param {string} statusId Identifiant demandé.
+   * @param {object|boolean} [options] Options Foundry.
+   * @returns {Promise<ActiveEffect|boolean>}
+   * @override
+   */
+  async toggleStatusEffect(statusId, options) {
+    const replacements = game.system.CONST.statusRules?.replacements ?? {}
+    return super.toggleStatusEffect(resolveStatusId(statusId, replacements), options)
+  }
+
+  /**
    * Vérifie qu'aucune autre posture défensive n'est déjà active avant d'en activer une.
    * Les postures sont apportées par un module de contenu via game.system.CONST.defenseStances :
    * si l'effet n'en est pas une, il n'y a rien à contrôler.
@@ -741,6 +756,8 @@ export default class COActor extends Actor {
   async activateCOStatusEffect({ state, effectid } = {}) {
     // FIXME Trouver pourquoi ça vaut ""
     if (effectid === "") return false
+
+    effectid = resolveStatusId(effectid, game.system.CONST.statusRules?.replacements ?? {})
 
     // On ne peut pas cumuler deux postures défensives
     if (state && !this.canActivateDefenseStance(effectid)) return false
@@ -2472,7 +2489,7 @@ export default class COActor extends Actor {
     let targetResults = []
     if (targets && targets.length > 0) {
       if (type === "attack") {
-        targetResults = Utils.computeTargetResults(targets, difficultyTooltip, rolls[0].total, results[0])
+        targetResults = Utils.computeTargetResults(targets, difficultyTooltip, rolls[0].total, results[0], { actionType })
         rolls[0].options.targetResults = targetResults
         if (rolls[1]) rolls[1].options.targetResults = targetResults
       } else if (type === "damage") {

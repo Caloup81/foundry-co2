@@ -74,6 +74,15 @@ export const RECOVERY_DICES = { d6: "d6", d8: "d8", d10: "d10" }
 export const PV = { 3: "3", 4: "4", 5: "5" }
 
 /**
+ * Points d'extension des règles de statuts propres aux univers.
+ * Les modules de règles peuplent ces tables pendant leur hook init.
+ */
+export const STATUS_RULES = {
+  replacements: {},
+  incomingAttack: {},
+}
+
+/**
  * Include all constant definitions within the SYSTEM global export
  * @type {Object}
  */
@@ -133,6 +142,7 @@ export const SYSTEM = {
   RESOURCES: CHARACTER.RESOURCES,
   SIZES,
   STATUS_EFFECT: EFFECTS.CUSTOM_STATUS_EFFECT,
+  statusRules: STATUS_RULES,
   TEMPLATE: TEMPLATE.TEMPLATE,
   TOKEN_SIZE,
 }

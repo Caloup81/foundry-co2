@@ -5,6 +5,7 @@
   "scripts": {
     "build": "gulp",
     "compile": "gulp css",
+    "test": "node --test test/*.test.mjs",
     "watch": "gulp",
     "gulp": "gulp"
   },

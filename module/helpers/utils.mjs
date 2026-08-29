@@ -1,4 +1,5 @@
 import { SYSTEM } from "../config/system.mjs"
+import { findAutomaticCriticalStatus } from "./status-rules.mjs"
 
 export default class Utils {
   /**
@@ -531,14 +532,32 @@ export default class Utils {
    * @param {string} rawDifficulty Formule brute de la difficulté (ex: "10 + @cible.con", "@oppose.int").
    * @param {number} rollTotal Total du jet d'attaque.
    * @param {Object} attackResult Résultat analysé du jet (isCritical, isFumble, isSuccessThreshold).
+   * @param {object} [context] Contexte de l'attaque.
+   * @param {string} [context.actionType] Type d'action (melee, ranged, magical, spell...).
    * @returns {Array} Un tableau d'objets { uuid, name, img, difficulty, isSuccess, isFailure, isCritical, isFumble, needsOppositeRoll }.
    */
-  static computeTargetResults(targets, rawDifficulty, rollTotal, attackResult = {}) {
+  static computeTargetResults(targets, rawDifficulty, rollTotal, attackResult = {}, { actionType } = {}) {
     return targets
       .map((target) => {
         const uuid = target.uuid
         const name = target.name
         const img = target.token?.document?.texture?.src ?? target.actor?.img ?? null
+        const forcedByStatus = findAutomaticCriticalStatus(target.actor?.statuses, actionType, game.system.CONST.statusRules?.incomingAttack)
+        if (forcedByStatus) {
+          return {
+            uuid,
+            name,
+            img,
+            difficulty: null,
+            isSuccess: true,
+            isFailure: false,
+            isCritical: true,
+            isFumble: false,
+            needsOppositeRoll: false,
+            forcedOutcome: "critical",
+            forcedByStatus,
+          }
+        }
         if (rawDifficulty && rawDifficulty.includes("@oppose")) {
           return {
             uuid,
@@ -587,6 +606,9 @@ export default class Utils {
    */
   static recomputeTargetResults(targetResults, rollTotal, attackResult = {}) {
     return targetResults.map((tr) => {
+      if (tr.forcedOutcome === "critical") {
+        return { ...tr, isSuccess: true, isFailure: false, isCritical: true, isFumble: false, needsOppositeRoll: false }
+      }
       if (tr.needsOppositeRoll) return tr
       return {
         ...tr,
