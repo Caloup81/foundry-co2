@@ -1,4 +1,4 @@
-# 2.3.6
+# 2.3.7
 
 ## Améliorations
 - Les modules de règles peuvent désormais remplacer un statut par un autre et déclarer les statuts qui rendent automatiquement critiques les attaques reçues, avec un filtrage possible par type d'attaque.
