@@ -1,3 +1,9 @@
+# 2.3.6
+
+## Améliorations
+- Les modules de règles peuvent désormais remplacer un statut par un autre et déclarer les statuts qui rendent automatiquement critiques les attaques reçues, avec un filtrage possible par type d'attaque.
+- Les bonus de compétence contextuels peuvent être présélectionnés à l'ouverture de la fenêtre de jet ; leur valeur est immédiatement intégrée au total et au récapitulatif du test.
+
 # 2.3.5
 
 ## Corrections

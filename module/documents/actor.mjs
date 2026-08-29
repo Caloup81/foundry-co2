@@ -5,6 +5,7 @@ import { CoFeatureModifierChoiceDialog } from "../dialogs/feature-modifier-choic
 import CoChat from "../chat.mjs"
 import Utils from "../helpers/utils.mjs"
 import { resolveStatusId } from "../helpers/status-rules.mjs"
+import { summarizeSelectedSkillBonuses } from "../helpers/skill-bonuses.mjs"
 
 /**
  * @class COActor
@@ -1836,6 +1837,7 @@ export default class COActor extends Actor {
    * @param {boolean} [options.showResult=true] Whether to show the result in chat or just return it.
    * @param options.skills
    * @param options.showOppositeRoll
+   * @param {string[]} [options.skillContexts] Contextes autorisant la présélection de bonus contextuels.
    * @returns {Roll, { diceResult, total, isCritical, isFumble, difficulty, isSuccess, isFailure }} Le jet et le résultat du jet de compétence
    */
   async rollSkill(
@@ -1857,6 +1859,7 @@ export default class COActor extends Actor {
       showResult = true,
       skills = undefined,
       showOppositeRoll = true,
+      skillContexts = [],
     } = {},
   ) {
     const options = {
@@ -1875,6 +1878,7 @@ export default class COActor extends Actor {
       targets,
       skillUsed: [],
       showResult,
+      skillContexts,
     }
     /**
      * A hook event that fires before the roll is made.
@@ -1971,8 +1975,9 @@ export default class COActor extends Actor {
     // Construction du message de chat
     if (!chatFlavor) chatFlavor = `${game.i18n.localize(`CO.abilities.long.${skillId}`)}`
 
-    const skillBonuses = this.getSkillBonuses(skillId) // Récupère un tableau d'objets avec {name, description, value}
+    const skillBonuses = this.getSkillBonuses(skillId, { rollType: "skill", skillContexts: options.skillContexts }) // Récupère un tableau d'objets avec {name, description, value}
     const hasSkillBonuses = skillBonuses.length > 0
+    const selectedSkillBonuses = summarizeSelectedSkillBonuses(skillBonuses)
 
     // Gestion des points de chance
     const hasLuckyPoints = this.hasLuckyPoints
@@ -2004,13 +2009,13 @@ export default class COActor extends Actor {
       showDifficulty,
       skillBonuses,
       hasSkillBonuses,
-      totalSkillBonuses: 0,
+      totalSkillBonuses: selectedSkillBonuses.total,
       targets,
       hasTargets: targets?.length > 0,
       hasLuckyPoints,
       abilities: SYSTEM.ABILITIES,
       skills,
-      skillUsed: [], // Tableau de clef valeur pour stocker les noms des skill activés et leur bonus
+      skillUsed: selectedSkillBonuses.skillUsed, // Tableau de clef valeur pour stocker les noms des skill activés et leur bonus
       showOppositeRoll,
     }
 

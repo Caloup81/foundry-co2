@@ -100,7 +100,7 @@
             <div class="flex1 skill-bonuses" id="skill-bonuses">
             {{#each skillBonuses as |bonus id|}}
                 {{!log 'skillBonuses' bonus id}}
-                <div class="bonus-item flexrow" data-value="{{bonus.value}}">
+                <div class="bonus-item flexrow {{#if bonus.selected}}checked{{/if}}" data-value="{{bonus.value}}">
                   <span class="bonus-value flex0">{{numberFormat bonus.value decimals=0 sign=true}}</span>
                   <div class="bonus-description">
                     <span class="bonus-name flex1">{{bonus.name}} {{#if bonus.hasPathName}}({{bonus.pathName}}){{/if}}</span>
