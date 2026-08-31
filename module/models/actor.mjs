@@ -123,13 +123,13 @@ export default class ActorData extends foundry.abstract.TypeDataModel {
       }
     })
 
-    // Prise en compte des customEffects en cours (applyOn others ou both)
+    // Prise en compte des customEffects en cours
+    // Les modifiers ont déjà été filtrés selon `apply` à la création de l'effet
+    // (Resolver#_createCustomEffect) en fonction de la cible réelle : ne pas re-filtrer ici.
     if (this.currentEffects.length > 0) {
       for (const effect of this.currentEffects) {
         if (effect.modifiers.length > 0) {
-          modifiersArray.push(
-            ...effect.modifiers.filter((m) => m.subtype === subtype && (m.apply === SYSTEM.MODIFIERS_APPLY.others.id || m.apply === SYSTEM.MODIFIERS_APPLY.both.id)),
-          )
+          modifiersArray.push(...effect.modifiers.filter((m) => m.subtype === subtype))
         }
       }
     }

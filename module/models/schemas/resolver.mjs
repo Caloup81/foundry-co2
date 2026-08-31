@@ -531,9 +531,9 @@ export class Resolver extends foundry.abstract.DataModel {
         await game.users.activeGM.query("co2.applyCustomEffect", { ce: ceOthers, targets: uuidList })
       }
 
-      // Vérifier si on a des modifiers avec apply="both" qui doivent aussi s'appliquer à soi-même
-      const hasBothModifiers = action.modifiers?.some((m) => m.apply === SYSTEM.MODIFIERS_APPLY.both.id)
-      if (hasBothModifiers) {
+      // Vérifier si on a des modifiers avec apply="self" ou "both" qui doivent aussi s'appliquer au lanceur
+      const hasSelfModifiers = action.modifiers?.some((m) => m.apply === SYSTEM.MODIFIERS_APPLY.self.id || m.apply === SYSTEM.MODIFIERS_APPLY.both.id)
+      if (hasSelfModifiers) {
         const ceSelf = await this._createCustomEffect(actor, item, action, true, selectedStatuses)
         await actor.applyCustomEffect(ceSelf)
       }
@@ -608,11 +608,14 @@ export class Resolver extends foundry.abstract.DataModel {
       }
     }
 
-    // Le nom de l'effet est actorId.actionName
+    // Le nom de l'effet est actorId.actionName[.self]
     // avec actorId : l'id de l'acteur qui applique l'effet
     // et actionName : le nom de l'action qui génère l'effet (libellé de l'action, ou nom de l'item)
+    // Le suffixe .self distingue l'effet "retour sur le lanceur" de l'effet posé sur les cibles,
+    // pour éviter que les deux ne partagent le même slug si le lanceur figure aussi parmi ses cibles
+    // (auquel cas applyCustomEffect() les traiterait comme un doublon et perdrait l'un des deux)
 
-    const effectName = `${actor.id}.${action.actionName}`
+    const effectName = isSelfTarget ? `${actor.id}.${action.actionName}.self` : `${actor.id}.${action.actionName}`
 
     // Utiliser les statuts sélectionnés par l'utilisateur si disponibles, sinon les statuts configurés
     const statusesToApply = selectedStatuses && selectedStatuses.length > 0 ? new Set(selectedStatuses) : this.additionalEffect.statuses
