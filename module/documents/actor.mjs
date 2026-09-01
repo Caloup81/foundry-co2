@@ -2856,11 +2856,11 @@ export default class COActor extends Actor {
     // Gestion des dommages normaux
     else {
       const hp = this.system.attributes.hp
-      hp.value = Math.max(0, hp.value - finalDamage)
-      if (hp.value === 0 && this.type !== "character") {
-        this.toggleStatusEffect("dead", true)
+      const newValue = Math.max(0, hp.value - finalDamage)
+      if (newValue === 0 && this.type !== "character") {
+        await this.toggleStatusEffect("dead", { active: true })
       }
-      await this.update({ "system.attributes.hp": hp })
+      await this.update({ "system.attributes.hp.value": newValue })
     }
 
     let message
