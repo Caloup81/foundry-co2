@@ -1,3 +1,23 @@
+# 2.3.8
+
+## Corrections
+- Un personnage tombé à 0 point de vigueur ne passait plus automatiquement inconscient, et une rencontre à 0 PV n'était plus déclarée morte.
+- Soigner des dommages temporaires les aggravait au lieu de les réduire.
+- Un soin de dommages temporaires demandé par un joueur non-MJ appliquait en réalité un soin normal.
+- L'application de dégâts pouvait écrire des données incohérentes dans la fiche de l'acteur et n'appliquait pas correctement le statut « mort » des rencontres à 0 PV.
+- Un profil dont une voie était refusée à la création pouvait laisser une entrée invalide dans les voies du personnage.
+- Deux messages d'interface manquants s'affichaient sous forme de clé brute au lieu d'un texte.
+- Le repos rapide pouvait écrire des données incohérentes dans les dés de récupération du personnage.
+- La suppression ou l'expiration d'effets personnalisés sur un acteur pouvait en oublier ou en supprimer le mauvais lorsque plusieurs étaient présents en même temps.
+- Un coup bénéficiant d'une réduction de dégâts suffisante pouvait ne faire aucun dégât, au lieu du minimum d'un point garanti par les règles.
+- Une famille de personnage inconnue ou renommée par un module de contenu pouvait faire planter entièrement la fiche.
+- Une durée d'effet mal formée pouvait se propager comme une valeur invalide au lieu d'être ramenée à 1.
+- Fiabilisation de la détection du type de jet (attaque/compétence) pour les modules tiers.
+- Un modificateur ciblant « Soi-même » posé via un effet personnalisé (buff/debuff sur le lanceur) était ignoré à la lecture des statistiques ([#429](https://github.com/BlackBookEditions/foundry-co2/issues/429))
+
+## Améliorations
+- Le malus d'armure peut désormais être modifié par un modificateur (ex. capacité), en plus de la valeur de base de l'armure équipée ([#342](https://github.com/BlackBookEditions/foundry-co2/issues/342))
+
 # 2.3.7
 
 ## Améliorations
