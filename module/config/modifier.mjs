@@ -163,6 +163,11 @@ export const MODIFIERS_TARGET = {
     label: "CO.label.long.movement",
     subtype: "attribute",
   },
+  armorMalus: {
+    id: "armorMalus",
+    label: "CO.label.long.armorMalus",
+    subtype: "attribute",
+  },
   recoveryFast: {
     id: "recoveryFast",
     label: "CO.label.long.recoveryFast",

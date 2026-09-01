@@ -99,6 +99,8 @@ export default class COActor extends Actor {
       rollData.atm = this.system.magic
     }
 
+    rollData.malusArmure = this.equippedArmors[0]?.system.overloadMalus ?? 0
+
     return rollData
   }
 
@@ -416,11 +418,10 @@ export default class COActor extends Actor {
    */
   get malusFromArmor() {
     const armors = this.equippedArmors
-    if (armors.length > 0) {
-      const armor = armors[0]
-      return -1 * armor.system.overloadMalus
-    }
-    return 0
+    if (armors.length === 0) return 0
+    const base = -1 * armors[0].system.overloadMalus
+    const modifiers = this.system.computeTotalModifiersByTarget(this.system.attributeModifiers, SYSTEM.MODIFIERS_TARGET.armorMalus.id)
+    return Math.min(0, base + modifiers.total)
   }
 
   get isUnlocked() {

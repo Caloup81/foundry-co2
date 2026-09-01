@@ -513,6 +513,7 @@
         "properties": "Propriétés",
         "xp": "Expérience",
         "movement": "Déplacement",
+        "armorMalus": "Malus d'armure",
         "def": "Défense",
         "init": "Initiative",
         "hd": "Dé de vie",
