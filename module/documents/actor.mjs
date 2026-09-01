@@ -1413,8 +1413,9 @@ export default class COActor extends Actor {
       // Item is null if the item has been deleted in the compendium or in the world
       // TODO Add a warning message and think about a global rollback
       if (originalPath !== null) {
+        // La méthode addPath peut renvoyer undefined si la voie a été refusée : on ne garde que les voies réellement créées
         const newPathUuid = await this.addPath(originalPath, newProfile[0])
-        updatedPathsUuids.push(newPathUuid)
+        if (newPathUuid) updatedPathsUuids.push(newPathUuid)
       }
     }
 
