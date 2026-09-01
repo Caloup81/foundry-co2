@@ -443,6 +443,7 @@
       "warningNoTargetOrTooManyTargets": "Vous n'avez ciblé personne ou trop de cibles pour cette action !",
       "warningNoValidTarget": "Aucune cible valide pour cette action",
       "warningInvalidScopeTargets": "Certaines cibles sélectionnées ne sont pas valides pour cette action",
+      "warningEncounterPathOnly": "Une rencontre ne peut apprendre que des voies de type rencontre.",
       "applyEffect": "{actorName} : application de {skillName} sur {targetNames}"
     },
     "tooltip": {
@@ -1112,7 +1113,8 @@
         "equipment": "Équipement",
         "feature": "Feature",
         "profile": "Profil",
-        "capacity": "Capacité"
+        "capacity": "Capacité",
+        "attack": "Attaque"
       },
       "subtype": {
         "ability": "Caractéristique",
