@@ -226,11 +226,11 @@ export default class CharacterData extends ActorData {
   }
 
   get fpFromFamily() {
-    return this.profile ? SYSTEM.FAMILIES[this.profile.system.family].fp : 0
+    return SYSTEM.FAMILIES[this.profile?.system.family]?.fp ?? 0
   }
 
   get rpFromFamily() {
-    return this.profile ? SYSTEM.FAMILIES[this.profile.system.family].recoveryBonus : 0
+    return SYSTEM.FAMILIES[this.profile?.system.family]?.recoveryBonus ?? 0
   }
 
   get currentLevel() {
@@ -384,7 +384,7 @@ export default class CharacterData extends ActorData {
       // Au niveau 1 : 2 * PV de la famille
       // Pour chaque niveau supplémentaire : + PV de la famille
       // Point d'extension : un module (ex. cof2-compagnon / profil Psionique) peut surcharger les PV/niveau du profil
-      const pvData = { profile: this.profile, value: this.profile ? SYSTEM.FAMILIES[this.profile.system.family].hp : 0 }
+      const pvData = { profile: this.profile, value: SYSTEM.FAMILIES[this.profile?.system.family]?.hp ?? 0 }
       Hooks.callAll("co2.computeProfileHpPerLevel", this.parent, pvData)
       const pvFromFamily = pvData.value
       this.attributes.hp.base = 2 * pvFromFamily + (this.attributes.level - 1) * pvFromFamily
