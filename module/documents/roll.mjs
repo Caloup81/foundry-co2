@@ -13,9 +13,9 @@ export class CORoll extends Roll {
     let result = {}
 
     // Vérification du type de roll
-    const isAttackRoll = roll?.constructor?.name === "COAttackRoll" && roll.options?.type === "attack"
-    const isSkillRoll = roll?.constructor?.name === "COSkillRoll"
-    const isRoll = roll?.constructor?.name === "Roll"
+    const isAttackRoll = roll instanceof COAttackRoll && roll.options?.type === "attack"
+    const isSkillRoll = roll instanceof COSkillRoll
+    const isRoll = roll instanceof Roll
 
     if (isAttackRoll || isSkillRoll || isRoll) {
       // On récupère le résultat du dé conservé
