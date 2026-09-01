@@ -1,6 +1,7 @@
 # 2.3.8
 
 ## Corrections
+
 - Un personnage tombé à 0 point de vigueur ne passait plus automatiquement inconscient, et une rencontre à 0 PV n'était plus déclarée morte.
 - Soigner des dommages temporaires les aggravait au lieu de les réduire.
 - Un soin de dommages temporaires demandé par un joueur non-MJ appliquait en réalité un soin normal.
@@ -14,42 +15,49 @@
 - Une durée d'effet mal formée pouvait se propager comme une valeur invalide au lieu d'être ramenée à 1.
 - Fiabilisation de la détection du type de jet (attaque/compétence) pour les modules tiers.
 - Un modificateur ciblant « Soi-même » posé via un effet personnalisé (buff/debuff sur le lanceur) était ignoré à la lecture des statistiques ([#429](https://github.com/BlackBookEditions/foundry-co2/issues/429))
+- Correction du calcul des Dés de récupérations et des points de mana qui utilisent maintenant bien les caractéristiques personnalisées sur la fiche du personnage ([#392](https://github.com/BlackBookEditions/foundry-co2/issues/392)
 
 ## Améliorations
+
 - Le malus d'armure peut désormais être modifié par un modificateur (ex. capacité), en plus de la valeur de base de l'armure équipée ([#342](https://github.com/BlackBookEditions/foundry-co2/issues/342))
 
 # 2.3.7
 
 ## Améliorations
+
 - Les modules de règles peuvent désormais remplacer un statut par un autre et déclarer les statuts qui rendent automatiquement critiques les attaques reçues, avec un filtrage possible par type d'attaque.
 - Les bonus de compétence contextuels peuvent être présélectionnés à l'ouverture de la fenêtre de jet ; leur valeur est immédiatement intégrée au total et au récapitulatif du test.
 
 # 2.3.5
 
 ## Corrections
-- Une capacité liée dont la capacité parente n'existe plus sur l'acteur n'était rendue nulle part sur la feuille — elle n'est affichée qu'à travers le `linkedCapacity` de son hôte — alors que ses modificateurs continuaient de s'appliquer, produisant des écarts de calcul inexplicables. Elle réapparaît désormais dans *Capacités hors voie*, signalée par une icône d'alerte, et peut y être supprimée.
+
+- Une capacité liée dont la capacité parente n'existe plus sur l'acteur n'était rendue nulle part sur la feuille — elle n'est affichée qu'à travers le `linkedCapacity` de son hôte — alors que ses modificateurs continuaient de s'appliquer, produisant des écarts de calcul inexplicables. Elle réapparaît désormais dans _Capacités hors voie_, signalée par une icône d'alerte, et peut y être supprimée.
 
 # 2.3.4
 
 ## Améliorations
-- Les cartes de chat d'attaque, de dommages et de sauvegarde portent l'identifiant de l'objet à l'origine du jet (`data-item-uuid` / `data-item-id`). Les modules d'animation tels que *Automated Animations* déclenchent désormais l'animation au moment du jet, quel que soit le point de lancement (feuille, carte de chat, HUD, macro). En contrepartie, publier un objet dans le chat ne déclenche plus d'animation : c'est le jet qui la porte.
+
+- Les cartes de chat d'attaque, de dommages et de sauvegarde portent l'identifiant de l'objet à l'origine du jet (`data-item-uuid` / `data-item-id`). Les modules d'animation tels que _Automated Animations_ déclenchent désormais l'animation au moment du jet, quel que soit le point de lancement (feuille, carte de chat, HUD, macro). En contrepartie, publier un objet dans le chat ne déclenche plus d'animation : c'est le jet qui la porte.
 
 # 2.3.3
 
 ## Corrections
+
 - Les voies apportées par un trait restent affichées lorsque la feuille de personnage est verrouillée, dès qu'une capacité de la voie est apprise ([#427](https://github.com/BlackBookEditions/foundry-co2/issues/427))
 - Les notes des modificateurs d'un trait, ainsi que leur bénéficiaire (soi-même, les autres, les deux), sont conservées lorsque le trait est glissé sur un personnage ([#427](https://github.com/BlackBookEditions/foundry-co2/issues/427))
-- La suppression d'un trait, d'un profil ou d'une voie ne laisse plus de voies ni de capacités orphelines sur le personnage. Les capacités déjà orphelines des personnages existants réapparaissent dans *Capacités hors voie* et peuvent y être supprimées ([#427](https://github.com/BlackBookEditions/foundry-co2/issues/427))
-
+- La suppression d'un trait, d'un profil ou d'une voie ne laisse plus de voies ni de capacités orphelines sur le personnage. Les capacités déjà orphelines des personnages existants réapparaissent dans _Capacités hors voie_ et peuvent y être supprimées ([#427](https://github.com/BlackBookEditions/foundry-co2/issues/427))
 
 # 2.3.2
 
 ## Corrections
-- Le modificateur de caractéristiques *Toutes les caractéristiques* est désormais pris en compte sur les acteurs de type Rencontre (([#426](https://github.com/BlackBookEditions/foundry-co2/issues/426))
+
+- Le modificateur de caractéristiques _Toutes les caractéristiques_ est désormais pris en compte sur les acteurs de type Rencontre (([#426](https://github.com/BlackBookEditions/foundry-co2/issues/426))
 
 # 2.3.1
 
 ## Améliorations
+
 - Lisibilité des couleurs de chat avec le thème sombre de Foundry
 - L'usage (nb mains) n'est pas affiché pour les armures
 - Les notes de version sont intégrées au système et affichées aux MJs
@@ -80,7 +88,6 @@
 ## Améliorations
 
 - Ajout de points d'extension pour gérer les points d'ego et les pouvoirs psioniques
-
 
 # 2.1.7
 
