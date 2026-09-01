@@ -859,7 +859,7 @@ export default class CharacterData extends ActorData {
 
       // Dépense du DR
       newRp.value = rp.value - 1
-      await this.parent.update({ "system.resources.recovery": newRp })
+      await this.parent.update({ "system.resources.recovery.value": newRp.value })
     }
     // Récupération complète
     else {
