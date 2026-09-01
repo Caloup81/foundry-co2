@@ -26,19 +26,21 @@ export function createActor(document, options, userId) {
  * @returns {void}
  */
 export function updateActor(actor, updateData, options, userId) {
-  if (document.type === "character" && changed?.system?.attributes?.hp?.value === 0 && !document.statuses.has("unconscious")) {
+  if (!game.user.isActiveGM) return
+
+  if (actor.type === "character" && updateData?.system?.attributes?.hp?.value === 0 && !actor.statuses.has("unconscious")) {
     // Si déjà affaibli le statut est supprimé
-    if (document.statuses.has("weakened")) {
-      document.toggleStatusEffect("weakened", { active: false })
-      document.unsetFlag("co2", "statuses.weakenedFromOneHP")
+    if (actor.statuses.has("weakened")) {
+      actor.toggleStatusEffect("weakened", { active: false })
+      actor.unsetFlag("co2", "statuses.weakenedFromOneHP")
     }
-    document.toggleStatusEffect("unconscious", { active: true })
-    document.setFlag("co2", "statuses.unconsciousFromZeroHP", true)
-    document.system.spendDR(1)
+    actor.toggleStatusEffect("unconscious", { active: true })
+    actor.setFlag("co2", "statuses.unconsciousFromZeroHP", true)
+    actor.system.spendDR(1)
   }
 
   // Une rencontre est morte à 0 PV
-  if (document.type === "encounter" && changed?.system?.attributes?.hp?.value === 0 && !document.statuses.has("dead")) {
-    document.toggleStatusEffect("dead", { active: true })
+  if (actor.type === "encounter" && updateData?.system?.attributes?.hp?.value === 0 && !actor.statuses.has("dead")) {
+    actor.toggleStatusEffect("dead", { active: true })
   }
 }
