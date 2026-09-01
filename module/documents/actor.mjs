@@ -2895,7 +2895,7 @@ export default class COActor extends Actor {
     if (isTemporaryHeal) {
       let tempDm = this.system.attributes.tempDm
       const healAmount = ignoreDR ? heal : heal + this.system.combat.dr.value
-      tempDm = Math.min(this.system.attributes.hp.max, tempDm + healAmount)
+      tempDm = Math.max(0, tempDm - healAmount)
       await this.update({ "system.attributes.tempDm": tempDm })
     }
     // Soigne des dommages normaux
