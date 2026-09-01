@@ -2843,7 +2843,7 @@ export default class COActor extends Actor {
    * @returns {Promise<void>} Résout lorsque la mise à jour des PV et la création du message de chat sont terminées.
    */
   async applyDamage({ source = null, damage, isTemporaryDamage = false, ignoreDR = false } = {}) {
-    if (damage === 0) return
+    if (!Number.isFinite(damage) || damage === 0) return
     const finalDamage = ignoreDR ? Math.max(0, damage) : Math.max(0, damage - this.system.combat.dr.value)
     // Gestion des dommages temporaires
     if (isTemporaryDamage) {
@@ -2892,6 +2892,7 @@ export default class COActor extends Actor {
    * @returns {Promise<void>} Résolue lorsque les PV de l'acteur ont été mis à jour.
    */
   async applyHeal({ source = null, heal = 0, isTemporaryHeal = false, ignoreDR = true } = {}) {
+    if (!Number.isFinite(heal) || heal === 0) return
     // Soigne des dommages temporaires
     if (isTemporaryHeal) {
       let tempDm = this.system.attributes.tempDm
