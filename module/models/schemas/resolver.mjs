@@ -568,7 +568,7 @@ export class Resolver extends foundry.abstract.DataModel {
     // TODO Vérifier si eval est nécessaire ici
     if (/[+\-*/%]/.test(evaluatedDuration)) evaluatedDuration = eval(evaluatedDuration)
     let duration = parseInt(evaluatedDuration)
-    if (duration < 1) duration = 1
+    if (!(duration >= 1)) duration = 1
 
     // Calcul du round de fin
     let remainingTurn
