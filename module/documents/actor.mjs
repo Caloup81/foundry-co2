@@ -2998,11 +2998,11 @@ export default class COActor extends Actor {
         await this.activateCOStatusEffect({ state: false, effectid: status })
       }
     }
-    await this.system.currentEffects.splice(this.system.currentEffects.indexOf(customEffect), 1)
-    await this.update({ "system.currentEffects": this.system.currentEffects })
+    const remaining = this.toObject().system.currentEffects.filter((ce) => ce.slug !== customEffect.slug)
+    await this.update({ "system.currentEffects": remaining })
 
     // Si il n'y a plus d'effet custom, on enlève l'icône
-    if (this.system.currentEffects.length === 0) {
+    if (remaining.length === 0) {
       await this.activateCOStatusEffect({ state: false, effectid: "customEffect" })
     }
   }
@@ -3088,8 +3088,11 @@ export default class COActor extends Actor {
    * @returns {Promise<void>} Resolves when all applicable effects have been processed.
    */
   async expireEffects() {
-    for (const effect of this.system.currentEffects) {
-      if (effect.remainingTurn <= 0 && effect.unit !== SYSTEM.COMBAT_UNITE.combat.id && effect.unit !== SYSTEM.COMBAT_UNITE.unlimited.id) await this.deleteCustomEffect(effect)
+    const toDelete = this.system.currentEffects.filter(
+      (effect) => effect.remainingTurn <= 0 && effect.unit !== SYSTEM.COMBAT_UNITE.combat.id && effect.unit !== SYSTEM.COMBAT_UNITE.unlimited.id,
+    )
+    for (const effect of toDelete) {
+      await this.deleteCustomEffect(effect)
     }
   }
 
@@ -3119,7 +3122,8 @@ export default class COActor extends Actor {
    * @returns {Promise<void>} A promise that resolves when all effects have been deleted.
    */
   async deleteEffects() {
-    for (const effect of this.system.currentEffects) {
+    const toDelete = [...this.system.currentEffects]
+    for (const effect of toDelete) {
       await this.deleteCustomEffect(effect)
     }
   }
