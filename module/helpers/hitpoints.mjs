@@ -72,7 +72,7 @@ export default class Hitpoints {
             fromSource: source,
             targetUuid: targetActor.uuid,
             healAmount: finalAmount,
-            isTemporaryDamage: true,
+            isTemporaryHeal: true,
             ignoreDR: drChecked,
           })
       } else {
