@@ -667,9 +667,10 @@ export default class CharacterData extends ActorData {
     let value = 0
     if (!this.hasSpells) return { value, tooltip: "Pas de sorts" }
     const nbSpells = this.nbSpells
+    const baseValue = this.abilities[this.resources.mana.ability].value
     let tooltip = Utils.getTooltip("Nb de sorts", nbSpells)
-    tooltip = tooltip.concat(Utils.getTooltip("Volonté", this.abilities.vol.value))
-    return { value: this.abilities.vol.value + nbSpells, tooltip }
+    tooltip = tooltip.concat(Utils.getTooltip(Utils.getAbilityName(this.resources.mana.ability), baseValue))
+    return { value: baseValue + nbSpells, tooltip }
   }
 
   /**
@@ -702,9 +703,10 @@ export default class CharacterData extends ActorData {
    */
   _computeBaseRP() {
     const baseRP = DefaultConfiguration.baseRecovery()
-    const value = baseRP + this.abilities.con.value + this.rpFromFamily
+    const baseValue = this.abilities[this.resources.recovery.ability].value
+    const value = baseRP + baseValue + this.rpFromFamily
     let tooltip = Utils.getTooltip("Base", baseRP)
-    tooltip = tooltip.concat(Utils.getTooltip("Constitution", this.abilities.con.value))
+    tooltip = tooltip.concat(Utils.getTooltip(Utils.getAbilityName(this.resources.recovery.ability), baseValue))
     if (this.rpFromFamily > 0) tooltip = tooltip.concat(Utils.getTooltip("Profil", this.rpFromFamily))
     return { value, tooltip }
   }
