@@ -2844,7 +2844,7 @@ export default class COActor extends Actor {
    */
   async applyDamage({ source = null, damage, isTemporaryDamage = false, ignoreDR = false } = {}) {
     if (!Number.isFinite(damage) || damage === 0) return
-    const finalDamage = ignoreDR ? Math.max(0, damage) : Math.max(0, damage - this.system.combat.dr.value)
+    const finalDamage = Math.max(1, ignoreDR ? damage : damage - this.system.combat.dr.value)
     // Gestion des dommages temporaires
     if (isTemporaryDamage) {
       const currentMaxHp = this.system.attributes.hp.max
